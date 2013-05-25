@@ -132,7 +132,9 @@ void ImageTableWidget::insertImage()
                         tr("Choose images"),
                         lastDir,
                         // FIXME: scaling down for *.png does not work as good as for jpg
-                        tr("Images (*.jpg *.png);;All files (* *.*)"));
+                        // FIXME: export fron png images don not work. Deactiving png for now.
+//                        tr("Images (*.jpg *.png);;All files (* *.*)"));
+                        tr("Images (*.jpg);;All files (* *.*)"));
 
     foreach (imageFileName, images) {
         if (moveSelectionDown) {
