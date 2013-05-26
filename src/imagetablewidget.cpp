@@ -26,6 +26,12 @@
 #include "ui_imagetablewidget.h"
 
 //TODO: comment this file, most comments from the old imagelistwidget shall match
+/* FIXME: I am very unhapy with the design of this ImageTableWidget. This is a dirty
+   hack that has to be rewritten. It is a lot of work that noone sees but has to be
+   rewritten before nice features like drag&drop comme in play.
+   Layout has to be separated from Data, items have to become a dedicated widget
+   (ideas: filename under image, display source image or preview, infos with tooltip...)
+*/
 
 ImageTableWidget::ImageTableWidget(QWidget *parent) :
     QWidget(parent),
@@ -153,6 +159,9 @@ void ImageTableWidget::insertImage()
 
 }
 
+/** \brief inserts an image at the current selection on the given side.
+
+*/
 // FIXME: handle fileName = "" (empty image)
 void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide side, QMap<QString, QVariant> settings)
 {
@@ -196,6 +205,33 @@ void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide si
     // Select the inserted item
     ui->images->setCurrentItem(item);
     // scroll down to next item for order by multiple inserts?
+}
+
+/** \brief Appends an image at the end of the Table
+
+*/
+void ImageTableWidget::appendImageToSide(QString fileName,
+                                         ImageTableWidget::ImageSide side,
+                                         QMap<QString, QVariant> settings)
+{
+    QTableWidgetItem *item;
+    QPixmap icon;
+    QFileInfo fi(fileName);
+
+    icon = QPixmap(fileName).scaledToWidth(100);
+    item = new QTableWidgetItem(QIcon(icon),
+                        fi.baseName());
+    // Adjust Table size if necessary
+    if (itemCount[side] >=  ui->images->rowCount()) {
+        ui->images->setRowCount(itemCount[side] + 1);
+    }
+    ui->images->setItem(itemCount[side], side, item);
+    item->setData(ImageFileName, fileName);
+    item->setData(ImagePreferences, settings);
+    item->setToolTip(fileName);
+    itemCount[side] = itemCount[side] + 1;
+
+    ui->images->setCurrentItem(item);
 }
 
 void ImageTableWidget::insertEmptyImage()
@@ -327,7 +363,7 @@ void ImageTableWidget::setSettings(QMap<QString, QVariant> settings)
         }
         filename = key.section("_", 2);
         if (row >= 0 && filename.length() > 0) {
-            addImage(filename, side, settings[key].toMap());
+            appendImageToSide(filename, side, settings[key].toMap());
         }
     }
 }

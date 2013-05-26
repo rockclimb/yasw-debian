@@ -1,7 +1,6 @@
 ToDo / Roadmap
  - BUG: when moving the first time a dekeytoning/croping quadrangle with controp pressed,
    the quadrangle is moved only the half of the mouse.
- - BUG: when loading a project, the displayed image do not match with the selection
  - Add ability to scale resulting images after cropping
  - Filter to fix image color / convert to black & white...
    o add filter for color manipulation_/adjustment
@@ -39,6 +38,9 @@ User requests:
    use 'Shift' key to force a horizontal line, i.e. deltaY = 0) Use the drawn line to calculate a
    finer rotation angle to straighten the page. (maybe name the two filters 'orientation' and 'rotation'
    to distinguish between them).
+
+201306xx; YASE 0.4
+ - Fixed Ticket #2 (Image order not retained when project is reloaded.)
 
 20130525; YASW 0.3 "yasw has reached one (1) user!"
  - About dialog
