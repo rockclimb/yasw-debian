@@ -175,7 +175,7 @@ void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide si
     //Alternatives: put some "waiting" dialog or do ICON-loading in the background
     icon = QPixmap(fileName).scaledToWidth(100);
     item = new QTableWidgetItem(QIcon(icon),
-                        fi.baseName());
+                        fi.fileName());
 
     // Adjust Table size if necessary
     if (itemCount[side] >=  ui->images->rowCount()) {
@@ -220,7 +220,7 @@ void ImageTableWidget::appendImageToSide(QString fileName,
 
     icon = QPixmap(fileName).scaledToWidth(100);
     item = new QTableWidgetItem(QIcon(icon),
-                        fi.baseName());
+                        fi.fileName());
     // Adjust Table size if necessary
     if (itemCount[side] >=  ui->images->rowCount()) {
         ui->images->setRowCount(itemCount[side] + 1);
