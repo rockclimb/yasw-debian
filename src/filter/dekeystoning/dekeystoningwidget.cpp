@@ -130,4 +130,9 @@ void DekeystoningWidget::setSelectionColor(QColor color)
     ui->view->setSelectionColor(color);
 }
 
+void DekeystoningWidget::setBackgroundColor(QColor color)
+{
+    ui->view->setBackgroundBrush(QBrush(color));
+}
+
 

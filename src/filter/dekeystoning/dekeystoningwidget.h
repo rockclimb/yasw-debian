@@ -44,6 +44,8 @@ public:
 
 public slots:
     void setSelectionColor(QColor color);
+    void setBackgroundColor(QColor color);
+
 
 protected:
     void changeEvent(QEvent *e);

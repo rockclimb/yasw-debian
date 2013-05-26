@@ -89,3 +89,8 @@ void RotationWidget::setRotation(int degrees)
        and knows what (s)he is dooing, so we don't check */
     rotationAngle = degrees;
 }
+
+void RotationWidget::setBackgroundColor(QColor color)
+{
+    ui->view->setBackgroundBrush(QBrush(color));
+}

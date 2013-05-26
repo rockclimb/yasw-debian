@@ -24,6 +24,7 @@
 
 class Cropping : public BaseFilter
 {
+    Q_OBJECT
 public:
     Cropping(QObject * parent = 0);
     AbstractFilterWidget* getWidget();

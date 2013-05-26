@@ -11,7 +11,8 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    setSelectionColor("red");
+    setSelectionColor(Qt::red);
+    setBackgroundColor(Qt::lightGray);
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -30,6 +31,12 @@ void PreferencesDialog::setSettings(QSettings *newSettings)
         color = selectionColor;
     }
     setSelectionColor(color);
+
+    color = settings->value("backgroundColor").value<QColor>();
+    if (!color.isValid()) {
+        color = backgroundColor;
+    }
+    setBackgroundColor(color);
 }
 
 void PreferencesDialog::on_selectionColorButton_clicked()
@@ -40,6 +47,11 @@ void PreferencesDialog::on_selectionColorButton_clicked()
     setSelectionColor(color);
 }
 
+/** \brief Sets the Color for grafical selection feedback (example deykeystoning quadrilateral)
+
+  This function emits a selectionColorChanged signal, so that the filtercontainer can
+  transmit the information to the plugings, who should change the color used.
+*/
 void PreferencesDialog::setSelectionColor(QColor color)
 {
     QPalette palette;
@@ -57,4 +69,31 @@ void PreferencesDialog::setSelectionColor(QColor color)
     }
 
     emit(selectionColorChanged(color));
+}
+
+void PreferencesDialog::setBackgroundColor(QColor color)
+{
+    QPalette palette;
+
+    if (!color.isValid()) {
+        return;
+    }
+
+    backgroundColor = color;
+    palette.setColor(QPalette::ButtonText, color);
+    ui->backgroundColorButton->setPalette(palette);
+
+    if (settings) {
+        settings->setValue("backgroundColor", color);
+    }
+
+    emit(backgroundColorChanged(color));
+}
+
+void PreferencesDialog::on_backgroundColorButton_clicked()
+{
+    QColor color;
+
+    color = QColorDialog::getColor(backgroundColor, this, tr("Choose a background color"));
+    setBackgroundColor(color);
 }

@@ -25,6 +25,7 @@ public:
 
 public slots:
     void setSelectionColor(QColor color);
+    void setBackgroundColor(QColor color);
 
 private:
     Ui::CroppingWidget *ui;

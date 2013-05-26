@@ -79,3 +79,8 @@ void CroppingWidget::setSelectionColor(QColor color)
 {
     ui->view->setSelectionColor(color);
 }
+
+void CroppingWidget::setBackgroundColor(QColor color)
+{
+    ui->view->setBackgroundBrush(QBrush(color));
+}

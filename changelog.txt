@@ -1,6 +1,4 @@
 ToDo / Roadmap
- - BUG: when moving the first time a dekeytoning/croping quadrangle with controp pressed,
-   the quadrangle is moved only the half of the mouse.
  - Add ability to scale resulting images after cropping
  - Filter to fix image color / convert to black & white...
    o add filter for color manipulation_/adjustment
@@ -43,6 +41,7 @@ User requests:
  - Fixed Ticket #2 (Image order not retained when project is reloaded.)
  - Fixed Ticket #1 (Display FileName instead of BaseName in the image list)
  - Fixed Ticket #3 (Propagate settings to all images for one side)
+ - Added a background color (configurable) for the filter widgets.
 
 20130525; YASW 0.3 "yasw has reached one (1) user!"
  - About dialog

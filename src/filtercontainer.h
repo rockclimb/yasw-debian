@@ -41,6 +41,8 @@ public slots:
     void tabChanged(int index);
     void setImage(QPixmap pixmap);
     void setSelectionColor(QColor color);
+    void setBackgroundColor(QColor color);
+
 
 private:
         QList<BaseFilter *> tabToFilter;
@@ -50,6 +52,8 @@ private:
 
 signals:
     void selectionColorChanged(QColor color);
+    void backgroundColorChanged(QColor color);
+
 
 };
 #endif // FILTERCONTAINER_H

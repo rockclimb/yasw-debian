@@ -21,15 +21,21 @@ public:
 private slots:
     void on_selectionColorButton_clicked();
 
+    void on_backgroundColorButton_clicked();
+
 private:
     void setSelectionColor(QColor color);
+    void setBackgroundColor(QColor color);
 
     Ui::PreferencesDialog *ui;
     QColor selectionColor;
     QSettings *settings = NULL;
+    QColor backgroundColor;
 
 signals:
     void selectionColorChanged(QColor color);
+    void backgroundColorChanged(QColor color);
+
 };
 
 #endif // PREFERENCESDIALOG_H

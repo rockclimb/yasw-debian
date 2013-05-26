@@ -27,7 +27,10 @@ Cropping::Cropping(QObject *parent)
 
     if (parent) {
         /* Connect slots to the filtercontainer */
-        connect(parent, SIGNAL(selectionColorChanged(QColor)), widget, SLOT(setSelectionColor(QColor)));
+        connect(parent, SIGNAL(selectionColorChanged(QColor)),
+                widget, SLOT(setSelectionColor(QColor)));
+        connect(parent, SIGNAL(backgroundColorChanged(QColor)),
+                widget, SLOT(setBackgroundColor(QColor)));
     }
 }
 

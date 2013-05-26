@@ -38,7 +38,7 @@ FilterContainer::FilterContainer( QWidget * parent)
     oldIndex = -1;
 
     // initialise the filters
-    Rotation *rotationFilter = new Rotation();
+    Rotation *rotationFilter = new Rotation(this);
     tabToFilter.append(rotationFilter);
     addTab(rotationFilter->getWidget(), rotationFilter->getName());
 
@@ -80,6 +80,11 @@ void FilterContainer::setImage(QPixmap pixmap)
 void FilterContainer::setSelectionColor(QColor color)
 {
     emit(selectionColorChanged(color));
+}
+
+void FilterContainer::setBackgroundColor(QColor color)
+{
+    emit(backgroundColorChanged(color));
 }
 
 void FilterContainer::tabChanged(int index)
