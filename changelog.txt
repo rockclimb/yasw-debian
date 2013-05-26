@@ -42,6 +42,7 @@ User requests:
 201306xx; YASE 0.4
  - Fixed Ticket #2 (Image order not retained when project is reloaded.)
  - Fixed Ticket #1 (Display FileName instead of BaseName in the image list)
+ - Fixed Ticket #3 (Propagate settings to all images for one side)
 
 20130525; YASW 0.3 "yasw has reached one (1) user!"
  - About dialog

@@ -73,7 +73,7 @@ void ImageTableWidget::setFilterContainer(FilterContainer *container)
 void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidgetItem *previousItem)
 {
     QMap<QString, QVariant> settings;
-    int rowPreviousItem, sidePreviousItem, i;
+    int fromRow, side, i;
 
     if (filterContainer && previousItem) {
         settings = filterContainer->getSettings();
@@ -83,19 +83,17 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
 
             // Propagate settings according to settings policy
             switch (ui->settingPolicy->currentIndex()) {
-                case 1: // propagate to all following images
-                    rowPreviousItem = ui->images->row(previousItem);
-                    sidePreviousItem = ui->images->column(previousItem);
-                    for (i = rowPreviousItem; i < itemCount[sidePreviousItem]; i++) {
-                        ui->images->item(i, sidePreviousItem)->setData(ImagePreferences, settings);
+                case 1: // propagate to all following images in this side
+                    fromRow = ui->images->row(previousItem);
+                    side = ui->images->column(previousItem);
+                    for (i = fromRow; i < itemCount[side]; i++) {
+                        ui->images->item(i, side)->setData(ImagePreferences, settings);
                     }
                     break;
-                case 2: // propagate to all images
-                    for (i = 0; i < itemCount[leftSide]; i++) {
-                        ui->images->item(i, leftSide)->setData(ImagePreferences, settings);
-                    }
-                    for (i = 0; i < itemCount[rightSide]; i++) {
-                        ui->images->item(i, rightSide)->setData(ImagePreferences, settings);
+                case 2: // propagate to all images in this side
+                    side = ui->images->column(previousItem);
+                    for (i = 0; i < itemCount[side]; i++) {
+                        ui->images->item(i, side)->setData(ImagePreferences, settings);
                     }
                     break;
                 //case 0: do not propagate;
