@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ScalingWidget</class>
+ <widget class="QWidget" name="ScalingWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>587</width>
+    <height>476</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QCheckBox" name="preview">
+   <property name="geometry">
+    <rect>
+     <x>118</x>
+     <y>11</y>
+     <width>71</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Preview</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="BaseFilterGraphicsView" name="view">
+   <property name="geometry">
+    <rect>
+     <x>9</x>
+     <y>39</y>
+     <width>391</width>
+     <height>428</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="enable">
+   <property name="geometry">
+    <rect>
+     <x>9</x>
+     <y>11</y>
+     <width>101</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enable Filter</string>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>66</y>
+     <width>39</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Width:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>93</y>
+     <width>45</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Height:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>66</y>
+     <width>110</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>93</y>
+     <width>110</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>120</y>
+     <width>24</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DPI:</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_3">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>120</y>
+     <width>110</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>39</y>
+     <width>86</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <item>
+    <property name="text">
+     <string>pixel</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>milimeter</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>inch</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>419</x>
+     <y>39</y>
+     <width>29</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Unit:</string>
+   </property>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>BaseFilterGraphicsView</class>
+   <extends>QGraphicsView</extends>
+   <header>basefiltergraphicsview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

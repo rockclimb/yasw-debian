@@ -36,8 +36,14 @@ User requests:
    use 'Shift' key to force a horizontal line, i.e. deltaY = 0) Use the drawn line to calculate a
    finer rotation angle to straighten the page. (maybe name the two filters 'orientation' and 'rotation'
    to distinguish between them).
+   -- when I rotate the page, seeing the thumbnail rotated as well.
+   -- being able to "arrow down" through the pages quickly, viewing previews.
+   -- When I exported to PDF, though, the app exported all the Left images, followed by (most of) the
+      "right" images. It should alternate L/R, obviously. Also, I'm getting a white border on the top
+      and the left of the images; I don't know if that's intentional or not, but I'd like to be able
+      to turn it off.
 
-201306xx; YASE 0.4
+201306xx; YASW 0.4
  - Fixed Ticket #2 (Image order not retained when project is reloaded.)
  - Fixed Ticket #1 (Display FileName instead of BaseName in the image list)
  - Fixed Ticket #3 (Propagate settings to all images for one side)
