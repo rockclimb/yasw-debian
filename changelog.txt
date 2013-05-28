@@ -47,6 +47,7 @@ User requests:
  - Fixed Ticket #1 (Display FileName instead of BaseName in the image list)
  - Fixed Ticket #3 (Propagate settings to all images for one side)
  - Added a background color (configurable) for the filter widgets.
+ - Fixed Ticket #11 (Do not interleave pages in PDF Export)
 
 20130525; YASW 0.3 "yasw has reached one (1) user!"
  - About dialog

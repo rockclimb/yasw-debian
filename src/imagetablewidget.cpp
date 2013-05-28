@@ -399,8 +399,8 @@ void ImageTableWidget::exportToFolder(QString folder)
 
 void ImageTableWidget::exportToPdf(QString pdfFile)
 {
-    //NOTE: this is duplicated code, this is bad, is it ?
     int row;
+    bool firstPage = true;
     QTableWidgetItem *currentItem = ui->images->currentItem();
     QPixmap pixmap;
     QPainter painter;
@@ -411,18 +411,31 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
 
     painter.begin(printer);
 
-    //FIXME: we should export event and odd for every row
-    for (row = 0; row < itemCount[leftSide]; row++) {
-        ui->images->setCurrentCell(row, leftSide);
-        pixmap = filterContainer->getResultImage();
-        painter.drawPixmap(printer->pageRect(), pixmap);
-        printer->newPage();
-    }
-    for (row = 0; row < itemCount[rightSide]; row++) {
-        ui->images->setCurrentCell(row, rightSide);
-        pixmap = filterContainer->getResultImage();
-        painter.drawPixmap(printer->pageRect(), pixmap);
-        printer->newPage();
+    for (row = 0; row < qMax(itemCount[leftSide], itemCount[rightSide]); row++) {
+        // left Side
+        if (row < itemCount[leftSide]) {       // is one item availabla at this row?
+            // we don't need a new page for the first page or we would have a blank page
+            if (firstPage == true) {
+                firstPage = false;
+            } else {
+                printer->newPage();
+            }
+            ui->images->setCurrentCell(row, leftSide);
+            pixmap = filterContainer->getResultImage();
+            painter.drawPixmap(printer->pageRect(), pixmap);
+        }
+        // right side
+        if (row < itemCount[rightSide]) {       // is one item availabla at this row?
+            // we don't need a new page for the first page or we would have a blank page
+            if (firstPage == true) {
+                firstPage = false;
+            } else {
+                printer->newPage();
+            }
+            ui->images->setCurrentCell(row, rightSide);
+            pixmap = filterContainer->getResultImage();
+            painter.drawPixmap(printer->pageRect(), pixmap);
+        }
     }
 
     painter.end();
