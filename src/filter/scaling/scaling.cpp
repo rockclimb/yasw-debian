@@ -17,9 +17,25 @@
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "scaling.h"
+#include <QDebug>
 
-Scaling::Scaling()
+Scaling::Scaling(QObject * parent) : BaseFilter(parent)
 {
+    widget = new ScalingWidget();
+    filterWidget = widget;
+
+    //TODO: connect items changed to recalculate
+
+    if (parent) {
+        /* Connect slots to the filtercontainer */
+        connect(parent, SIGNAL(backgroundColorChanged(QColor)),
+                widget, SLOT(setBackgroundColor(QColor)));
+    }
+}
+
+AbstractFilterWidget *Scaling::getWidget()
+{
+    return widget;
 }
 
 QString Scaling::getIdentifier()
@@ -29,5 +45,27 @@ QString Scaling::getIdentifier()
 
 QString Scaling::getName()
 {
-    return tr("scaling");
+    return tr("Scaling");
+}
+
+QMap<QString, QVariant> Scaling::getSettings()
+{
+    QMap<QString, QVariant> settings;
+    /* do something */
+
+    return settings;
+}
+
+void Scaling::setSettings(QMap<QString, QVariant> settings)
+{
+    /* do something */
+
+    recalculate();
+}
+
+void Scaling::recalculate()
+{
+    QSize outputSize = QSize(widget->imageWidth(),widget->imageHeight());
+    outputPixmap = inputPixmap.scaled(outputSize);
+    widget->setPreview(outputPixmap);
 }

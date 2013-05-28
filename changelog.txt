@@ -16,7 +16,6 @@ ToDo / Roadmap
  - error message on console: kfilemodule(5761)/kio (KDirModel)
    KDirModelPrivate::_k_slotDeleteItems: No node found for item that was just
    removed: KUrl("file:(((...")
- - application icon
  - windows port: security credentials (producer...)
  - add a placeholder at the end of the imagetablewidget, so that can insert an image at the end and
    insert an image on the right when there is no image in the list.

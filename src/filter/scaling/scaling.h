@@ -20,20 +20,23 @@
 #define SCALING_H
 
 #include "basefilter.h"
+#include "scalingwidget.h"
 
 class Scaling : public BaseFilter
 {
 public:
-    Scaling();
-//    AbstractFilterWidget* getWidget();
+    Scaling(QObject * parent = 0);
+    AbstractFilterWidget* getWidget();
     QString getIdentifier();
     QString getName();
-//    QMap<QString, QVariant> getSettings();
-//    void setSettings(QMap <QString, QVariant> settings);
+    QMap<QString, QVariant> getSettings();
+    void setSettings(QMap <QString, QVariant> settings);
 private:
+    ScalingWidget *widget;
+    QTransform scalingMatrix;
 
 public slots:
-//    void recalculate();
+    void recalculate();
 
 };
 

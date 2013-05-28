@@ -36,8 +36,9 @@ RotationWidget::~RotationWidget()
 void RotationWidget::setPixmap(QPixmap pixmap)
 {
     inputPixmap = pixmap;
-    if (!preview())
+    if (!preview()) {
         ui->view->setPixmap(pixmap);
+    }
 }
 
 void RotationWidget::setPreview(QPixmap pixmap)

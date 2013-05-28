@@ -76,7 +76,8 @@ FORMS += mainwindow.ui \
 INCLUDEPATH += filter \
     filter/dekeystoning \
     filter/rotation \
-    filter/cropping
+    filter/cropping \
+    filter/scaling
 RESOURCES += icons/icons.qrc
 
 OTHER_FILES += \

@@ -21,6 +21,7 @@
 #include "rotation.h"
 #include "dekeystoning.h"
 #include "cropping.h"
+#include "scaling.h"
 
 /** \class FilterContainer
     \brief A customised QTabWidget to display the different filters.
@@ -49,6 +50,10 @@ FilterContainer::FilterContainer( QWidget * parent)
     Cropping *croppingFilter = new Cropping(this);
     tabToFilter.append(croppingFilter);
     addTab(croppingFilter->getWidget(), croppingFilter->getName());
+
+    Scaling *scalingFilter = new Scaling(this);
+    tabToFilter.append(scalingFilter);
+    addTab(scalingFilter->getWidget(), scalingFilter->getName());
 
     connect(this, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
