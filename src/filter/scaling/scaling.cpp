@@ -25,6 +25,8 @@ Scaling::Scaling(QObject * parent) : BaseFilter(parent)
     filterWidget = widget;
 
     //TODO: connect items changed to recalculate
+    connect(widget, SIGNAL(signalPropertyChanged()),
+            this, SLOT(recalculate()));
 
     if (parent) {
         /* Connect slots to the filtercontainer */
@@ -48,17 +50,24 @@ QString Scaling::getName()
     return tr("Scaling");
 }
 
+/** \brief Gets the settings of the filter.
+
+  As all the settings are maintained in the widget, this function just gets the setting from
+  the widget and gives them back.
+*/
 QMap<QString, QVariant> Scaling::getSettings()
 {
-    QMap<QString, QVariant> settings;
-    /* do something */
-
-    return settings;
+    return widget->getSettings();
 }
+
+/** \brief Sets the settings for the filter.
+
+  Gives the settings to the widget (were they are stored) and recalculate the produced Image.
+ */
 
 void Scaling::setSettings(QMap<QString, QVariant> settings)
 {
-    /* do something */
+    widget->setSettings(settings);
 
     recalculate();
 }

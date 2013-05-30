@@ -58,6 +58,7 @@ ImageTableWidget::~ImageTableWidget()
 void ImageTableWidget::setFilterContainer(FilterContainer *container)
 {
     if (filterContainer) {
+        Q_ASSERT ("Changing filterContainer. This should never occur !");
         disconnect(this, SIGNAL(pixmapChanged(QPixmap)),
                    filterContainer, SLOT(setImage(QPixmap)));
     }

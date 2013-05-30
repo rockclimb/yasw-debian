@@ -23,12 +23,18 @@ public:
     bool preview();
     double imageHeight();
     double imageWidth();
+    QMap<QString, QVariant> getSettings();
+    void setSettings(QMap <QString, QVariant> settings);
 
 public slots:
     void setBackgroundColor(QColor color);
 
 private slots:
     void on_preview_toggled(bool checked);
+    void slotPropertyChanged();
+
+signals:
+    void signalPropertyChanged();
 
 
 private:

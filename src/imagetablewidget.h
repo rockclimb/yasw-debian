@@ -44,8 +44,6 @@ public:
 
 public slots:
     void currentItemChanged(QTableWidgetItem *newItem, QTableWidgetItem *previousItem);
-
-private slots:
     void insertImage();
     void insertEmptyImage();
     void imageUp();

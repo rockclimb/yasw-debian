@@ -23,6 +23,7 @@ ToDo / Roadmap
  - autocalibration with a printed grid (line detection)
    o have a look at ppmunwarp http://diybookscanner.org/forum/viewtopic.php?f=19&t=2589
  - move image from left ro right
+ - centralized .h header with includes and default values.
 User requests:
  - Add the ability to take a checkerboard pattern as input to the de-warping stage.
  - A way to measure DPI in-situ. Allow the user to draw a line on the pic and inform yasw that the
