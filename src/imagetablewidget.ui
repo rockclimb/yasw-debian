@@ -212,7 +212,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
    <item row="3" column="0">
     <widget class="QLabel" name="settingPolicyLabel">
      <property name="text">
-      <string>Propage image settings</string>
+      <string>Propage changes within the side</string>
      </property>
     </widget>
    </item>
