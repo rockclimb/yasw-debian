@@ -42,7 +42,7 @@ signals:
 private:
     Ui::ScalingWidget *ui;
     QDoubleValidator *doubleValidator;
-    int lastUnitIndex;
+    int lastUnitIndex = 0;
 };
 
 #endif // SCALINGWIDGET_H

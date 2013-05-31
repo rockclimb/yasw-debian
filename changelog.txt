@@ -55,6 +55,7 @@ User requests:
  - Added a background color (configurable) for the filter widgets.
  - Fixed Ticket #11 (Do not interleave pages in PDF Export)
  - Scaling filter
+ - Improve PDF Export (a lot!)
 
 20130525; YASW 0.3 "yasw has reached one (1) user!"
  - About dialog
