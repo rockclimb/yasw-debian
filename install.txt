@@ -33,7 +33,7 @@ How to Release
 #######################
 # Prepare Release
 #######################
-- edit changelog
+- edit changelog (name release)
 - update version in yasw.pro
 - make distclean working repository, rebuild in release, extensive test
   - insert images left and right
@@ -75,9 +75,10 @@ cd windows-build
 i686-pc-mingw32-qmake ../src/yasw.pro CONFIG+=static
 make
 # build archive
-VERSION=0.3
+VERSION=0.4
 mkdir yasw_${VERSION}_Windows
 cp release/yasw.exe yasw_${VERSION}_Windows/
 cp ../README yasw_${VERSION}_Windows/
+cp ../changelog.txt yasw_${VERSION}_Windows/
 cp ../documentation/gpl.txt yasw_${VERSION}_Windows/
 zip -r yasw_${VERSION}_Windows.zip yasw_${VERSION}_Windows/

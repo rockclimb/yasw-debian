@@ -150,15 +150,24 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
    <property name="text">
     <string>&amp;Quit</string>
    </property>
+   <property name="shortcut">
+    <string>Alt+F4</string>
+   </property>
   </action>
   <action name="action_Open">
    <property name="text">
     <string>&amp;Open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="action_Save">
    <property name="text">
     <string>&amp;Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="action_SaveAs">
@@ -169,6 +178,9 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
   <action name="action_Close">
    <property name="text">
     <string>&amp;Close</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
    </property>
   </action>
   <action name="actionTo_Jpeg">

@@ -4,7 +4,6 @@ ToDo / Roadmap
  - I'm not happy with "apply to all". This applies every filter settings to al slides.
    This may be dangerous!
  - optimise YASW: selecting another (big) image lasts 1 second.
- - improve pdf output: compression level, page size...
  - scaling filter: add padding sizes and/or page size
  - Filter to fix image color / convert to black & white...
    o add filter for color manipulation_/adjustment
@@ -50,7 +49,10 @@ User requests:
       and the left of the images; I don't know if that's intentional or not, but I'd like to be able
       to turn it off.
 
-201306xx; YASW 0.4
+201306xx; YASW 0.5
+ - Key shortcuts
+
+20130601; YASW 0.4
  - Fixed Ticket #2 (Image order not retained when project is reloaded.)
  - Fixed Ticket #1 (Display FileName instead of BaseName in the image list)
  - Fixed Ticket #3 (Propagate settings to all images for one side)
