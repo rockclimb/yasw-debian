@@ -52,7 +52,7 @@ How to Release
 # Build source tarball
 #######################
 # Tag the git repository
-VERSION=0.3
+VERSION=0.4
 git tag -a yasw_${VERSION} -m "YASW version ${VERSION}"
 # build the tarball (note: it contains files like .gitignore...)
 git archive --prefix=yasw_${VERSION}/ yasw_${VERSION} | gzip > ../yasw_${VERSION}.tgz

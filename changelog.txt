@@ -1,6 +1,8 @@
 ToDo / Roadmap
  - It may make sense to apply the changes from the Scaling Filter to all (left/right) images. Maybe
    a button "apply to all images" in the filter wiget ?
+ - I'm not happy with "apply to all". This applies every filter settings to al slides.
+   This may be dangerous!
  - optimise YASW: selecting another (big) image lasts 1 second.
  - improve pdf output: compression level, page size...
  - scaling filter: add padding sizes and/or page size
