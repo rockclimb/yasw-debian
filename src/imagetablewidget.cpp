@@ -405,36 +405,51 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
     QTableWidgetItem *currentItem = ui->images->currentItem();
     QPixmap pixmap;
     QPainter painter;
+    QMap<QString, QVariant> imageSize;
 
     QPrinter *printer = new QPrinter();
     printer->setOutputFormat(QPrinter::PdfFormat);
+    printer->setFullPage(true);
     printer->setOutputFileName(pdfFile);
 
-    painter.begin(printer);
 
     for (row = 0; row < qMax(itemCount[leftSide], itemCount[rightSide]); row++) {
         // left Side
         if (row < itemCount[leftSide]) {       // is one item availabla at this row?
+            ui->images->setCurrentCell(row, leftSide);
+            pixmap = filterContainer->getResultImage();
+
+            /* set Paper size from the scaling Filter */
+            imageSize = filterContainer->getImageSize();
+            printer->setPaperSize(QSize(imageSize["size"].toSize()),
+                                  static_cast<QPrinter::Unit>(imageSize["unit"].toInt()));
+
             // we don't need a new page for the first page or we would have a blank page
             if (firstPage == true) {
                 firstPage = false;
+                painter.begin(printer);
             } else {
                 printer->newPage();
             }
-            ui->images->setCurrentCell(row, leftSide);
-            pixmap = filterContainer->getResultImage();
             painter.drawPixmap(printer->pageRect(), pixmap);
         }
         // right side
         if (row < itemCount[rightSide]) {       // is one item availabla at this row?
+            ui->images->setCurrentCell(row, rightSide);
+            pixmap = filterContainer->getResultImage();
+
+            /* set Paper size from the scaling Filter */
+            imageSize = filterContainer->getImageSize();
+            printer->setPaperSize(QSize(imageSize["size"].toSize()),
+                                  static_cast<QPrinter::Unit>(imageSize["unit"].toInt()));
+
             // we don't need a new page for the first page or we would have a blank page
             if (firstPage == true) {
                 firstPage = false;
+                painter.begin(printer);
             } else {
                 printer->newPage();
             }
-            ui->images->setCurrentCell(row, rightSide);
-            pixmap = filterContainer->getResultImage();
             painter.drawPixmap(printer->pageRect(), pixmap);
         }
     }

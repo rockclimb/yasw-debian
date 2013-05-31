@@ -22,6 +22,7 @@
 #include "dekeystoning.h"
 #include "cropping.h"
 #include "scaling.h"
+#include <QPrinter>
 
 /** \class FilterContainer
     \brief A customised QTabWidget to display the different filters.
@@ -51,7 +52,7 @@ FilterContainer::FilterContainer( QWidget * parent)
     tabToFilter.append(croppingFilter);
     addTab(croppingFilter->getWidget(), croppingFilter->getName());
 
-    Scaling *scalingFilter = new Scaling(this);
+    scalingFilter = new Scaling(this);
     tabToFilter.append(scalingFilter);
     addTab(scalingFilter->getWidget(), scalingFilter->getName());
 
@@ -200,5 +201,39 @@ QPixmap FilterContainer::getResultImage()
     updatePixmapInTabs(oldIndex);
 
     return tabToFilter[maxTab]->getFilteredImage();
+}
+
+/** \brief returns the Size of the current image.
+
+    \returns QMap<QString, QVariant>; keys are size (QSize), and
+        unit (enum QPrinter::Unit)
+*/
+QMap<QString, QVariant> FilterContainer::getImageSize()
+{
+    QMap<QString, QVariant> allSettings = scalingFilter->getSettings();
+    QMap<QString, QVariant> imageSize;
+    qreal width, height, dpi;
+
+    width = allSettings["imageWidth"].toDouble();
+    height = allSettings["imageWidth"].toDouble();
+    dpi = allSettings["DPI"].toDouble();
+
+    switch (allSettings["unit"].toInt()) {
+    case 0:
+        imageSize["unit"] = QPrinter::Point;
+        // We work in Prixel with DPI, QPrinter defines the point as an 1/72 of an Inch.
+        width = width / dpi * 72;
+        height = height / dpi * 72;
+        break;
+    case 1:
+        imageSize["unit"] = QPrinter::Millimeter;
+        break;
+    case 2:
+    default:
+        imageSize["unit"] = QPrinter::Inch;
+    }
+
+    imageSize["size"] = QSize(width, height);
+    return imageSize;
 }
 
