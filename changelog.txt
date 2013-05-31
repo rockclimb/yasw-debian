@@ -1,5 +1,9 @@
 ToDo / Roadmap
- - Add ability to scale resulting images after cropping
+ - It may make sense to apply the changes from the Scaling Filter to all (left/right) images. Maybe
+   a button "apply to all images" in the filter wiget ?
+ - optimise YASW: selecting another (big) image lasts 1 second.
+ - improve pdf output: compression level, page size...
+ - scaling filter: add padding sizes and/or page size
  - Filter to fix image color / convert to black & white...
    o add filter for color manipulation_/adjustment
    o point to white pixel (or many white pixels)
@@ -50,6 +54,7 @@ User requests:
  - Fixed Ticket #3 (Propagate settings to all images for one side)
  - Added a background color (configurable) for the filter widgets.
  - Fixed Ticket #11 (Do not interleave pages in PDF Export)
+ - Scaling filter
 
 20130525; YASW 0.3 "yasw has reached one (1) user!"
  - About dialog

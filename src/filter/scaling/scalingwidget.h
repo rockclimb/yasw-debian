@@ -33,6 +33,8 @@ private slots:
     void on_preview_toggled(bool checked);
     void slotPropertyChanged();
 
+    void on_unit_currentIndexChanged(int index);
+
 signals:
     void signalPropertyChanged();
 
@@ -40,6 +42,7 @@ signals:
 private:
     Ui::ScalingWidget *ui;
     QDoubleValidator *doubleValidator;
+    int lastUnitIndex;
 };
 
 #endif // SCALINGWIDGET_H

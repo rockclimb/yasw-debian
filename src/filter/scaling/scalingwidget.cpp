@@ -103,10 +103,14 @@ void ScalingWidget::setSettings(QMap<QString, QVariant> settings)
     }
     if (settings.contains("unit")
             && settings["unit"].canConvert(QVariant::Int)) {
+        lastUnitIndex = settings["unit"].toInt();
         ui->unit->setCurrentIndex(settings["unit"].toInt());
     } else {
-        ui->dpi->setCurrentIndex(1);
+        lastUnitIndex = 1;
+        ui->unit->setCurrentIndex(1);
     }
+
+    slotPropertyChanged();
 }
 
 void ScalingWidget::setBackgroundColor(QColor color)
@@ -124,10 +128,107 @@ void ScalingWidget::on_preview_toggled(bool checked)
 
 /** \brief Slot to call when a parameter of the filter changes
 
- This is an agregator for all changed signals. It emits signalPropertyChanged, wich is used
- The Scaling class to recalculate the resulting image.
+ This is an agregator for all changed signals. It has multiple functions:
+    - display calculated width and height of the resulting image.
+    - emit a signel signalPropertyChanged, wich is used by the Scaling class to
+      recalculate the resulting image.
  */
 void ScalingWidget::slotPropertyChanged()
 {
+    qreal factor;
+    QString calcUnitName;
+    const qreal millimeterPerInch = 25.4;     // 1 inch = 25,4 mm
+
+    qreal dpi = ui->dpi->currentText().toDouble();
+    if (dpi > 0) {
+        switch (ui->unit->currentIndex()) {
+            case 0:      // pixel -> display mm
+                calcUnitName = " mm";
+                // size_mm = size_pix/dpi * inch2mm
+                factor = 1 / dpi * millimeterPerInch;
+                break;
+            case 1:    // millimeter -> display pixels
+                calcUnitName = " pixel";
+                factor = 1 / millimeterPerInch * dpi;
+                break;
+            case 2:     // inches -> display pixels
+                calcUnitName = " pixel";
+                factor = dpi;
+                break;
+            default:
+            // This step is never reached.
+            Q_ASSERT (false);
+        }
+
+        QString calcWidth, calcHeight;
+        qreal width = ui->imageWidth->text().toDouble();
+        qreal height = ui->imageHeight->text().toDouble();
+        calcWidth = QString::number(width * factor) + calcUnitName;
+        calcHeight = QString::number(height * factor) + calcUnitName;
+        ui->calculatedWidth->setText(calcWidth);
+        ui->calculatedHeight->setText(calcHeight);
+    } else {
+        ui->calculatedWidth->clear();
+        ui->calculatedHeight->clear();
+    }
+
     emit signalPropertyChanged();
+}
+
+/** \brief Update the size displayed when the Unit changes
+*/
+void ScalingWidget::on_unit_currentIndexChanged(int index)
+{
+    qreal dpi = ui->dpi->currentText().toDouble();
+    const qreal millimeterPerInch = 25.4;     // 1 inch = 25,4 mm
+
+    if (lastUnitIndex == index || dpi == 0) {
+        return;
+    }
+
+    qreal factor;
+
+    /* First calculate the factor to convert into pixel */
+    switch (lastUnitIndex) {
+        case 0:      // pixel -> do nothing
+            factor = 1;
+            break;
+        case 1:    // millimeter
+            factor = 1 / millimeterPerInch * dpi;
+            break;
+        case 2:     // inches -> display pixels
+            factor = dpi;
+            break;
+        default:
+        // This step is never reached.
+        Q_ASSERT (false);
+    }
+
+
+    /* Then update the factor to convert to the new Unit */
+    switch (index) {
+        case 0:      // pixel -> do nothing
+            // factor = factor * 1;
+            break;
+        case 1:    // millimeter
+            factor = factor / dpi * millimeterPerInch;
+            break;
+        case 2:     // inches
+            factor = factor / dpi;
+            break;
+        default:
+        // This step is never reached.
+        Q_ASSERT (false);
+    }
+
+    QString calcWidth, calcHeight;
+    qreal width = ui->imageWidth->text().toDouble();
+    qreal height = ui->imageHeight->text().toDouble();
+    calcWidth = QString::number(width * factor);
+    calcHeight = QString::number(height * factor);
+    ui->imageWidth->setText(calcWidth);
+    ui->imageHeight->setText(calcHeight);
+
+    lastUnitIndex = index;
+
 }
