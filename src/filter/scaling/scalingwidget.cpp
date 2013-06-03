@@ -136,23 +136,19 @@ void ScalingWidget::on_preview_toggled(bool checked)
 void ScalingWidget::slotPropertyChanged()
 {
     qreal factor;
-    QString calcUnitName;
     const qreal millimeterPerInch = 25.4;     // 1 inch = 25,4 mm
 
     qreal dpi = ui->dpi->currentText().toDouble();
     if (dpi > 0) {
+        // calculate the factor into pixel
         switch (ui->unit->currentIndex()) {
-            case 0:      // pixel -> display mm
-                calcUnitName = " mm";
-                // size_mm = size_pix/dpi * inch2mm
-                factor = 1 / dpi * millimeterPerInch;
+            case 0:      // pixel -> do nothing
+                factor = 1;
                 break;
-            case 1:    // millimeter -> display pixels
-                calcUnitName = " pixel";
+            case 1:    // millimeter
                 factor = 1 / millimeterPerInch * dpi;
                 break;
-            case 2:     // inches -> display pixels
-                calcUnitName = " pixel";
+            case 2:     // inches
                 factor = dpi;
                 break;
             default:
@@ -160,16 +156,22 @@ void ScalingWidget::slotPropertyChanged()
             Q_ASSERT (false);
         }
 
-        QString calcWidth, calcHeight;
-        qreal width = ui->imageWidth->text().toDouble();
-        qreal height = ui->imageHeight->text().toDouble();
-        calcWidth = QString::number(width * factor) + calcUnitName;
-        calcHeight = QString::number(height * factor) + calcUnitName;
-        ui->calculatedWidth->setText(calcWidth);
-        ui->calculatedHeight->setText(calcHeight);
+        qreal width = ui->imageWidth->text().toDouble() * factor;
+        qreal height = ui->imageHeight->text().toDouble() * factor;
+
+        ui->pixelWidth->setText(QString::number(width, 'f', 1));
+        ui->pixelHeight->setText(QString::number(height, 'f', 1));
+        ui->inchWidth->setText(QString::number(width / dpi, 'f', 1));
+        ui->inchHeight->setText(QString::number(height / dpi, 'f', 1));
+        ui->millimeterWidth->setText(QString::number(width / dpi * millimeterPerInch, 'f', 1));
+        ui->millimeterHeight->setText(QString::number(height / dpi * millimeterPerInch, 'f', 1));
     } else {
-        ui->calculatedWidth->clear();
-        ui->calculatedHeight->clear();
+        ui->pixelWidth->clear();
+        ui->pixelHeight->clear();
+        ui->inchWidth->clear();
+        ui->inchHeight->clear();
+        ui->millimeterWidth->clear();
+        ui->millimeterHeight->clear();
     }
 
     emit signalPropertyChanged();
@@ -196,7 +198,7 @@ void ScalingWidget::on_unit_currentIndexChanged(int index)
         case 1:    // millimeter
             factor = 1 / millimeterPerInch * dpi;
             break;
-        case 2:     // inches -> display pixels
+        case 2:     // inches
             factor = dpi;
             break;
         default:

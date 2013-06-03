@@ -6,14 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>621</width>
-    <height>476</height>
+    <width>620</width>
+    <height>526</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,1,0">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
     <widget class="QCheckBox" name="enable">
      <property name="text">
@@ -34,55 +40,97 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="2">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+   <item row="0" column="5">
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>216</width>
-       <height>20</height>
-      </size>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
-    </spacer>
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;With the scaling filter, you can define the size (Width and Height) of the final image. To do so, you have to define:&lt;br/&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;Width&lt;/span&gt; and &lt;span style=&quot; font-weight:600;&quot;&gt;height&lt;/span&gt; of the final image&lt;br/&gt;- &lt;span style=&quot; font-weight:600;&quot;&gt;Unit&lt;/span&gt; in which you specify the width and height&lt;br/&gt;- Resolution of the final image in Dots per Inch (&lt;span style=&quot; font-weight:600;&quot;&gt;DPI&lt;/span&gt;). This is used to convert between pixels, millimiter and inch.&lt;/p&gt;&lt;p&gt;The resulting image size is displayed in pixel, millimiter an inch.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="text">
+      <string>?</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::AutoText</enum>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
    </item>
-   <item row="1" column="0" rowspan="2" colspan="3">
-    <widget class="BaseFilterGraphicsView" name="view"/>
+   <item row="1" column="0" rowspan="3" colspan="3">
+    <widget class="BaseFilterGraphicsView" name="view">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
-   <item row="1" column="3">
-    <layout class="QGridLayout" name="gridLayout" columnminimumwidth="0,100,0,70">
-     <item row="1" column="0">
+   <item row="1" column="3" colspan="3">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
       <widget class="QLabel" name="labelWidth">
        <property name="text">
         <string>Width:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item row="0" column="1">
       <widget class="QLineEdit" name="imageWidth"/>
      </item>
-     <item row="2" column="2" colspan="2">
-      <widget class="QLabel" name="calculatedHeight"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QLabel" name="labelDPI">
-       <property name="text">
-        <string>DPI:</string>
-       </property>
+     <item row="0" column="2" rowspan="2">
+      <widget class="QComboBox" name="unit">
+       <item>
+        <property name="text">
+         <string>pixel</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>milimeter</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>inch</string>
+        </property>
+       </item>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="1" column="0">
       <widget class="QLabel" name="labelHeight">
        <property name="text">
         <string>Height:</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="2" colspan="2">
-      <widget class="QLabel" name="calculatedWidth"/>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="imageHeight"/>
      </item>
-     <item row="0" column="3">
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelDPI">
+       <property name="text">
+        <string>DPI:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
       <widget class="QComboBox" name="dpi">
        <property name="editable">
         <bool>true</bool>
@@ -104,38 +152,119 @@
        </item>
       </widget>
      </item>
-     <item row="2" column="1">
-      <widget class="QLineEdit" name="imageHeight"/>
-     </item>
-     <item row="0" column="1">
-      <widget class="QComboBox" name="unit">
-       <item>
-        <property name="text">
-         <string>pixel</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>milimeter</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>inch</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="labelUnit">
-       <property name="text">
-        <string>Unit:</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
-   <item row="2" column="3">
+   <item row="2" column="3" colspan="3">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Resulting image size</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="1">
+       <widget class="QLabel" name="labelWidth_2">
+        <property name="text">
+         <string>Width</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="labelHeight_2">
+        <property name="text">
+         <string>Height</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelWidth_3">
+        <property name="text">
+         <string>Pixel</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="pixelWidth">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="pixelHeight">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelWidth_4">
+        <property name="text">
+         <string>Millimeter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLabel" name="millimeterWidth">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="millimeterHeight">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="labelWidth_5">
+        <property name="text">
+         <string>Inch</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="inchWidth">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="inchHeight">
+        <property name="text">
+         <string>0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="4">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -144,6 +273,19 @@
       <size>
        <width>20</width>
        <height>317</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="2" colspan="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>216</width>
+       <height>20</height>
       </size>
      </property>
     </spacer>

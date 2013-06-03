@@ -1,4 +1,5 @@
 ToDo / Roadmap
+ - QPixmap::scaled: Pixmap is a null pixmap while loading
  - It may make sense to apply the changes from the Scaling Filter to all (left/right) images. Maybe
    a button "apply to all images" in the filter wiget ?
  - I'm not happy with "apply to all". This applies every filter settings to al slides.
@@ -29,7 +30,6 @@ ToDo / Roadmap
    o have a look at ppmunwarp http://diybookscanner.org/forum/viewtopic.php?f=19&t=2589
  - move image from left ro right
  - centralized .h header with includes and default values.
- - QPixmap::scaled: Pixmap is a null pixmap while loading
 User requests:
  - Add the ability to take a checkerboard pattern as input to the de-warping stage.
  - A way to measure DPI in-situ. Allow the user to draw a line on the pic and inform yasw that the
