@@ -38,6 +38,7 @@ public:
     void setSettings(QMap<QString, QVariant> settings);
     QPixmap getResultImage();
     QMap<QString, QVariant> getImageSize();
+    QString currentFilter();
 
 public slots:
     void tabChanged(int index);

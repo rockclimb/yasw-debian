@@ -74,7 +74,9 @@ void ImageTableWidget::setFilterContainer(FilterContainer *container)
 void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidgetItem *previousItem)
 {
     QMap<QString, QVariant> settings;
+    QMap<QString, QVariant> tmpSettings;
     int fromRow, side, i;
+    QString filterID = "";
 
     if (filterContainer && previousItem) {
         settings = filterContainer->getSettings();
@@ -83,21 +85,47 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
             previousItem->setData(ImagePreferences, settings);
 
             // Propagate settings according to settings policy
-            switch (ui->settingPolicy->currentIndex()) {
-                case 1: // propagate to all following images in this side
-                    fromRow = ui->images->row(previousItem);
-                    side = ui->images->column(previousItem);
+            switch (ui->settingImagePolicy->currentIndex()) {
+            case 1: // propagate to all following images in this side
+                fromRow = ui->images->row(previousItem);
+                side = ui->images->column(previousItem);
+
+                switch (ui->settingFilterPolicy->currentIndex()) {
+                case 0: // propagate only selected filter
+                    filterID = filterContainer->currentFilter();
+                    for (i = fromRow; i < itemCount[side]; i++) {
+                        tmpSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+                        tmpSettings[filterID] = settings[filterID];
+                        ui->images->item(i, side)->setData(ImagePreferences, tmpSettings);
+                    }
+                    break;
+                case 1: // propagate all filter settings
                     for (i = fromRow; i < itemCount[side]; i++) {
                         ui->images->item(i, side)->setData(ImagePreferences, settings);
                     }
                     break;
-                case 2: // propagate to all images in this side
-                    side = ui->images->column(previousItem);
+                }
+                break;
+            case 2: // propagate to all images in this side
+                side = ui->images->column(previousItem);
+                switch (ui->settingFilterPolicy->currentIndex()) {
+                case 0: // propagate only selected filter
+                    filterID = filterContainer->currentFilter();
+                    for (i = 0; i < itemCount[side]; i++) {
+                        tmpSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+                        tmpSettings[filterID] = settings[filterID];
+                        ui->images->item(i, side)->setData(ImagePreferences, tmpSettings);
+                    }
+                    break;
+                case 1: // propagate all filter settings
                     for (i = 0; i < itemCount[side]; i++) {
                         ui->images->item(i, side)->setData(ImagePreferences, settings);
                     }
                     break;
-                //case 0: do not propagate;
+                }
+                break;
+//          default:
+//          case 0: // do not propagate;
             }
         }
     }

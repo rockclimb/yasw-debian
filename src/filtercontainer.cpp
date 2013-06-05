@@ -143,9 +143,6 @@ void FilterContainer::updateCurrentTabPixmap(int fromIndex)
         fromIndex = currentTab;
 
     updatePixmapInTabs(fromIndex, currentTab);
-//    for (i = fromIndex; i <= currentTab; i++) {
-//        tabToFilter[i]->setImage(tabToFilter[i-1]->getFilteredImage());
-//    }
 }
 
 /*! \brief Get settings from the filters.
@@ -235,5 +232,11 @@ QMap<QString, QVariant> FilterContainer::getImageSize()
 
     imageSize["size"] = QSize(width, height);
     return imageSize;
+}
+
+/** \brief Returns the identifiert of the current filter */
+QString FilterContainer::currentFilter()
+{
+    return tabToFilter[currentIndex()]->getIdentifier();
 }
 
