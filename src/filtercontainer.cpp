@@ -95,7 +95,10 @@ void FilterContainer::setBackgroundColor(QColor color)
 
 void FilterContainer::tabChanged(int index)
 {
-    updateCurrentTabPixmap(oldIndex); // we do not need to update Tabs before oldIndex
+    if (oldIndex >= 0) { // if there were no old Index, we have nothing to update
+        updateCurrentTabPixmap(oldIndex); // we do not need to update Tabs before oldIndex
+        emit filterChanged(tabToFilter[oldIndex]->getIdentifier());
+    }
     oldIndex = index;
 }
 

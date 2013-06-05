@@ -49,6 +49,7 @@ public slots:
     void imageUp();
     void imageDown();
     void removeSelected();
+    void filterChanged(QString oldFilterID);
 
 private:
     Ui::ImageTableWidget *ui;

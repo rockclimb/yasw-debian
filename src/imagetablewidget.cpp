@@ -58,15 +58,16 @@ ImageTableWidget::~ImageTableWidget()
 void ImageTableWidget::setFilterContainer(FilterContainer *container)
 {
     if (filterContainer) {
-        Q_ASSERT ("Changing filterContainer. This should never occur !");
-        disconnect(this, SIGNAL(pixmapChanged(QPixmap)),
-                   filterContainer, SLOT(setImage(QPixmap)));
+        Q_ASSERT (false); // Changing filterContainer. This should never occur !
     }
 
     filterContainer = container;
 
     connect (this, SIGNAL(pixmapChanged(QPixmap)),
              filterContainer, SLOT(setImage(QPixmap)));
+    // When a new filter is selected, propagate the changes to other images
+    connect (filterContainer, SIGNAL(filterChanged(QString)),
+             this, SLOT(filterChanged(QString)));
 }
 
 
@@ -74,14 +75,15 @@ void ImageTableWidget::setFilterContainer(FilterContainer *container)
 void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidgetItem *previousItem)
 {
     QMap<QString, QVariant> settings;
-    QMap<QString, QVariant> tmpSettings;
+    QMap<QString, QVariant> oldSettings;
     int fromRow, side, i;
     QString filterID = "";
 
     if (filterContainer && previousItem) {
         settings = filterContainer->getSettings();
+        oldSettings = previousItem->data(ImagePreferences).toMap();
         // settings changed? Save them!
-        if (settings != previousItem->data(ImagePreferences).toMap()) {
+        if (settings != oldSettings) {
             previousItem->setData(ImagePreferences, settings);
 
             // Propagate settings according to settings policy
@@ -94,9 +96,9 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
                 case 0: // propagate only selected filter
                     filterID = filterContainer->currentFilter();
                     for (i = fromRow; i < itemCount[side]; i++) {
-                        tmpSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
-                        tmpSettings[filterID] = settings[filterID];
-                        ui->images->item(i, side)->setData(ImagePreferences, tmpSettings);
+                        oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+                        oldSettings[filterID] = settings[filterID];
+                        ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
                     }
                     break;
                 case 1: // propagate all filter settings
@@ -112,9 +114,9 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
                 case 0: // propagate only selected filter
                     filterID = filterContainer->currentFilter();
                     for (i = 0; i < itemCount[side]; i++) {
-                        tmpSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
-                        tmpSettings[filterID] = settings[filterID];
-                        ui->images->item(i, side)->setData(ImagePreferences, tmpSettings);
+                        oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+                        oldSettings[filterID] = settings[filterID];
+                        ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
                     }
                     break;
                 case 1: // propagate all filter settings
@@ -142,6 +144,56 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
         if (filterContainer)
             filterContainer->setSettings(QMap<QString, QVariant>());
     }
+}
+
+/* \brief Propagate settings to other images,
+   if the settings changed and if there is such a policy activated */
+void ImageTableWidget::filterChanged(QString oldFilterID)
+{
+    QMap<QString, QVariant> settings;
+    QMap<QString, QVariant> oldSettings;
+    QTableWidgetItem *item;
+    int fromRow, side, i;
+
+    settings = filterContainer->getSettings();
+    item = ui->images->currentItem();
+    oldSettings = item->data(ImagePreferences).toMap();
+
+    if (settings[oldFilterID] == oldSettings[oldFilterID]) {
+        // do nothing
+        return;
+    }
+
+    // update old Settungs and save the changes
+    oldSettings[oldFilterID] = settings[oldFilterID];
+    item->setData(ImagePreferences, oldSettings);
+
+    // and propagate them according to the settings policy
+    switch (ui->settingImagePolicy->currentIndex()) {
+    case 1: // propagate to all following images in this side
+        fromRow = ui->images->row(item);
+        side = ui->images->column(item);
+
+        for (i = fromRow; i < itemCount[side]; i++) {
+            oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+            oldSettings[oldFilterID] = settings[oldFilterID];
+            ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
+        }
+        break;
+    case 2: // propagate to all images in this side
+        side = ui->images->column(item);
+        for (i = 0; i < itemCount[side]; i++) {
+            oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+            oldSettings[oldFilterID] = settings[oldFilterID];
+            ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
+        }
+        break;
+//    default:
+//    case 0: // do not propagate;
+    }
+
+
+
 }
 
 void ImageTableWidget::insertImage()
@@ -341,6 +393,8 @@ void ImageTableWidget::removeSelected()
     currentItemChanged(ui->images->currentItem(), NULL);
 }
 
+
+
 QMap<QString, QVariant> ImageTableWidget::getSettings()
 {
     QMap<QString, QVariant> settings;
@@ -401,6 +455,8 @@ void ImageTableWidget::clear()
     ui->images->setRowCount(0);
     itemCount[leftSide] = 0;
     itemCount[rightSide] = 0;
+    ui->settingFilterPolicy->setCurrentIndex(0);
+    ui->settingImagePolicy->setCurrentIndex(0);
 }
 
 void ImageTableWidget::exportToFolder(QString folder)

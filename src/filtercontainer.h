@@ -57,6 +57,11 @@ private:
 signals:
     void selectionColorChanged(QColor color);
     void backgroundColorChanged(QColor color);
+    /** \brief Emited when a user changes the Tab
+
+      Used by imageTableWidget to propagate the settings to other images.
+    */
+    void filterChanged(QString oldFilterID);
 
 
 };
