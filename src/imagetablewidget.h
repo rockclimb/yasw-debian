@@ -52,6 +52,11 @@ public slots:
     void filterChanged(QString oldFilterID);
     void moveImageLeft();
     void moveImageRight();
+    void selectPreviousImage();
+    void selectNextImage();
+    void selectRightImage();
+    void selectLeftImage();
+
 
 private:
     Ui::ImageTableWidget *ui;

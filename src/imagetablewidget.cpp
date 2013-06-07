@@ -415,6 +415,81 @@ void ImageTableWidget::moveImageRight()
     insertItem(itemToMove, currentRow, otherSide);
 }
 
+void ImageTableWidget::selectPreviousImage()
+{
+    int side = ui->images->currentColumn();
+    int row = ui->images->currentRow();
+
+    row = row - 1;
+
+    /* If the position is outside the possible possition, modifiy it to be the best
+     * available value */
+    if (side < 0)
+        side = 0;
+    if (side > 1)
+        side = 1;
+    if (row < 0)
+        row = 0;
+    if (row >= itemCount[side])
+        row = itemCount[side] - 1;
+
+    ui->images->setCurrentCell(row, side);
+}
+
+void ImageTableWidget::selectNextImage()
+{
+    int side = ui->images->currentColumn();
+    int row = ui->images->currentRow();
+
+    row = row + 1;
+
+    /* If the position is outside the possible possition, modifiy it to be the best
+     * available value */
+    if (side < 0)
+        side = 0;
+    if (side > 1)
+        side = 1;
+    if (row < 0)
+        row = 0;
+    if (row >= itemCount[side])
+        row = itemCount[side] - 1;
+
+    ui->images->setCurrentCell(row, side);}
+
+void ImageTableWidget::selectRightImage()
+{
+    int side = ui->images->currentColumn();
+    int row = ui->images->currentRow();
+
+    side = 1;
+
+    /* If the position is outside the possible possition, modifiy it to be the best
+     * available value */
+    if (row < 0)
+        row = 0;
+    if (row >= itemCount[side])
+        row = itemCount[side] - 1;
+
+    ui->images->setCurrentCell(row, side);
+}
+
+void ImageTableWidget::selectLeftImage()
+{
+    int side = ui->images->currentColumn();
+    int row = ui->images->currentRow();
+
+    side = 0;
+
+    /* If the position is outside the possible possition, modifiy it to be the best
+     * available value */
+    if (row < 0)
+        row = 0;
+    if (row >= itemCount[side])
+        row = itemCount[side] - 1;
+
+    ui->images->setCurrentCell(row, side);
+}
+
 
 QTableWidgetItem * ImageTableWidget::takeItem(int row, int side)
 {

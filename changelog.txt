@@ -51,6 +51,7 @@ User requests:
  - New policies for propagating changes. I'm not 100% happy as this is quite
    complicated. But I have no other Idea for now... Closes #14
  - Move am image between left and right column. Closes #13
+ - Move image selection with arrow keys. Closes #12
 
 
 20130601; YASW 0.4
