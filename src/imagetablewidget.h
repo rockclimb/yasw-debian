@@ -50,6 +50,8 @@ public slots:
     void imageDown();
     void removeSelected();
     void filterChanged(QString oldFilterID);
+    void moveImageLeft();
+    void moveImageRight();
 
 private:
     Ui::ImageTableWidget *ui;
@@ -67,6 +69,8 @@ private:
                               ImageFileName
                             };
     void addClicked(ImageTableWidget::ImageSide side);
+    QTableWidgetItem * takeItem(int row, int side);
+    void insertItem(QTableWidgetItem * item, int row, int side);
 
 
 

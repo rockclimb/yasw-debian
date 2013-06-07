@@ -196,6 +196,8 @@ void ImageTableWidget::filterChanged(QString oldFilterID)
 
 }
 
+
+
 void ImageTableWidget::insertImage()
 {
     QFileInfo fi;
@@ -248,18 +250,16 @@ void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide si
     QTableWidgetItem *currentItem;
     QFileInfo fi(fileName);
     QPixmap icon;
-    int i, currentRow;
+    int currentRow;
 
     //NOTE: loading all icons at this time implies waiting time for the user.
     //Alternatives: put some "waiting" dialog or do ICON-loading in the background
     icon = QPixmap(fileName).scaledToWidth(100);
     item = new QTableWidgetItem(QIcon(icon),
                         fi.fileName());
-
-    // Adjust Table size if necessary
-    if (itemCount[side] >=  ui->images->rowCount()) {
-        ui->images->setRowCount(itemCount[side] + 1);
-    }
+    item->setData(ImageFileName, fileName);
+    item->setData(ImagePreferences, settings);
+    item->setToolTip(fileName);
 
     currentItem = ui->images->currentItem();
     if (currentItem && ui->images->currentColumn() == side) {
@@ -270,20 +270,40 @@ void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide si
         currentRow = itemCount[side];
     }
 
-    // move all items after current item one step down
-    for (i = itemCount[side]; i > currentRow; i--) {
+    insertItem(item, currentRow, side);
+}
+
+/** \brief Inserts an item at row and side and selects it */
+void ImageTableWidget::insertItem(QTableWidgetItem *item, int row, int side)
+{
+    int i;
+
+    /* If the position is outside the possible possition, modifiy it to be the best
+     * available value */
+    if (side < 0)
+        side = 0;
+    if (side > 1)
+        side = 1;
+    if (row < 0)
+        row = 0;
+    if (row >= itemCount[side])
+        row = itemCount[side];
+
+    // Adjust Table size if necessary
+    if (itemCount[side] >=  ui->images->rowCount()) {
+        ui->images->setRowCount(itemCount[side] + 1);
+    }
+
+    // move all items after position one step down
+    for (i = itemCount[side]; i > row; i--) {
         ui->images->setItem(i, side, ui->images->takeItem(i - 1, side));
     }
 
-    ui->images->setItem(currentRow, side, item);
-    item->setData(ImageFileName, fileName);
-    item->setData(ImagePreferences, settings);
-    item->setToolTip(fileName);
+    ui->images->setItem(row, side, item);
     itemCount[side] = itemCount[side] + 1;
 
     // Select the inserted item
     ui->images->setCurrentItem(item);
-    // scroll down to next item for order by multiple inserts?
 }
 
 /** \brief Appends an image at the end of the Table
@@ -361,36 +381,84 @@ void ImageTableWidget::imageUp()
     ui->images->setCurrentItem(itemToUp);
 }
 
-void ImageTableWidget::removeSelected()
+void ImageTableWidget::moveImageLeft()
 {
-    int currentRow = ui->images->currentRow();
-    int currentColumn = ui->images->currentColumn();
-    if (currentColumn < 0 || currentColumn > 1)
+    int side = ui->images->currentColumn();
+    if (side != 1) { // nothing to move
         return;
-    int otherSide = 1 - currentColumn;
-    int i;
-
-    if (currentRow >=0
-            && currentRow >= itemCount[currentColumn])
-        return; //Nothing to delete
-
-    delete ui->images->takeItem(currentRow, currentColumn);
-    for (i = currentRow; i < itemCount[currentColumn] - 1; i++) {
-        ui->images->setItem(i, currentColumn,
-                            ui->images->takeItem(i + 1, currentColumn));
     }
-    itemCount[currentColumn]--;
-    if (itemCount[currentColumn] >= itemCount[otherSide]) {
-        ui->images->setRowCount(itemCount[currentColumn]);
+    int otherSide = 1 - side;
+
+    int currentRow = ui->images->currentRow();
+    if (currentRow < 0 || currentRow >= itemCount[side]) {
+        return;
+    }
+
+    QTableWidgetItem *itemToMove = takeItem(currentRow, side);
+    insertItem(itemToMove, currentRow, otherSide);
+}
+
+void ImageTableWidget::moveImageRight()
+{
+    int side = ui->images->currentColumn();
+    if (side != 0) { // nothing to move
+        return;
+    }
+    int otherSide = 1 - side;
+
+    int currentRow = ui->images->currentRow();
+    if (currentRow < 0 || currentRow >= itemCount[side]) {
+        return;
+    }
+
+    QTableWidgetItem *itemToMove = takeItem(currentRow, side);
+    insertItem(itemToMove, currentRow, otherSide);
+}
+
+
+QTableWidgetItem * ImageTableWidget::takeItem(int row, int side)
+{
+    int i;
+    QTableWidgetItem *item;
+
+    if (side < 0 || side > 1)
+        return NULL; //Nothing to delete
+    int otherSide = 1 - side;
+
+    if (row >=0 && row >= itemCount[side]) {
+        return NULL; //Nothing to delete
+    }
+
+    item = ui->images->takeItem(row, side);
+    for (i = row; i < itemCount[side] - 1; i++) {
+        ui->images->setItem(i, side,
+                            ui->images->takeItem(i + 1, side));
+    }
+    itemCount[side]--;
+    if (itemCount[side] >= itemCount[otherSide]) {
+        ui->images->setRowCount(itemCount[side]);
     }
 
     // if last column removed, scroll one up
-    if (currentRow == itemCount[currentColumn] && currentRow > 0) {
-        ui->images->setCurrentCell(currentRow - 1, currentColumn);
+    if (row == itemCount[side] && row > 0) {
+        ui->images->setCurrentCell(row - 1, side);
     }
 
     // redraw
     currentItemChanged(ui->images->currentItem(), NULL);
+
+    return item;
+}
+
+
+
+
+void ImageTableWidget::removeSelected()
+{
+    int currentRow = ui->images->currentRow();
+    int currentColumn = ui->images->currentColumn();
+
+    delete takeItem(currentRow, currentColumn);
 }
 
 
@@ -543,5 +611,7 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
 
     ui->images->setCurrentItem(currentItem);
 }
+
+
 
 
