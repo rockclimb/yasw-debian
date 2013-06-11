@@ -52,7 +52,7 @@ User requests:
    complicated. But I have no other Idea for now... Closes #14
  - Move am image between left and right column. Closes #13
  - Move image selection with arrow keys. Closes #12
-
+ - Segfault when changing settings of a non existent image - Fixes #15
 
 20130601; YASW 0.4
  - Fixed Ticket #2 (Image order not retained when project is reloaded.)

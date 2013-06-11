@@ -157,6 +157,9 @@ void ImageTableWidget::filterChanged(QString oldFilterID)
 
     settings = filterContainer->getSettings();
     item = ui->images->currentItem();
+    if (item == NULL) { // There is no item under selection
+        return;
+    }
     oldSettings = item->data(ImagePreferences).toMap();
 
     if (settings[oldFilterID] == oldSettings[oldFilterID]) {
