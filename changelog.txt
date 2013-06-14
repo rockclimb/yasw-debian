@@ -1,6 +1,7 @@
 ToDo / Roadmap
- - QPixmap::scaled: Pixmap is a null pixmap while loading
  - optimise YASW: selecting another (big) image lasts 1 second.
+   o when loading a project, recalculate is called a lot of times. This should not be!
+   o when inserting an image, recalclate ist called twice. This should not be!
  - scaling filter: add padding sizes and/or page size
  - Filter to fix image color / convert to black & white...
    o add filter for color manipulation_/adjustment
@@ -10,7 +11,6 @@ ToDo / Roadmap
  - handle empty images (placeholder) differently
  - Load images for Icons in background
  - Implement disable filter
-   o Set image size, use it in pdf export.
    o disabling a filter (UI) should disable the rendering.
  - progress dialog while exporting / loading
  - Display page preview instead of original image in image list
@@ -45,7 +45,7 @@ User requests:
       and the left of the images; I don't know if that's intentional or not, but I'd like to be able
       to turn it off.
 
-201306xx; YASW 0.5
+201306xx; YASW 0.5 "release few but release often"
  - Key shortcuts
  - Redesign of the Scaling Filter Widget
  - New policies for propagating changes. I'm not 100% happy as this is quite
@@ -53,6 +53,7 @@ User requests:
  - Move am image between left and right column. Closes #13
  - Move image selection with arrow keys. Closes #12
  - Segfault when changing settings of a non existent image - Fixes #15
+ - QPixmap::scaled: Pixmap is a null pixmap while loading - Fixes #17
 
 20130601; YASW 0.4
  - Fixed Ticket #2 (Image order not retained when project is reloaded.)
