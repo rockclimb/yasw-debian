@@ -66,6 +66,38 @@ double ScalingWidget::imagePixelWidth()
     return ui->pixelImageWidth->text().toDouble();
 }
 
+double ScalingWidget::pagePixelHeight()
+{
+    return ui->pixelPageHeight->text().toDouble();
+}
+
+double ScalingWidget::pagePixelWidth()
+{
+    return ui->pixelPageWidth->text().toDouble();
+}
+
+double ScalingWidget::leftMargin()
+{
+    return(enteredSizeToPixel(ui->leftMargin->text().toDouble()));
+}
+
+double ScalingWidget::bottomMargin()
+{
+    return(enteredSizeToPixel(ui->leftMargin->text().toDouble()));
+}
+
+
+// Fixme: this should be an enum, not a string!
+QString ScalingWidget::layout()
+{
+    if (ui->marginLayout->isChecked())
+        return ("margin");
+    if (ui->pageLayout->isChecked())
+        return ("page");
+//    if (ui->noMarginLayout->isChecked()) // this is default
+     return ("no margin");
+}
+
 QMap<QString, QVariant> ScalingWidget::getSettings()
 {
     QMap<QString, QVariant> settings;
@@ -74,12 +106,7 @@ QMap<QString, QVariant> ScalingWidget::getSettings()
     settings["imageHeight"] = ui->imageHeight->text().toDouble();
     settings["DPI"] = ui->dpi->currentText().toDouble();
     settings["unit"] = ui->unit->currentIndex();
-    if (ui->noMarginLayout->isChecked())
-        settings["layout"] = "no margin";
-    if (ui->marginLayout->isChecked())
-        settings["layout"] = "margin";
-    if (ui->pageLayout->isChecked())
-        settings["layout"] = "page";
+    settings["layout"] = layout();
     settings["leftMargin"] = ui->leftMargin->text().toDouble();
     settings["rightMargin"] = ui->rightMargin->text().toDouble();
     settings["topMargin"] = ui->topMargin->text().toDouble();
@@ -137,7 +164,7 @@ void ScalingWidget::setSettings(QMap<QString, QVariant> settings)
         ui->marginLayout->setChecked(true);
     } else if (settings["layout"].toString() == "page") {
         ui->pageLayout->setChecked(true);
-    } else { // "no marging" or wrong parameter
+    } else { // "no margin" or wrong parameter
         ui->noMarginLayout->setChecked(true);
     }
 
@@ -322,3 +349,32 @@ void ScalingWidget::on_unit_currentIndexChanged(int index)
 
 }
 
+
+
+qreal ScalingWidget::enteredSizeToPixel(qreal size)
+{
+    qreal factor;
+    const qreal millimeterPerInch = 25.4;     // 1 inch = 25,4 mm
+
+    qreal dpi = ui->dpi->currentText().toDouble();
+    if (dpi == 0)
+        return 0;
+
+    // calculate the factor into pixel
+    switch (ui->unit->currentIndex()) {
+        case 0:      // pixel -> do nothing
+            factor = 1;
+            break;
+        case 1:    // millimeter
+            factor = 1 / millimeterPerInch * dpi;
+            break;
+        case 2:     // inches
+            factor = dpi;
+            break;
+        default:
+        // This step is never reached.
+        Q_ASSERT (false);
+    }
+
+    return size * factor;
+}

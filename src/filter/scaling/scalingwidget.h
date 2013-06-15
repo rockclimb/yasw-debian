@@ -23,6 +23,13 @@ public:
     bool preview();
     double imagePixelHeight();
     double imagePixelWidth();
+    double pagePixelHeight();
+    double pagePixelWidth();
+    double leftMargin();
+    double bottomMargin();
+
+
+    QString layout();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
 
@@ -40,6 +47,8 @@ signals:
 
 
 private:
+    qreal enteredSizeToPixel(qreal size);
+
     Ui::ScalingWidget *ui;
     QDoubleValidator *doubleValidator;
     int lastUnitIndex = 0;

@@ -18,6 +18,7 @@
  */
 #include "scaling.h"
 #include <QDebug>
+#include <QPainter>
 
 Scaling::Scaling(QObject * parent) : BaseFilter(parent)
 {
@@ -74,16 +75,47 @@ void Scaling::setSettings(QMap<QString, QVariant> settings)
 
 void Scaling::recalculate()
 {
-    qreal width = widget->imagePixelWidth();
-    qreal height = widget->imagePixelHeight();
+    qreal imageWidth = widget->imagePixelWidth();
+    qreal imageHeight = widget->imagePixelHeight();
+    qreal pageWidth = widget->pagePixelWidth();
+    qreal pageHeight = widget->pagePixelHeight();
+    QString layout = widget->layout();
+    qreal leftMargin, bottomMargin;
 
-    if (width == 0 || height == 0 || inputPixmap.isNull()) {
+    if (imageWidth == 0 || imageHeight == 0 || inputPixmap.isNull()) {
         outputPixmap = QPixmap();
     } else {
-        QSize outputSize = QSize(width, height);
-        outputPixmap = inputPixmap.scaled(outputSize);
-    }
+        if (layout == "margin") {
+            leftMargin = widget->leftMargin();
+            bottomMargin = widget->bottomMargin();
+        } else if (layout == "page") {
+            // if the image is too big, reduce it.
+            // NOTE: this shall decrease the DPI value in the UI.
+            if (imageWidth > pageWidth) {
+                imageHeight = imageHeight * pageWidth / imageWidth;
+                imageWidth = pageWidth;
+            }
+            if (imageHeight > pageHeight) {
+                imageWidth = imageWidth * pageHeight / imageHeight;
+                imageHeight = pageHeight;
+            }
+            //FIXME: check alignement
+            leftMargin = (pageWidth - imageWidth) / 2;
+            bottomMargin = (pageHeight - imageHeight) / 2;
+        } else { // layout == "no margin" or error
+            leftMargin = 0;
+            bottomMargin = 0;
+        }
 
+        QSize outputImageSize = QSize(imageWidth, imageHeight);
+        QPixmap scaledImage = inputPixmap.scaled(outputImageSize);
+        QPixmap page = QPixmap(pageWidth, pageHeight);
+        //NOTE: fill color could be a parameter. Wait for User feedback ;-)
+        page.fill(Qt::white);
+        QPainter painter(&page);
+        painter.drawPixmap(leftMargin, bottomMargin, scaledImage);
+        outputPixmap = page;
+    }
 
     widget->setPreview(outputPixmap);
 }
