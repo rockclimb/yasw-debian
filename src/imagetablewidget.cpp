@@ -200,7 +200,7 @@ void ImageTableWidget::filterChanged(QString oldFilterID)
 }
 
 
-
+/** \brief Slot called from the UI to add an one or many images */
 void ImageTableWidget::insertImage()
 {
     QFileInfo fi;
@@ -213,6 +213,9 @@ void ImageTableWidget::insertImage()
         side = ImageTableWidget::rightSide;
     else // defaults to left
         side = ImageTableWidget::leftSide;
+
+    // Save current settings: call the currentItemChanged slot newItem = previusItem = currentItem
+    currentItemChanged(ui->images->currentItem(), ui->images->currentItem());
 
     if (lastDir.length() == 0)
         lastDir = QDir::currentPath();
@@ -235,6 +238,9 @@ void ImageTableWidget::insertImage()
         addImage(imageFileName, side);
         moveSelectionDown = true;
     }
+
+    // Load settings/image for the current item.
+    currentItemChanged(ui->images->currentItem(), NULL);
 
     if (imageFileName.length() > 0) {
         fi = QFileInfo(imageFileName);

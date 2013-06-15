@@ -54,6 +54,7 @@ User requests:
  - Move image selection with arrow keys. Closes #12
  - Segfault when changing settings of a non existent image - Fixes #15
  - QPixmap::scaled: Pixmap is a null pixmap while loading - Fixes #17
+ - Fixed #18 Inserted item is selected but does not apear in the filter select
 
 20130601; YASW 0.4
  - Fixed Ticket #2 (Image order not retained when project is reloaded.)
