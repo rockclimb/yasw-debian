@@ -74,6 +74,20 @@ QMap<QString, QVariant> ScalingWidget::getSettings()
     settings["imageHeight"] = ui->imageHeight->text().toDouble();
     settings["DPI"] = ui->dpi->currentText().toDouble();
     settings["unit"] = ui->unit->currentIndex();
+    if (ui->noMarginLayout->isChecked())
+        settings["layout"] = "no margin";
+    if (ui->marginLayout->isChecked())
+        settings["layout"] = "margin";
+    if (ui->pageLayout->isChecked())
+        settings["layout"] = "page";
+    settings["leftMargin"] = ui->leftMargin->text().toDouble();
+    settings["rightMargin"] = ui->rightMargin->text().toDouble();
+    settings["topMargin"] = ui->topMargin->text().toDouble();
+    settings["bottomMargin"] = ui->bottomMargin->text().toDouble();
+    settings["horizontalAlignement"] = ui->horizontalAlignement->currentIndex();
+    settings["verticalAlignement"] = ui->verticalAlignement->currentIndex();
+    settings["pageWidth"] = ui->pageWidth->text().toDouble();
+    settings["pageHeight"] = ui->pageHeight->text().toDouble();
 
     return settings;
 
@@ -81,20 +95,8 @@ QMap<QString, QVariant> ScalingWidget::getSettings()
 
 void ScalingWidget::setSettings(QMap<QString, QVariant> settings)
 {
-    if (settings.contains("imageWidth")
-            && settings["imageWidth"].canConvert(QVariant::Double)
-            && settings["imageWidth"].toDouble() != 0) {
-        ui->imageWidth->setText(settings["imageWidth"].toString());
-    } else {
-        ui->imageWidth->clear();
-    }
-    if (settings.contains("imageHeight")
-            && settings["imageHeight"].canConvert(QVariant::Double)
-            && settings["imageHeight"].toDouble() != 0) {
-        ui->imageHeight->setText(settings["imageHeight"].toString());
-    } else {
-        ui->imageHeight->clear();
-    }
+    ui->imageWidth->setText(settings["imageWidth"].toString());
+    ui->imageHeight->setText(settings["imageHeight"].toString());
     if (settings.contains("DPI")
             && settings["DPI"].canConvert(QVariant::Double)) {
         QString DPIValue = settings["DPI"].toString();
@@ -114,6 +116,29 @@ void ScalingWidget::setSettings(QMap<QString, QVariant> settings)
     } else {
         lastUnitIndex = 1;
         ui->unit->setCurrentIndex(1);
+    }
+    ui->leftMargin->setText(settings["leftMargin"].toString());
+    ui->rightMargin->setText(settings["rightMargin"].toString());
+    ui->topMargin->setText(settings["topMargin"].toString());
+    ui->bottomMargin->setText(settings["bottomMargin"].toString());
+    ui->pageWidth->setText(settings["pageWidth"].toString());
+    ui->pageHeight->setText(settings["pageHeight"].toString());
+    if (settings.contains("horizontalAlignement")) {
+        ui->horizontalAlignement->setCurrentIndex(settings["horizontalAlignement"].toInt());
+    } else {
+        ui->horizontalAlignement->setCurrentIndex(1);
+    }
+    if (settings.contains("verticalAlignement")) {
+        ui->verticalAlignement->setCurrentIndex(settings["verticalAlignement"].toInt());
+    } else {
+        ui->verticalAlignement->setCurrentIndex(1);
+    }
+    if (settings["layout"].toString() == "margin") {
+        ui->marginLayout->setChecked(true);
+    } else if (settings["layout"].toString() == "page") {
+        ui->pageLayout->setChecked(true);
+    } else { // "no marging" or wrong parameter
+        ui->noMarginLayout->setChecked(true);
     }
 
     slotPropertyChanged();
@@ -264,14 +289,36 @@ void ScalingWidget::on_unit_currentIndexChanged(int index)
         Q_ASSERT (false);
     }
 
-    QString calcWidth, calcHeight;
-    qreal width = ui->imageWidth->text().toDouble();
-    qreal height = ui->imageHeight->text().toDouble();
-    calcWidth = QString::number(width * factor);
-    calcHeight = QString::number(height * factor);
-    ui->imageWidth->setText(calcWidth);
-    ui->imageHeight->setText(calcHeight);
+    QString calcImageWidth, calcImageHeight;
+    qreal imageWidth = ui->imageWidth->text().toDouble();
+    qreal imageWeight = ui->imageHeight->text().toDouble();
+    calcImageWidth = QString::number(imageWidth * factor);
+    calcImageHeight = QString::number(imageWeight * factor);
+    ui->imageWidth->setText(calcImageWidth);
+    ui->imageHeight->setText(calcImageHeight);
+
+    qreal value;
+    QString string;
+    value = ui->leftMargin->text().toDouble();
+    string = QString::number(value * factor);
+    ui->leftMargin->setText(string);
+    value = ui->rightMargin->text().toDouble();
+    string = QString::number(value * factor);
+    ui->rightMargin->setText(string);
+    value = ui->topMargin->text().toDouble();
+    string = QString::number(value * factor);
+    ui->topMargin->setText(string);
+    value = ui->bottomMargin->text().toDouble();
+    string = QString::number(value * factor);
+    ui->bottomMargin->setText(string);
+    value = ui->pageWidth->text().toDouble();
+    string = QString::number(value * factor);
+    ui->pageWidth->setText(string);
+    value = ui->pageHeight->text().toDouble();
+    string = QString::number(value * factor);
+    ui->pageHeight->setText(string);
 
     lastUnitIndex = index;
 
 }
+
