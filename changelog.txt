@@ -71,7 +71,6 @@ User requests:
  - change selection color for dekeystoning and cropping
  - move all corners (dekeystonig, cropping) when pressing "control" while draging one of the corners
 
-
 20121118; YASW 0.2
  - export to pdf
  - a lot of small fixes in handling to pages types (even/odd)

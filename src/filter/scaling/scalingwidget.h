@@ -21,8 +21,8 @@ public:
     void setPixmap(QPixmap pixmap);
     void setPreview(QPixmap pixmap);
     bool preview();
-    double imageHeight();
-    double imageWidth();
+    double imagePixelHeight();
+    double imagePixelWidth();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
 

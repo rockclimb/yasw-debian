@@ -16,6 +16,12 @@ ScalingWidget::ScalingWidget(QWidget *parent) :
     ui->imageHeight->setValidator(doubleValidator);
     ui->imageWidth->setValidator(doubleValidator);
     ui->dpi->setValidator(doubleValidator);
+    ui->leftMargin->setValidator(doubleValidator);
+    ui->rightMargin->setValidator(doubleValidator);
+    ui->bottomMargin->setValidator(doubleValidator);
+    ui->topMargin->setValidator(doubleValidator);
+    ui->pageWidth->setValidator(doubleValidator);
+    ui->pageHeight->setValidator(doubleValidator);
 }
 
 ScalingWidget::~ScalingWidget()
@@ -50,14 +56,14 @@ bool ScalingWidget::preview()
     return ui->preview->isChecked();
 }
 
-double ScalingWidget::imageHeight()
+double ScalingWidget::imagePixelHeight()
 {
-    return ui->imageHeight->text().toDouble();
+    return ui->pixelImageHeight->text().toDouble();
 }
 
-double ScalingWidget::imageWidth()
+double ScalingWidget::imagePixelWidth()
 {
-    return ui->imageWidth->text().toDouble();
+    return ui->pixelImageWidth->text().toDouble();
 }
 
 QMap<QString, QVariant> ScalingWidget::getSettings()
@@ -156,22 +162,57 @@ void ScalingWidget::slotPropertyChanged()
             Q_ASSERT (false);
         }
 
-        qreal width = ui->imageWidth->text().toDouble() * factor;
-        qreal height = ui->imageHeight->text().toDouble() * factor;
+        // Sizes in Pixel
+        qreal imageWidth = ui->imageWidth->text().toDouble() * factor;
+        qreal imageHeight = ui->imageHeight->text().toDouble() * factor;
+        qreal leftMargin = ui->leftMargin->text().toDouble() * factor;
+        qreal rightMargin = ui->rightMargin->text().toDouble() * factor;
+        qreal bottomMargin = ui->bottomMargin->text().toDouble() * factor;
+        qreal topMargin = ui->topMargin->text().toDouble() * factor;
+        qreal specifiedPageWidth = ui->pageWidth->text().toDouble() * factor;
+        qreal specifiedPageHeight = ui->pageHeight->text().toDouble() * factor;
 
-        ui->pixelWidth->setText(QString::number(width, 'f', 1));
-        ui->pixelHeight->setText(QString::number(height, 'f', 1));
-        ui->inchWidth->setText(QString::number(width / dpi, 'f', 1));
-        ui->inchHeight->setText(QString::number(height / dpi, 'f', 1));
-        ui->millimeterWidth->setText(QString::number(width / dpi * millimeterPerInch, 'f', 1));
-        ui->millimeterHeight->setText(QString::number(height / dpi * millimeterPerInch, 'f', 1));
+        qreal pageWidth, pageHeight;
+        if (ui->noMarginLayout->isChecked()) {
+            pageWidth = imageWidth;
+            pageHeight = imageHeight;
+        }
+        if (ui->marginLayout->isChecked()) {
+            pageWidth = imageWidth + leftMargin + rightMargin;
+            pageHeight = imageHeight + topMargin + bottomMargin;
+        }
+        if (ui->pageLayout->isChecked()) {
+            pageWidth = specifiedPageWidth;
+            pageHeight = specifiedPageHeight;
+        }
+
+        //image
+        ui->pixelImageWidth->setText(QString::number(imageWidth, 'f', 1));
+        ui->pixelImageHeight->setText(QString::number(imageHeight, 'f', 1));
+        ui->inchImageWidth->setText(QString::number(imageWidth / dpi, 'f', 1));
+        ui->inchImageHeight->setText(QString::number(imageHeight / dpi, 'f', 1));
+        ui->millimeterImageWidth->setText(QString::number(imageWidth / dpi * millimeterPerInch, 'f', 1));
+        ui->millimeterImageHeight->setText(QString::number(imageHeight / dpi * millimeterPerInch, 'f', 1));
+        //page
+        ui->pixelPageWidth->setText(QString::number(pageWidth, 'f', 1));
+        ui->pixelPageHeight->setText(QString::number(pageHeight, 'f', 1));
+        ui->inchPageWidth->setText(QString::number(pageWidth / dpi, 'f', 1));
+        ui->inchPageHeight->setText(QString::number(pageHeight / dpi, 'f', 1));
+        ui->millimeterPageWidth->setText(QString::number(pageWidth / dpi * millimeterPerInch, 'f', 1));
+        ui->millimeterPageHeight->setText(QString::number(pageHeight / dpi * millimeterPerInch, 'f', 1));
     } else {
-        ui->pixelWidth->clear();
-        ui->pixelHeight->clear();
-        ui->inchWidth->clear();
-        ui->inchHeight->clear();
-        ui->millimeterWidth->clear();
-        ui->millimeterHeight->clear();
+        ui->pixelImageWidth->clear();
+        ui->pixelImageHeight->clear();
+        ui->inchImageWidth->clear();
+        ui->inchImageHeight->clear();
+        ui->millimeterImageWidth->clear();
+        ui->millimeterImageHeight->clear();
+        ui->leftMargin->clear();
+        ui->rightMargin->clear();
+        ui->bottomMargin->clear();
+        ui->topMargin->clear();
+        ui->pageWidth->clear();
+        ui->pageHeight->clear();
     }
 
     emit signalPropertyChanged();

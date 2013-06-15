@@ -74,8 +74,8 @@ void Scaling::setSettings(QMap<QString, QVariant> settings)
 
 void Scaling::recalculate()
 {
-    qreal width = widget->imageWidth();
-    qreal height = widget->imageHeight();
+    qreal width = widget->imagePixelWidth();
+    qreal height = widget->imagePixelHeight();
 
     if (width == 0 || height == 0 || inputPixmap.isNull()) {
         outputPixmap = QPixmap();
