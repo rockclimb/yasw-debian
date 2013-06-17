@@ -81,21 +81,31 @@ double ScalingWidget::leftMargin()
     return(enteredSizeToPixel(ui->leftMargin->text().toDouble()));
 }
 
-double ScalingWidget::bottomMargin()
+double ScalingWidget::topMargin()
 {
-    return(enteredSizeToPixel(ui->leftMargin->text().toDouble()));
+    return(enteredSizeToPixel(ui->topMargin->text().toDouble()));
 }
 
 
 // Fixme: this should be an enum, not a string!
-QString ScalingWidget::layout()
+enum ScalingWidget::PageLayout ScalingWidget::layout()
 {
     if (ui->marginLayout->isChecked())
-        return ("margin");
+        return MarginLayout;
     if (ui->pageLayout->isChecked())
-        return ("page");
+        return PageLayout;
 //    if (ui->noMarginLayout->isChecked()) // this is default
-     return ("no margin");
+    return NoMarginLayout;
+}
+
+ScalingWidget::HAlignment ScalingWidget::hAlignment()
+{
+    return (ScalingWidget::HAlignment)ui->horizontalAlignment->currentIndex();
+}
+
+ScalingWidget::VAlignment ScalingWidget::vAlignment()
+{
+    return (ScalingWidget::VAlignment)ui->verticalAlignment->currentIndex();
 }
 
 QMap<QString, QVariant> ScalingWidget::getSettings()
@@ -111,8 +121,8 @@ QMap<QString, QVariant> ScalingWidget::getSettings()
     settings["rightMargin"] = ui->rightMargin->text().toDouble();
     settings["topMargin"] = ui->topMargin->text().toDouble();
     settings["bottomMargin"] = ui->bottomMargin->text().toDouble();
-    settings["horizontalAlignement"] = ui->horizontalAlignement->currentIndex();
-    settings["verticalAlignement"] = ui->verticalAlignement->currentIndex();
+    settings["horizontalAlignment"] = ui->horizontalAlignment->currentIndex();
+    settings["verticalAlignment"] = ui->verticalAlignment->currentIndex();
     settings["pageWidth"] = ui->pageWidth->text().toDouble();
     settings["pageHeight"] = ui->pageHeight->text().toDouble();
 
@@ -150,19 +160,19 @@ void ScalingWidget::setSettings(QMap<QString, QVariant> settings)
     ui->bottomMargin->setText(settings["bottomMargin"].toString());
     ui->pageWidth->setText(settings["pageWidth"].toString());
     ui->pageHeight->setText(settings["pageHeight"].toString());
-    if (settings.contains("horizontalAlignement")) {
-        ui->horizontalAlignement->setCurrentIndex(settings["horizontalAlignement"].toInt());
+    if (settings.contains("horizontalAlignment")) {
+        ui->horizontalAlignment->setCurrentIndex(settings["horizontalAlignment"].toInt());
     } else {
-        ui->horizontalAlignement->setCurrentIndex(1);
+        ui->horizontalAlignment->setCurrentIndex(1);
     }
-    if (settings.contains("verticalAlignement")) {
-        ui->verticalAlignement->setCurrentIndex(settings["verticalAlignement"].toInt());
+    if (settings.contains("verticalAlignment")) {
+        ui->verticalAlignment->setCurrentIndex(settings["verticalAlignment"].toInt());
     } else {
-        ui->verticalAlignement->setCurrentIndex(1);
+        ui->verticalAlignment->setCurrentIndex(1);
     }
-    if (settings["layout"].toString() == "margin") {
+    if (settings["layout"].toInt() == MarginLayout) {
         ui->marginLayout->setChecked(true);
-    } else if (settings["layout"].toString() == "page") {
+    } else if (settings["layout"].toInt() ==  PageLayout) {
         ui->pageLayout->setChecked(true);
     } else { // "no margin" or wrong parameter
         ui->noMarginLayout->setChecked(true);

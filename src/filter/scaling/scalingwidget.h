@@ -26,10 +26,16 @@ public:
     double pagePixelHeight();
     double pagePixelWidth();
     double leftMargin();
-    double bottomMargin();
+    double topMargin();
 
+    enum HAlignment {LeftHAlignment, CenterHAlignment, RightHAlignment};
+    enum VAlignment {TopVAlignment, CenterVAlignment, BottomVAlignment};
+    enum PageLayout {NoMarginLayout, MarginLayout, PageLayout};
 
-    QString layout();
+    enum ScalingWidget::PageLayout layout();
+    enum ScalingWidget::HAlignment hAlignment();
+    enum ScalingWidget::VAlignment vAlignment();
+
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
 

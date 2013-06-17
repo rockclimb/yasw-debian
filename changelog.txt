@@ -1,4 +1,7 @@
 ToDo / Roadmap
+ - adapt pdf export
+ - separate scaling filter from layout filter -> one may want to sets the settings differently (typicaly layout for all images)
+ - checking "preview" on scaling widget does not calculate image
  - optimise YASW: selecting another (big) image lasts 1 second.
    o when loading a project, recalculate is called a lot of times. This should not be!
    o when inserting an image, recalclate ist called twice. This should not be!
