@@ -656,7 +656,7 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
             pixmap = filterContainer->getResultImage();
 
             /* set Paper size from the scaling Filter */
-            imageSize = filterContainer->getImageSize();
+            imageSize = filterContainer->getPageSize();
             printer->setPaperSize(QSize(imageSize["size"].toSize()),
                                   static_cast<QPrinter::Unit>(imageSize["unit"].toInt()));
 
@@ -675,7 +675,7 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
             pixmap = filterContainer->getResultImage();
 
             /* set Paper size from the scaling Filter */
-            imageSize = filterContainer->getImageSize();
+            imageSize = filterContainer->getPageSize();
             printer->setPaperSize(QSize(imageSize["size"].toSize()),
                                   static_cast<QPrinter::Unit>(imageSize["unit"].toInt()));
 

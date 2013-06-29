@@ -208,32 +208,17 @@ QPixmap FilterContainer::getResultImage()
     \returns QMap<QString, QVariant>; keys are size (QSize), and
         unit (enum QPrinter::Unit)
 */
-QMap<QString, QVariant> FilterContainer::getImageSize()
+QMap<QString, QVariant> FilterContainer::getPageSize()
 {
-    QMap<QString, QVariant> allSettings = scalingFilter->getSettings();
     QMap<QString, QVariant> imageSize;
-    qreal width, height, dpi;
+    qreal width, height;
 
-    width = allSettings["imageWidth"].toDouble();
-    height = allSettings["imageWidth"].toDouble();
-    dpi = allSettings["DPI"].toDouble();
+    width = scalingFilter->pageMilimeterWidth();
+    height = scalingFilter->pageMilimeterHeight();
 
-    switch (allSettings["unit"].toInt()) {
-    case 0:
-        imageSize["unit"] = QPrinter::Point;
-        // We work in Prixel with DPI, QPrinter defines the point as an 1/72 of an Inch.
-        width = width / dpi * 72;
-        height = height / dpi * 72;
-        break;
-    case 1:
-        imageSize["unit"] = QPrinter::Millimeter;
-        break;
-    case 2:
-    default:
-        imageSize["unit"] = QPrinter::Inch;
-    }
-
+    imageSize["unit"] = QPrinter::Millimeter;
     imageSize["size"] = QSize(width, height);
+
     return imageSize;
 }
 

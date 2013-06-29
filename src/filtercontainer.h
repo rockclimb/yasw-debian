@@ -37,7 +37,7 @@ public:
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap<QString, QVariant> settings);
     QPixmap getResultImage();
-    QMap<QString, QVariant> getImageSize();
+    QMap<QString, QVariant> getPageSize();
     QString currentFilter();
 
 public slots:

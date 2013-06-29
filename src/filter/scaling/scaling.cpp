@@ -73,6 +73,16 @@ void Scaling::setSettings(QMap<QString, QVariant> settings)
     recalculate();
 }
 
+qreal Scaling::pageMilimeterHeight()
+{
+    return widget->pageMilimeterHeight();
+}
+
+qreal Scaling::pageMilimeterWidth()
+{
+    return widget->pageMilimeterWidth();
+}
+
 void Scaling::recalculate()
 {
     qreal imageWidth = widget->imagePixelWidth();

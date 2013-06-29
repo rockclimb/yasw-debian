@@ -25,6 +25,8 @@ public:
     double imagePixelWidth();
     double pagePixelHeight();
     double pagePixelWidth();
+    qreal pageMilimeterHeight();
+    qreal pageMilimeterWidth();
     double leftMargin();
     double topMargin();
 

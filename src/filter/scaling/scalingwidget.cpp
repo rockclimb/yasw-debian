@@ -76,6 +76,16 @@ double ScalingWidget::pagePixelWidth()
     return ui->pixelPageWidth->text().toDouble();
 }
 
+qreal ScalingWidget::pageMilimeterHeight()
+{
+    return ui->millimeterPageHeight->text().toDouble();
+}
+
+qreal ScalingWidget::pageMilimeterWidth()
+{
+    return ui->millimeterPageWidth->text().toDouble();
+}
+
 double ScalingWidget::leftMargin()
 {
     return(enteredSizeToPixel(ui->leftMargin->text().toDouble()));
