@@ -48,7 +48,7 @@ User requests:
       and the left of the images; I don't know if that's intentional or not, but I'd like to be able
       to turn it off.
 
-201306xx; YASW 0.5 "release few but release often"
+20130629; YASW 0.5 "release few but release often"
  - Key shortcuts
  - Redesign of the Scaling Filter Widget
  - New policies for propagating changes. I'm not 100% happy as this is quite
