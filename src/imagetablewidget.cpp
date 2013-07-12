@@ -22,6 +22,7 @@
 #include <QPrinter>
 #include <QPainter>
 #include <QDebug>
+#include <QProgressDialog>
 #include "imagetablewidget.h"
 #include "ui_imagetablewidget.h"
 
@@ -575,7 +576,7 @@ QMap<QString, QVariant> ImageTableWidget::getSettings()
     return settings;
 }
 
-void ImageTableWidget::setSettings(QMap<QString, QVariant> settings)
+bool ImageTableWidget::setSettings(QMap<QString, QVariant> settings)
 {
     QString key;
     int row;
@@ -583,9 +584,18 @@ void ImageTableWidget::setSettings(QMap<QString, QVariant> settings)
     ImageTableWidget::ImageSide side;
     QString filename;
 
+    int progress = 0;
+    QProgressDialog progressDialog("Loading project...", "Abort", 0, settings.size());
+    progressDialog.setWindowModality(Qt::WindowModal);
+
     clear();
 
     foreach (key, settings.keys()) {
+        progressDialog.setValue(progress);
+        progress++;
+        if (progressDialog.wasCanceled()) {
+            return false;
+        }
         row = key.section("_", 0, 0).toInt();
         sideString = key.section("_", 1, 1);
         if (sideString == "Left") {
@@ -599,6 +609,8 @@ void ImageTableWidget::setSettings(QMap<QString, QVariant> settings)
             appendImageToSide(filename, side, settings[key].toMap());
         }
     }
+    progressDialog.setValue(settings.size());
+    return true;
 }
 
 void ImageTableWidget::clear()

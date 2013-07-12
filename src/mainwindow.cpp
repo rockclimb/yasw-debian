@@ -197,9 +197,12 @@ void MainWindow::loadProject(QString fileName)
         in >> settings;
         file.close();
     }
-    setProjectFileName(fileName);
-
-    ui->imageList->setSettings(settings);
+    if(ui->imageList->setSettings(settings)) {
+        setProjectFileName(fileName);
+    } else {
+        // Something went wrong -> clear the project.
+        on_action_Close_triggered();
+    }
 }
 
 

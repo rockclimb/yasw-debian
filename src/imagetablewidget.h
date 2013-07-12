@@ -37,7 +37,7 @@ public:
     ~ImageTableWidget();
     void setFilterContainer(FilterContainer *container);
     QMap<QString, QVariant> getSettings();
-    void setSettings(QMap<QString, QVariant> settings);
+    bool setSettings(QMap<QString, QVariant> settings);
     void clear();
     void exportToFolder(QString folder);
     void exportToPdf(QString pdfFile);

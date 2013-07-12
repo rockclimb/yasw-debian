@@ -48,6 +48,9 @@ User requests:
       and the left of the images; I don't know if that's intentional or not, but I'd like to be able
       to turn it off.
 
+20130xxx; YASW 0.6
+ - Progress dialogs for long operations
+
 20130629; YASW 0.5 "release few but release often"
  - Key shortcuts
  - Redesign of the Scaling Filter Widget
