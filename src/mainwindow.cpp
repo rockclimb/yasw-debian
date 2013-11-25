@@ -236,11 +236,6 @@ void MainWindow::exportToJpeg()
         return;
 
     ui->imageList->exportToFolder(exportFolder);
-
-    QMessageBox::information(this,
-                tr("Project exported"),
-                tr("The project was exported to folder %1").arg(exportFolder)
-                             );
 }
 
 void MainWindow::exportToPdf()
@@ -255,11 +250,6 @@ void MainWindow::exportToPdf()
         return;
 
     ui->imageList->exportToPdf(exportFile);
-
-    QMessageBox::information(this,
-                tr("Project exported"),
-                tr("The project was exported to file %1").arg(exportFile)
-                );
 }
 
 /** \brief Close curent project,

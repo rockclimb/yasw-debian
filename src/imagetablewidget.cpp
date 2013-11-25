@@ -591,11 +591,13 @@ bool ImageTableWidget::setSettings(QMap<QString, QVariant> settings)
     clear();
 
     foreach (key, settings.keys()) {
+        // update progress dialog
         progressDialog.setValue(progress);
         progress++;
         if (progressDialog.wasCanceled()) {
             return false;
         }
+        // load image
         row = key.section("_", 0, 0).toInt();
         sideString = key.section("_", 1, 1);
         if (sideString == "Left") {
@@ -636,24 +638,28 @@ void ImageTableWidget::exportToFolder(QString folder)
     progressDialog.setWindowModality(Qt::WindowModal);
 
     for (row = 0; row < itemCount[leftSide]; row++) {
+        // Update Process Dialog
         progressDialog.setValue(progress);
         progress++;
         if (progressDialog.wasCanceled()) {
             ui->images->setCurrentItem(currentItem);
             return;
         }
+        // Export image
         ui->images->setCurrentCell(row, leftSide);
         pixmap = filterContainer->getResultImage();
         filename = QString("%1/image_%2_Left.jpg").arg(folder).arg(row+1, 3, 10, QChar('0'));
         pixmap.save(filename);
     }
     for (row = 0; row < itemCount[rightSide]; row++) {
+        // Update Process Dialog
         progressDialog.setValue(progress);
         progress++;
         if (progressDialog.wasCanceled()) {
             ui->images->setCurrentItem(currentItem);
             return;
         }
+        // Export image
         ui->images->setCurrentCell(row, rightSide);
         pixmap = filterContainer->getResultImage();
         filename = QString("%1/image_%2_Right.jpg").arg(folder).arg(row+1, 3, 10, QChar('0'));
@@ -684,6 +690,7 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
     progressDialog.setWindowModality(Qt::WindowModal);
 
     for (row = 0; row < qMax(itemCount[leftSide], itemCount[rightSide]); row++) {
+        // Update Process Dialog
         progressDialog.setValue(progress);
         progress++;
         if (progressDialog.wasCanceled()) {
@@ -692,7 +699,8 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
             ui->images->setCurrentItem(currentItem);
             return;
         }
-        // left Side
+        // Export page
+        // left side
         if (row < itemCount[leftSide]) {       // is one item availabla at this row?
             ui->images->setCurrentCell(row, leftSide);
             pixmap = filterContainer->getResultImage();
