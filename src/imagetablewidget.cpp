@@ -630,19 +630,37 @@ void ImageTableWidget::exportToFolder(QString folder)
     QPixmap pixmap;
     QString filename;
 
+    int progress = 0;
+    int maxProgress = itemCount[leftSide] + itemCount[rightSide];
+    QProgressDialog progressDialog(QString("Exporting to folder %2...").arg(folder), "Abort", 0, maxProgress);
+    progressDialog.setWindowModality(Qt::WindowModal);
+
     for (row = 0; row < itemCount[leftSide]; row++) {
+        progressDialog.setValue(progress);
+        progress++;
+        if (progressDialog.wasCanceled()) {
+            ui->images->setCurrentItem(currentItem);
+            return;
+        }
         ui->images->setCurrentCell(row, leftSide);
         pixmap = filterContainer->getResultImage();
         filename = QString("%1/image_%2_Left.jpg").arg(folder).arg(row+1, 3, 10, QChar('0'));
         pixmap.save(filename);
     }
     for (row = 0; row < itemCount[rightSide]; row++) {
+        progressDialog.setValue(progress);
+        progress++;
+        if (progressDialog.wasCanceled()) {
+            ui->images->setCurrentItem(currentItem);
+            return;
+        }
         ui->images->setCurrentCell(row, rightSide);
         pixmap = filterContainer->getResultImage();
         filename = QString("%1/image_%2_Right.jpg").arg(folder).arg(row+1, 3, 10, QChar('0'));
         pixmap.save(filename);
     }
 
+    progressDialog.setValue(maxProgress);
     ui->images->setCurrentItem(currentItem);
 }
 
@@ -660,8 +678,20 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
     printer->setFullPage(true);
     printer->setOutputFileName(pdfFile);
 
+    int progress = 0;
+    int maxProgress = qMax(itemCount[leftSide], itemCount[rightSide]);
+    QProgressDialog progressDialog(QString("Exporting to %2...").arg(pdfFile), "Abort", 0, maxProgress);
+    progressDialog.setWindowModality(Qt::WindowModal);
 
     for (row = 0; row < qMax(itemCount[leftSide], itemCount[rightSide]); row++) {
+        progressDialog.setValue(progress);
+        progress++;
+        if (progressDialog.wasCanceled()) {
+            painter.end();
+            delete(printer);
+            ui->images->setCurrentItem(currentItem);
+            return;
+        }
         // left Side
         if (row < itemCount[leftSide]) {       // is one item availabla at this row?
             ui->images->setCurrentCell(row, leftSide);
@@ -705,6 +735,7 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
     painter.end();
     delete(printer);
 
+    progressDialog.setValue(maxProgress);
     ui->images->setCurrentItem(currentItem);
 }
 
