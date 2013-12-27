@@ -22,7 +22,7 @@ Rotation::Rotation(QObject * parent) : BaseFilter(parent)
 {
     widget = new RotationWidget();
     filterWidget = widget;
-    connect(widget, SIGNAL(rotationChanged()), this, SLOT(recalculate()));
+    connect(widget, SIGNAL(rotationChanged()), this, SLOT(widgetParameterChanged()));
     if (parent) {
         /* Connect slots to the filtercontainer */
         connect(parent, SIGNAL(backgroundColorChanged(QColor)),
@@ -55,6 +55,9 @@ AbstractFilterWidget * Rotation::getWidget()
 
 void Rotation::recalculate()
 {
+    if (reloadInputImage && previousFilter) {
+        inputPixmap = previousFilter->getOutputImage();
+    }
     rotationMatrix.reset();
     rotationMatrix.rotate(widget->rotation());
     outputPixmap = inputPixmap.transformed(rotationMatrix);

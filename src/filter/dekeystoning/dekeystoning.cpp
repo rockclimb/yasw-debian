@@ -24,7 +24,7 @@ Dekeystoning::Dekeystoning(QObject *parent)
 {
     widget = new DekeystoningWidget();
     filterWidget = widget;
-    connect(widget, SIGNAL(polygonChanged()), this, SLOT(recalculate()));
+    connect(widget, SIGNAL(polygonChanged()), this, SLOT(widgetParameterChanged()));
 
 
     if (parent) {
@@ -75,6 +75,10 @@ AbstractFilterWidget* Dekeystoning::getWidget()
 
 void Dekeystoning::recalculate()
 {
+    if (reloadInputImage && previousFilter) {
+        inputPixmap = previousFilter->getOutputImage();
+    }
+
     QPolygonF polygon = widget->polygon();
 
     QTransform transformMatrix;
@@ -84,6 +88,9 @@ void Dekeystoning::recalculate()
         return;
     }
 
+    /* As transformMatrix transforms the polygon to a unit square (1px * 1px), we have
+     * to scale it back to the size of our rectangle selection. We use the mean size of
+     * the Rectangle as a reference. */
     qreal width  = widget->meanWidth();
     qreal height = widget->meanHeight();
     QTransform scaleMatrix = QTransform::fromScale(width, height);
@@ -91,6 +98,8 @@ void Dekeystoning::recalculate()
     QTransform transformationMatrix = transformMatrix * scaleMatrix;
 
     outputPixmap = inputPixmap.transformed(transformationMatrix);
+
+    qDebug() << inputPixmap.size() << outputPixmap.size() ;
 
     widget->setPreview(outputPixmap);
 }

@@ -50,6 +50,7 @@ User requests:
 
 20130xxx; YASW 0.6 "at least it's a new release"
  - Progress dialogs for long operations
+ - In Progress: performance optimisation (calculate only when seen on screen or exporting)
 
 20130629; YASW 0.5 "release few but release often"
  - Key shortcuts

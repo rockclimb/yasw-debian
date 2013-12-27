@@ -119,7 +119,7 @@ void FilterContainer::updatePixmapInTabs(int beginTab, int endTab)
         beginTab = 1;
 
     for (i = beginTab; i <= realEndTab; i++) {
-        tabToFilter[i]->setImage(tabToFilter[i-1]->getFilteredImage());
+        tabToFilter[i]->setImage(tabToFilter[i-1]->getOutputImage());
     }
 }
 
@@ -200,7 +200,7 @@ QPixmap FilterContainer::getResultImage()
 
     updatePixmapInTabs(oldIndex);
 
-    return tabToFilter[maxTab]->getFilteredImage();
+    return tabToFilter[maxTab]->getOutputImage();
 }
 
 /** \brief returns the Size of the current image.

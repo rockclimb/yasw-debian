@@ -27,7 +27,7 @@ Scaling::Scaling(QObject * parent) : BaseFilter(parent)
 
     //TODO: connect items changed to recalculate
     connect(widget, SIGNAL(signalPropertyChanged()),
-            this, SLOT(recalculate()));
+            this, SLOT(widgetParameterChanged()));
 
     if (parent) {
         /* Connect slots to the filtercontainer */
@@ -85,6 +85,10 @@ qreal Scaling::pageMilimeterWidth()
 
 void Scaling::recalculate()
 {
+    if (reloadInputImage && previousFilter) {
+        inputPixmap = previousFilter->getOutputImage();
+    }
+
     qreal imageWidth = widget->imagePixelWidth();
     qreal imageHeight = widget->imagePixelHeight();
     qreal pageWidth = widget->pagePixelWidth();

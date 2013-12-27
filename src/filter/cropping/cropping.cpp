@@ -23,7 +23,7 @@ Cropping::Cropping(QObject *parent)
 {
     widget = new CroppingWidget();
     filterWidget = widget;
-    connect(widget, SIGNAL(rectangleChanged()), this, SLOT(recalculate()));
+    connect(widget, SIGNAL(rectangleChanged()), this, SLOT(widgetParameterChanged()));
 
     if (parent) {
         /* Connect slots to the filtercontainer */
@@ -35,6 +35,10 @@ Cropping::Cropping(QObject *parent)
 }
 
 void Cropping::recalculate() {
+    if (reloadInputImage && previousFilter) {
+        inputPixmap = previousFilter->getOutputImage();
+    }
+
     QRect rectangle = widget->rectangle();
 
     outputPixmap = inputPixmap.copy(rectangle);

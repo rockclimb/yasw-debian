@@ -35,19 +35,34 @@ public:
     BaseFilter(QObject * parent = 0);
     ~BaseFilter();
     void setImage(const QPixmap pixmap);
-    virtual QPixmap getFilteredImage();
+    virtual QPixmap getOutputImage();
     AbstractFilterWidget* getWidget();
     virtual QString getIdentifier();
     virtual QString getName();
     virtual QMap<QString, QVariant> getSettings();
     virtual void setSettings(QMap <QString, QVariant> settings);
+    void setPreviousFilter(BaseFilter *filter);
+/* Note: slots are always public because they a used at run-time */
 public slots:
     virtual void recalculate();
+    /* get the information from external classes that an external parameter changed.
+     * Next time getFilteredImage() is called, must reload the inputPixmap. */
+    void inputImageChanged();
+    /* Parameter for the Filter changed through user intercaction */
+    void widgetParameterChanged();
+signals:
+    /* Yell that my parameter (this includes input image) changed and that one need to reload my FilteredImage */
+    void parameterChanged();
 
 protected:
     QPixmap inputPixmap;
     QPixmap outputPixmap;
-    AbstractFilterWidget *filterWidget;
+    AbstractFilterWidget *filterWidget = NULL;
+    /* Store the information that the input image has to be reloaded befor producing the output image */
+    bool reloadInputImage = true;
+    /* Link to previous Filter which can delivery a new inputImage */
+    BaseFilter *previousFilter = NULL;
+
 private:
     BaseFilterWidget* widget;
 

@@ -54,11 +54,11 @@ void BaseFilter::setImage(QPixmap pixmap)
     recalculate();
 }
 
-/*! \brief Returns the transformed page
+/*! \brief Returns the transformed image
 
   @returns The transformed page, or a null Pixmap if no page is available
 */
-QPixmap BaseFilter::getFilteredImage()
+QPixmap BaseFilter::getOutputImage()
 {
     return outputPixmap;
 }
@@ -95,7 +95,22 @@ QString BaseFilter::getName()
 */
 void BaseFilter::recalculate()
 {
+    if (reloadInputImage && previousFilter) {
+        inputPixmap = previousFilter->getOutputImage();
+    }
     outputPixmap = inputPixmap;
+}
+
+void BaseFilter::inputImageChanged()
+{
+    reloadInputImage = true;
+    // FIXME: something must be done to refresh the actual image if it is currently seen on the screen.
+}
+
+void BaseFilter::widgetParameterChanged()
+{
+    emit parameterChanged();
+    recalculate();
 }
 
 /*! \brief virtual function to get the Filter settings
@@ -115,6 +130,13 @@ QMap<QString, QVariant> BaseFilter::getSettings()
 void BaseFilter::setSettings(QMap<QString, QVariant> /* settings */)
 {
     /* Ignore settings, as there is nothing to set */
+}
+
+void BaseFilter::setPreviousFilter(BaseFilter *filter)
+{
+    previousFilter = filter;
+    /* Change of previous Filter = change of external Parameter*/
+    inputImageChanged();
 }
 
 
