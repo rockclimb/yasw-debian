@@ -25,7 +25,6 @@ Scaling::Scaling(QObject * parent) : BaseFilter(parent)
     widget = new ScalingWidget();
     filterWidget = widget;
 
-    //TODO: connect items changed to recalculate
     connect(widget, SIGNAL(signalPropertyChanged()),
             this, SLOT(widgetParameterChanged()));
 

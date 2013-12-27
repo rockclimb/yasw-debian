@@ -47,15 +47,26 @@ FilterContainer::FilterContainer( QWidget * parent)
     Dekeystoning *dekeystoningFilter = new Dekeystoning(this);
     tabToFilter.append(dekeystoningFilter);
     addTab(dekeystoningFilter->getWidget(), dekeystoningFilter->getName());
+    /* connect the filter to previous filter so it gets changes automaticaly */
+    connect(rotationFilter, SIGNAL(parameterChanged()),
+            dekeystoningFilter, SLOT(inputImageChanged()));
+    dekeystoningFilter->setPreviousFilter(rotationFilter);
 
     Cropping *croppingFilter = new Cropping(this);
     tabToFilter.append(croppingFilter);
     addTab(croppingFilter->getWidget(), croppingFilter->getName());
+    /* connect the filter to previous filter so it gets changes automaticaly */
+    connect(dekeystoningFilter, SIGNAL(parameterChanged()),
+            croppingFilter, SLOT(inputImageChanged()));
+    croppingFilter->setPreviousFilter(dekeystoningFilter);
 
     scalingFilter = new Scaling(this);
     tabToFilter.append(scalingFilter);
     addTab(scalingFilter->getWidget(), scalingFilter->getName());
-
+    /* connect the filter to previous filter so it gets changes automaticaly */
+    scalingFilter->setPreviousFilter(croppingFilter);
+    connect(croppingFilter, SIGNAL(parameterChanged()),
+            scalingFilter, SLOT(inputImageChanged()));
     connect(this, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
 }
