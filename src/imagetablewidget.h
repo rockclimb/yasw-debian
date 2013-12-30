@@ -77,8 +77,6 @@ private:
     QTableWidgetItem * takeItem(int row, int side);
     void insertItem(QTableWidgetItem * item, int row, int side);
 
-
-
 signals:
     void pixmapChanged (QPixmap newPixmap);
 

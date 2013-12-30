@@ -29,14 +29,13 @@ class Rotation: public BaseFilter
     Q_OBJECT
 public:
     Rotation(QObject * parent = 0);
-    AbstractFilterWidget* getWidget();
     QString getIdentifier();
     QString getName();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
 
 public slots:
-    void recalculate();
+    void compute();
 
 private:
     RotationWidget *widget;

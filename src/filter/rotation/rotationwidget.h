@@ -48,8 +48,6 @@ private slots:
     void on_rotateRight_clicked();
     void on_preview_toggled(bool checked);
 
-signals:
-    void rotationChanged();
 
 private:
     Ui::RotationWidget *ui;

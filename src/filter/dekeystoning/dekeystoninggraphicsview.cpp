@@ -81,6 +81,15 @@ DekeystoningGraphicsView::DekeystoningGraphicsView(QWidget *parent):
             bottomRightCorner, SLOT(moveCorner(QPointF)));
     connect(bottomLeftCorner, SIGNAL(moveOtherCorner(QPointF)),
             topRightCorner, SLOT(moveCorner(QPointF)));
+
+    connect(topLeftCorner, SIGNAL(parameterChanged()),
+            this, SLOT(cornerMoved()));
+    connect(topRightCorner, SIGNAL(parameterChanged()),
+            this, SLOT(cornerMoved()));
+    connect(bottomRightCorner, SIGNAL(parameterChanged()),
+            this, SLOT(cornerMoved()));
+    connect(bottomLeftCorner, SIGNAL(parameterChanged()),
+            this, SLOT(cornerMoved()));
 }
 
 /*! cleen the allocated memory */
@@ -147,6 +156,11 @@ void DekeystoningGraphicsView::hidePolygon(bool hide)
     l2->setVisible(showPolygon);
     l3->setVisible(showPolygon);
     l4->setVisible(showPolygon);
+}
+
+void DekeystoningGraphicsView::cornerMoved()
+{
+    emit parameterChanged();
 }
 
 /** \brief Changes the color of the corners and the line.

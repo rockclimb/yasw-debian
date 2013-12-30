@@ -45,7 +45,7 @@ public:
 public slots:
     void setSelectionColor(QColor color);
     void setBackgroundColor(QColor color);
-
+    void gvParameterChanged();
 
 protected:
     void changeEvent(QEvent *e);
@@ -55,9 +55,6 @@ private:
 
 private slots:
     void on_preview_toggled(bool checked);
-
-signals:
-    void polygonChanged();
 };
 
 #endif // DEKEYSTONINGWIDGET_H

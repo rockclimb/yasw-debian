@@ -187,8 +187,6 @@ void ScalingWidget::setSettings(QMap<QString, QVariant> settings)
     } else { // "no margin" or wrong parameter
         ui->noMarginLayout->setChecked(true);
     }
-
-    slotPropertyChanged();
 }
 
 void ScalingWidget::setBackgroundColor(QColor color)
@@ -287,7 +285,7 @@ void ScalingWidget::slotPropertyChanged()
         ui->pageHeight->clear();
     }
 
-    emit signalPropertyChanged();
+    emit parameterChanged();
 }
 
 /** \brief Update the size displayed when the Unit changes

@@ -66,6 +66,7 @@ QVariant CroppingCorner::itemChange(QGraphicsItem::GraphicsItemChange change, co
         cornerMoved = true;
         emit signalCornerMoved();
         lastPosition = pos();
+        // tell the filter widget that a parameter changed
     }
     return QGraphicsEllipseItem::itemChange(change, value);
 }

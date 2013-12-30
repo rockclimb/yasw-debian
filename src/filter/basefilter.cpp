@@ -17,6 +17,7 @@
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "basefilter.h"
+#include <QDebug>
 
 /*! \class BaseFilter
 
@@ -50,8 +51,9 @@ BaseFilter::~BaseFilter()
 void BaseFilter::setImage(QPixmap pixmap)
 {
     inputPixmap = pixmap;
+    emit parameterChanged();
     filterWidget->setPixmap(pixmap);
-    recalculate();
+    mustRecalculate = true;
 }
 
 /*! \brief Returns the transformed image
@@ -60,6 +62,7 @@ void BaseFilter::setImage(QPixmap pixmap)
 */
 QPixmap BaseFilter::getOutputImage()
 {
+    refresh();
     return outputPixmap;
 }
 
@@ -70,7 +73,7 @@ QPixmap BaseFilter::getOutputImage()
   */
 AbstractFilterWidget* BaseFilter::getWidget()
 {
-    return widget;
+    return filterWidget;
 }
 
 /** \brief Returns a universal name for this filter.
@@ -89,28 +92,23 @@ QString BaseFilter::getName()
     return tr("Base Filer");
 }
 
-/*! \brief Recalculate the output Pixmap
 
-    In the case of BaseFilter: does nothing as the filter does nothing.
-*/
-void BaseFilter::recalculate()
-{
-    if (reloadInputImage && previousFilter) {
-        inputPixmap = previousFilter->getOutputImage();
-    }
-    outputPixmap = inputPixmap;
-}
 
 void BaseFilter::inputImageChanged()
 {
     reloadInputImage = true;
-    // FIXME: something must be done to refresh the actual image if it is currently seen on the screen.
+    // Tell folowing filter that my parameter changed.
+    emit parameterChanged();
 }
 
 void BaseFilter::widgetParameterChanged()
 {
     emit parameterChanged();
-    recalculate();
+    mustRecalculate = true;
+    // Only refresh the output image if preview is active
+    if (filterWidget->preview()) {
+        refresh();
+    }
 }
 
 /*! \brief virtual function to get the Filter settings
@@ -129,7 +127,9 @@ QMap<QString, QVariant> BaseFilter::getSettings()
 */
 void BaseFilter::setSettings(QMap<QString, QVariant> /* settings */)
 {
+//    loadingSettings = true;
     /* Ignore settings, as there is nothing to set */
+//    loadingSettings = false;
 }
 
 void BaseFilter::setPreviousFilter(BaseFilter *filter)
@@ -139,6 +139,42 @@ void BaseFilter::setPreviousFilter(BaseFilter *filter)
     inputImageChanged();
 }
 
+void BaseFilter::refresh()
+{
+    qDebug() << "refresh";
+    if (loadingSettings)
+        return;
+
+    if (reloadInputImage && previousFilter) {
+        setImage(previousFilter->getOutputImage());
+        reloadInputImage = false;
+        mustRecalculate = true;
+    }
+    if (mustRecalculate) {
+        compute();
+        mustRecalculate = false;
+        filterWidget->setPreview(outputPixmap);
+    }
+}
 
 
+//// Checks if the image is to be recalculated and if so call compute()
+//void BaseFilter::recompute()
+//{
+//    if (reloadInputImage && previousFilter) {
+//        setImage(previousFilter->getOutputImage());
+//        reloadInputImage = false;
+//        mustRecalculate = true;
+//    }
+//    if (mustRecalculate) {
+//        compute();
+//        mustRecalculate = false;
+//    }
+//}
+
+// Do compute the outputPixmap with the help of all available parameters.
+void BaseFilter::compute()
+{
+    outputPixmap = inputPixmap;
+}
 

@@ -44,6 +44,8 @@ private:
     QGraphicsRectItem *rectangle;
     const QPoint defaultTopLeft = QPoint(100, 100);
     const QPoint defaultBottomRight = QPoint(500, 500);
+signals:
+    void parameterChanged();
 };
 
 #endif // CROPPINGGRAPHICSVIEW_H

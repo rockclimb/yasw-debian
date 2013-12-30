@@ -26,12 +26,11 @@ public:
 public slots:
     void setSelectionColor(QColor color);
     void setBackgroundColor(QColor color);
+    void gvParameterChanged();
 
 private:
     Ui::CroppingWidget *ui;
 
-signals:
-    void rectangleChanged();
 private slots:
     void on_preview_toggled(bool checked);
 };

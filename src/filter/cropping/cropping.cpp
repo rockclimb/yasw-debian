@@ -23,7 +23,7 @@ Cropping::Cropping(QObject *parent)
 {
     widget = new CroppingWidget();
     filterWidget = widget;
-    connect(widget, SIGNAL(rectangleChanged()), this, SLOT(widgetParameterChanged()));
+    connect(widget, SIGNAL(parameterChanged()), this, SLOT(widgetParameterChanged()));
 
     if (parent) {
         /* Connect slots to the filtercontainer */
@@ -34,16 +34,10 @@ Cropping::Cropping(QObject *parent)
     }
 }
 
-void Cropping::recalculate() {
-    if (reloadInputImage && previousFilter) {
-        inputPixmap = previousFilter->getOutputImage();
-    }
-
+void Cropping::compute() {
     QRect rectangle = widget->rectangle();
 
     outputPixmap = inputPixmap.copy(rectangle);
-
-    widget->setPreview(outputPixmap);
 }
 
 /** \brief Returns a universal name for this filter.
@@ -62,11 +56,6 @@ QString Cropping::getName()
     return tr("Cropping");
 }
 
-AbstractFilterWidget * Cropping::getWidget()
-{
-    return filterWidget;
-}
-
 /** \brief Gets the settings from this filter
 */
 QMap<QString, QVariant> Cropping::getSettings()
@@ -78,7 +67,12 @@ QMap<QString, QVariant> Cropping::getSettings()
  **/
 void Cropping::setSettings(QMap<QString, QVariant> settings)
 {
+    loadingSettings = true;
     widget->setSettings(settings);
+
+    mustRecalculate = true;
+    loadingSettings = false;
 }
+
 
 

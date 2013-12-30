@@ -6,6 +6,9 @@ CroppingWidget::CroppingWidget(QWidget *parent) :
     ui(new Ui::CroppingWidget)
 {
     ui->setupUi(this);
+
+    connect(ui->view, SIGNAL(parameterChanged()),
+            this, SLOT(gvParameterChanged()));
 }
 
 CroppingWidget::~CroppingWidget()
@@ -17,7 +20,7 @@ void CroppingWidget::on_preview_toggled(bool checked)
 {
     if (checked) {
         ui->view->resetRectangleMoved();
-        emit rectangleChanged();
+        emit parameterChanged();
         ui->view->setPixmap(previewPixmap);
     } else {
         ui->view->setPixmap(inputPixmap);
@@ -83,4 +86,9 @@ void CroppingWidget::setSelectionColor(QColor color)
 void CroppingWidget::setBackgroundColor(QColor color)
 {
     ui->view->setBackgroundBrush(QBrush(color));
+}
+
+void CroppingWidget::gvParameterChanged()
+{
+    emit parameterChanged();
 }

@@ -75,12 +75,17 @@ void ImageTableWidget::setFilterContainer(FilterContainer *container)
 
 void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidgetItem *previousItem)
 {
+    if (!filterContainer) {
+        // This should never happen, but if so, do nothing.
+        return;
+    }
+
     QMap<QString, QVariant> settings;
     QMap<QString, QVariant> oldSettings;
     int fromRow, side, i;
     QString filterID = "";
 
-    if (filterContainer && previousItem) {
+    if (previousItem) {
         settings = filterContainer->getSettings();
         oldSettings = previousItem->data(ImagePreferences).toMap();
         // settings changed? Save them!
@@ -133,17 +138,15 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
         }
     }
 
-    if (filterContainer && newItem) {
-        filterContainer->setSettings(newItem->data(ImagePreferences).toMap());
-    }
-
     if (newItem) {
+        filterContainer->setSettings(newItem->data(ImagePreferences).toMap());
         emit pixmapChanged(QPixmap(newItem->data(ImageFileName).toString()));
     } else {
+        // FIXME: can this happen?
+        qDebug() << "ImageTableWidget::currentItemChanged to an empty item";
         emit pixmapChanged(QPixmap());
         // Reset Filter Settings as no image is selected
-        if (filterContainer)
-            filterContainer->setSettings(QMap<QString, QVariant>());
+        filterContainer->setSettings(QMap<QString, QVariant>());
     }
 }
 
@@ -215,8 +218,12 @@ void ImageTableWidget::insertImage()
     else // defaults to left
         side = ImageTableWidget::leftSide;
 
-    // Save current settings: call the currentItemChanged slot newItem = previusItem = currentItem
-    currentItemChanged(ui->images->currentItem(), ui->images->currentItem());
+    // if there is a selected item, save its settings.
+    QTableWidgetItem *currentImage = ui->images->currentItem();
+    if (currentImage) {
+        // Save current settings: call the currentItemChanged slot newItem = previusItem = currentItem
+        currentItemChanged(currentImage, currentImage);
+    }
 
     if (lastDir.length() == 0)
         lastDir = QDir::currentPath();
@@ -250,8 +257,7 @@ void ImageTableWidget::insertImage()
 
 }
 
-/** \brief inserts an image at the current selection on the given side.
-
+/* Inserts an image at the current selection on the given side and selects it.
 */
 // FIXME: handle fileName = "" (empty image)
 void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide side, QMap<QString, QVariant> settings)
@@ -281,9 +287,12 @@ void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide si
     }
 
     insertItem(item, currentRow, side);
+
+    // Select the inserted item
+    ui->images->setCurrentItem(item);
 }
 
-/** \brief Inserts an item at row and side and selects it */
+/** \brief Inserts an item at row and side */
 void ImageTableWidget::insertItem(QTableWidgetItem *item, int row, int side)
 {
     int i;
@@ -311,9 +320,6 @@ void ImageTableWidget::insertItem(QTableWidgetItem *item, int row, int side)
 
     ui->images->setItem(row, side, item);
     itemCount[side] = itemCount[side] + 1;
-
-    // Select the inserted item
-    ui->images->setCurrentItem(item);
 }
 
 /** \brief Appends an image at the end of the Table
@@ -406,6 +412,8 @@ void ImageTableWidget::moveImageLeft()
 
     QTableWidgetItem *itemToMove = takeItem(currentRow, side);
     insertItem(itemToMove, currentRow, otherSide);
+    // Select the moved item
+    ui->images->setCurrentItem(itemToMove);
 }
 
 void ImageTableWidget::moveImageRight()
@@ -423,6 +431,8 @@ void ImageTableWidget::moveImageRight()
 
     QTableWidgetItem *itemToMove = takeItem(currentRow, side);
     insertItem(itemToMove, currentRow, otherSide);
+    // Select the moved item
+    ui->images->setCurrentItem(itemToMove);
 }
 
 void ImageTableWidget::selectPreviousImage()

@@ -104,7 +104,7 @@
       <item row="0" column="0">
        <widget class="QLabel" name="labelUnit">
         <property name="text">
-         <string>Entered legnth are expressed in</string>
+         <string>Entered length are expressed in</string>
         </property>
        </widget>
       </item>

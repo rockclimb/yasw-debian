@@ -24,6 +24,9 @@ DekeystoningWidget::DekeystoningWidget(QWidget *parent) :
     ui(new Ui::DekeystoningWidget)
 {
     ui->setupUi(this);
+
+    connect(ui->view, SIGNAL(parameterChanged()),
+            this, SLOT(gvParameterChanged()));
 }
 
 DekeystoningWidget::~DekeystoningWidget()
@@ -81,7 +84,7 @@ void DekeystoningWidget::on_preview_toggled(bool checked)
 {
     if (checked) {
         ui->view->resetPolygonMoved();
-        emit polygonChanged();
+        emit parameterChanged();
         ui->view->setPixmap(previewPixmap);
     } else {
         ui->view->setPixmap(inputPixmap);
@@ -133,6 +136,11 @@ void DekeystoningWidget::setSelectionColor(QColor color)
 void DekeystoningWidget::setBackgroundColor(QColor color)
 {
     ui->view->setBackgroundBrush(QBrush(color));
+}
+
+void DekeystoningWidget::gvParameterChanged()
+{
+    emit parameterChanged();
 }
 
 

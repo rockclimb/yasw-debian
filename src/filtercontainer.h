@@ -49,9 +49,7 @@ public slots:
 
 private:
     QList<BaseFilter *> tabToFilter;
-    int oldIndex; //stores the last selected index
-    void updatePixmapInTabs(int beginTab = 1, int endTab = -1);
-    void updateCurrentTabPixmap(int fromIndex = 1);
+    int oldIndex = 0; //stores the last selected index, at init = first tab
     Scaling *scalingFilter;
 
 signals:

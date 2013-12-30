@@ -27,15 +27,14 @@ class Dekeystoning : public BaseFilter
     Q_OBJECT
 public:
     Dekeystoning(QObject * parent = 0);
-    AbstractFilterWidget* getWidget();
     QString getIdentifier();
     QString getName();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
+
 private:
     DekeystoningWidget *widget;
-public slots:
-    void recalculate();
+    void compute();
 };
 
 #endif // DEKEYSTONING_H

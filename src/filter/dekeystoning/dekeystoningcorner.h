@@ -52,6 +52,8 @@ signals:
     coners. The connection is handeld in the constructor of DekeystoningGraphicsView.
      */
     void moveOtherCorner(QPointF delta);
+    // When a corner is moved, emit a parameterChanged() signal.
+    void parameterChanged();
 };
 
 #endif // DEKEYSTONINGCORNER_H

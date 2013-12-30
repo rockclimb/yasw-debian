@@ -32,6 +32,10 @@ public:
     BaseFilterWidget(QWidget *parent = 0);
     ~BaseFilterWidget();
     void setPixmap(QPixmap pixmap);
+    void setPreview(QPixmap pixmap);
+    // true if preview is active
+    bool preview();
+
 
 protected:
     void changeEvent(QEvent *e);

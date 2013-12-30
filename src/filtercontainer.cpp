@@ -37,8 +37,6 @@
 FilterContainer::FilterContainer( QWidget * parent)
     : QTabWidget(parent)
 {
-    oldIndex = -1;
-
     // initialise the filters
     Rotation *rotationFilter = new Rotation(this);
     tabToFilter.append(rotationFilter);
@@ -80,18 +78,13 @@ FilterContainer::~FilterContainer()
     tabToFilter.clear();
 }
 
-/** \brief Sets the image to be worked on.
-    NOTE: For the shake of perfomance, a downscale of the pixmap would be nice, BUT
-    this means every operation should be recomputed when working on the original image.
-    For now, The downscaling ist disabled, this is a feature to think about later when yasw
-    is functional an needs performance tuning.
-  */
+/* Sets the image to be worked on. */
 void FilterContainer::setImage(QPixmap pixmap)
 {
-    // Downscale the Pixmap to have better performance disabled (see comment)
-    //tabToFilter[0]->setImage(pixmap.scaledToHeight(1000));
     tabToFilter[0]->setImage(pixmap);
-    updateCurrentTabPixmap();
+
+    int currentTab = std::min (tabToFilter.size(), currentIndex());
+    tabToFilter[currentTab]->refresh();
 }
 
 void FilterContainer::setSelectionColor(QColor color)
@@ -106,57 +99,10 @@ void FilterContainer::setBackgroundColor(QColor color)
 
 void FilterContainer::tabChanged(int index)
 {
-    if (oldIndex >= 0) { // if there were no old Index, we have nothing to update
-        updateCurrentTabPixmap(oldIndex); // we do not need to update Tabs before oldIndex
-        emit filterChanged(tabToFilter[oldIndex]->getIdentifier());
-    }
-    oldIndex = index;
-}
-
-
-/* \brief Compute resulting image in Tabs
-    If no arguments are given, all tabs (Filter)will be computed.
-    Tabs are counted from 0;
- */
-void FilterContainer::updatePixmapInTabs(int beginTab, int endTab)
-{
-    int realEndTab;
-    int i;
-
-    realEndTab = endTab;
-    if (endTab == -1)
-        realEndTab = tabToFilter.size() - 1;
-    if (beginTab < 1) // tab 0 is updated when setting the Pixmap
-        beginTab = 1;
-
-    for (i = beginTab; i <= realEndTab; i++) {
-        tabToFilter[i]->setImage(tabToFilter[i-1]->getOutputImage());
-    }
-}
-
-/*! \brief Ensure the current Filter works with the latest Pixmap.
-
-    Lets the previous tabs (filters) recalculate their Pixmap so that current Tab
-    gets the latest filtered Pixmap.
-
-    // NOTE: This could be a performance issue, caching may be a solution.
-
-*/
-void FilterContainer::updateCurrentTabPixmap(int fromIndex)
-{
-//    int i;
     int currentTab = std::min (tabToFilter.size(), currentIndex());
-
-    if (currentTab <= 0)    //either no tab (-1) or first tab (0)
-        return;
-
-    if (fromIndex < 1)      //no update of tab 0
-        fromIndex = 1;
-
-    if (fromIndex > currentTab) //no update of tab further current Tab
-        fromIndex = currentTab;
-
-    updatePixmapInTabs(fromIndex, currentTab);
+    tabToFilter[currentTab]->refresh();
+    emit filterChanged(tabToFilter[oldIndex]->getIdentifier());
+    oldIndex = index;
 }
 
 /*! \brief Get settings from the filters.
@@ -208,8 +154,6 @@ void FilterContainer::setSettings(QMap<QString, QVariant> settings)
 QPixmap FilterContainer::getResultImage()
 {
     int maxTab = tabToFilter.size() - 1;
-
-    updatePixmapInTabs(oldIndex);
 
     return tabToFilter[maxTab]->getOutputImage();
 }

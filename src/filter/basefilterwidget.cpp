@@ -48,3 +48,14 @@ void BaseFilterWidget::setPixmap(QPixmap pixmap)
     ui->view->setPixmap(pixmap);
 }
 
+void BaseFilterWidget::setPreview(QPixmap pixmap)
+{
+    previewPixmap = pixmap;
+
+}
+
+bool BaseFilterWidget::preview()
+{
+    return ui->preview->isChecked();
+}
+

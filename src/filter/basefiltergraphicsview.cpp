@@ -26,7 +26,6 @@
 BaseFilterGraphicsView::BaseFilterGraphicsView(QWidget *parent) : QGraphicsView(parent)
 {
     scene = new QGraphicsScene();
-//    scene->setSceneRect(0, 0, 110, 110);
     setScene(scene);
 
     pixmapItem = new QGraphicsPixmapItem();

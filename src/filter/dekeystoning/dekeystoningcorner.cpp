@@ -72,6 +72,8 @@ QVariant DekeystoningCorner::itemChange(GraphicsItemChange change, const QVarian
         foreach (DekeystoningLine *line, myLines)
             line->trackCorners();
         lastPosition = pos();
+        // tell the filter widget that a parameter changed
+        emit parameterChanged();
     }
     return QGraphicsEllipseItem::itemChange(change, value);
 }

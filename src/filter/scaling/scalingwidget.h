@@ -50,9 +50,6 @@ private slots:
 
     void on_unit_currentIndexChanged(int index);
 
-signals:
-    void signalPropertyChanged();
-
 
 private:
     qreal enteredSizeToPixel(qreal size);

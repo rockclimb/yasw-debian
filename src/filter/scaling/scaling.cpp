@@ -25,7 +25,7 @@ Scaling::Scaling(QObject * parent) : BaseFilter(parent)
     widget = new ScalingWidget();
     filterWidget = widget;
 
-    connect(widget, SIGNAL(signalPropertyChanged()),
+    connect(widget, SIGNAL(parameterChanged()),
             this, SLOT(widgetParameterChanged()));
 
     if (parent) {
@@ -33,11 +33,6 @@ Scaling::Scaling(QObject * parent) : BaseFilter(parent)
         connect(parent, SIGNAL(backgroundColorChanged(QColor)),
                 widget, SLOT(setBackgroundColor(QColor)));
     }
-}
-
-AbstractFilterWidget *Scaling::getWidget()
-{
-    return widget;
 }
 
 QString Scaling::getIdentifier()
@@ -67,9 +62,12 @@ QMap<QString, QVariant> Scaling::getSettings()
 
 void Scaling::setSettings(QMap<QString, QVariant> settings)
 {
+    loadingSettings = true;
+
     widget->setSettings(settings);
 
-    recalculate();
+    mustRecalculate = true;
+    loadingSettings = false;
 }
 
 qreal Scaling::pageMilimeterHeight()
@@ -82,12 +80,8 @@ qreal Scaling::pageMilimeterWidth()
     return widget->pageMilimeterWidth();
 }
 
-void Scaling::recalculate()
+void Scaling::compute()
 {
-    if (reloadInputImage && previousFilter) {
-        inputPixmap = previousFilter->getOutputImage();
-    }
-
     qreal imageWidth = widget->imagePixelWidth();
     qreal imageHeight = widget->imagePixelHeight();
     qreal pageWidth = widget->pagePixelWidth();
@@ -153,6 +147,4 @@ void Scaling::recalculate()
         painter.drawPixmap(leftMargin, topMargin, scaledImage);
         outputPixmap = page;
     }
-
-    widget->setPreview(outputPixmap);
 }

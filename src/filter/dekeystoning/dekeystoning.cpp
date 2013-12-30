@@ -24,7 +24,7 @@ Dekeystoning::Dekeystoning(QObject *parent)
 {
     widget = new DekeystoningWidget();
     filterWidget = widget;
-    connect(widget, SIGNAL(polygonChanged()), this, SLOT(widgetParameterChanged()));
+    connect(widget, SIGNAL(parameterChanged()), this, SLOT(widgetParameterChanged()));
 
 
     if (parent) {
@@ -64,21 +64,15 @@ QMap<QString, QVariant> Dekeystoning::getSettings()
  **/
 void Dekeystoning::setSettings(QMap<QString, QVariant> settings)
 {
+    loadingSettings = true;
     widget->setSettings(settings);
+
+    mustRecalculate = true;
+    loadingSettings = false;
 }
 
-// NOTE: cannot this be handled by BaseFilter::getWidget() ?
-AbstractFilterWidget* Dekeystoning::getWidget()
+void Dekeystoning::compute()
 {
-    return widget;
-}
-
-void Dekeystoning::recalculate()
-{
-    if (reloadInputImage && previousFilter) {
-        inputPixmap = previousFilter->getOutputImage();
-    }
-
     QPolygonF polygon = widget->polygon();
 
     QTransform transformMatrix;
@@ -98,9 +92,5 @@ void Dekeystoning::recalculate()
     QTransform transformationMatrix = transformMatrix * scaleMatrix;
 
     outputPixmap = inputPixmap.transformed(transformationMatrix);
-
-    qDebug() << inputPixmap.size() << outputPixmap.size() ;
-
-    widget->setPreview(outputPixmap);
 }
 

@@ -17,12 +17,13 @@
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "rotation.h"
+#include <QDebug>
 
 Rotation::Rotation(QObject * parent) : BaseFilter(parent)
 {
     widget = new RotationWidget();
     filterWidget = widget;
-    connect(widget, SIGNAL(rotationChanged()), this, SLOT(widgetParameterChanged()));
+    connect(widget, SIGNAL(parameterChanged()), this, SLOT(widgetParameterChanged()));
     if (parent) {
         /* Connect slots to the filtercontainer */
         connect(parent, SIGNAL(backgroundColorChanged(QColor)),
@@ -48,20 +49,11 @@ QString Rotation::getName()
     return tr("Rotation");
 }
 
-AbstractFilterWidget * Rotation::getWidget()
+void Rotation::compute()
 {
-    return widget;
-}
-
-void Rotation::recalculate()
-{
-    if (reloadInputImage && previousFilter) {
-        inputPixmap = previousFilter->getOutputImage();
-    }
     rotationMatrix.reset();
     rotationMatrix.rotate(widget->rotation());
     outputPixmap = inputPixmap.transformed(rotationMatrix);
-    widget->setPreview(outputPixmap);
 }
 
 /** \brief Get filter settings
@@ -85,18 +77,14 @@ QMap<QString, QVariant> Rotation::getSettings()
   */
 void Rotation::setSettings(QMap<QString, QVariant> settings)
 {
-    /* We might not need to check, as the default value for an uninitialized int
-        ist 0, but this is cleaner */
+    loadingSettings = true;
+
     if (settings.contains("rotation"))
         widget->setRotation(settings["rotation"].toUInt());
     else
         widget->setRotation(0);
 
-    recalculate();
+    mustRecalculate = true;
+    loadingSettings = false;
 }
 
-///*! \todo implement this */
-//QPixmap Rotation::getFilteredImage()
-//{
-//    return inputPixmap;
-//}

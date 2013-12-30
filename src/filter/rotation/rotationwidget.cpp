@@ -52,22 +52,25 @@ void RotationWidget::setPreview(QPixmap pixmap)
 void RotationWidget::on_rotateLeft_clicked()
 {
     rotationAngle = (rotationAngle - 90) % 360;
-    emit rotationChanged();
+    emit parameterChanged();
 }
 
 void RotationWidget::on_rotateRight_clicked()
 {
     rotationAngle = (rotationAngle + 90) % 360;;
-    emit rotationChanged();
+    emit parameterChanged();
 }
 
 
 void RotationWidget::on_preview_toggled(bool checked)
 {
-    if (checked)
+    if (checked) {
+        // recalculate preview Pixmap if necessery
+        emit parameterChanged();
         ui->view->setPixmap(previewPixmap);
-    else
+    } else {
         ui->view->setPixmap(inputPixmap);
+    }
 }
 
 bool RotationWidget::preview()

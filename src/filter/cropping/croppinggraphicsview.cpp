@@ -82,6 +82,9 @@ void CroppingGraphicsView::moveRectangle()
 
     rectangle->setRect(0, 0, width, heigth);
     rectangle->setPos(topLeftCorner->scenePos());
+
+    // tell the filter widget that a parameter changed
+    emit parameterChanged();
 }
 
 

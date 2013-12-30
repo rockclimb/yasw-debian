@@ -26,7 +26,6 @@ class Scaling : public BaseFilter
 {
 public:
     Scaling(QObject * parent = 0);
-    AbstractFilterWidget* getWidget();
     QString getIdentifier();
     QString getName();
     QMap<QString, QVariant> getSettings();
@@ -38,7 +37,7 @@ private:
     QTransform scalingMatrix;
 
 public slots:
-    void recalculate();
+    void compute();
 
 };
 
