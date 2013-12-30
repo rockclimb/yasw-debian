@@ -211,7 +211,7 @@ void ScalingWidget::on_preview_toggled(bool checked)
  */
 void ScalingWidget::slotPropertyChanged()
 {
-    qreal factor;
+    qreal factor = 1; // avoid a compilation warning by setting factor = 1
     const qreal millimeterPerInch = 25.4;     // 1 inch = 25,4 mm
 
     qreal dpi = ui->dpi->currentText().toDouble();
@@ -242,7 +242,8 @@ void ScalingWidget::slotPropertyChanged()
         qreal specifiedPageWidth = ui->pageWidth->text().toDouble() * factor;
         qreal specifiedPageHeight = ui->pageHeight->text().toDouble() * factor;
 
-        qreal pageWidth, pageHeight;
+        qreal pageWidth = 0;  // setting value to 0 to avoid compilation warning
+        qreal pageHeight = 0; // setting value to 0 to avoid compilation warning
         if (ui->noMarginLayout->isChecked()) {
             pageWidth = imageWidth;
             pageHeight = imageHeight;

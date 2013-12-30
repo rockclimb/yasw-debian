@@ -1,11 +1,6 @@
 ToDo / Roadmap
  - adapt pdf export
  - separate scaling filter from layout filter -> one may want to sets the settings differently (typicaly layout for all images)
- - checking "preview" on scaling widget does not calculate image
- - optimise YASW: selecting another (big) image lasts 1 second.
-   o when loading a project, recalculate is called a lot of times. This should not be!
-   o when inserting an image, recalclate ist called twice. This should not be!
- - scaling filter: add padding sizes and/or page size
  - Filter to fix image color / convert to black & white...
    o add filter for color manipulation_/adjustment
    o point to white pixel (or many white pixels)
@@ -15,7 +10,6 @@ ToDo / Roadmap
  - Load images for Icons in background
  - Implement disable filter
    o disabling a filter (UI) should disable the rendering.
- - progress dialog while exporting / loading
  - Display page preview instead of original image in image list
  - drag and drop in the image list
  - error message on console: kfilemodule(5761)/kio (KDirModel)
@@ -51,6 +45,7 @@ User requests:
 20130xxx; YASW 0.6 "at least it's a new release"
  - Progress dialogs for long operations
  - Performance optimisation (calculate only when seen on screen or exporting) & bug fixes
+ - NEXT: propagate changes only explicitly (press a button)
 
 20130629; YASW 0.5 "release few but release often"
  - Key shortcuts
