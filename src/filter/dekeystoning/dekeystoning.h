@@ -32,9 +32,11 @@ public:
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
 
+protected:
+    void compute();
+
 private:
     DekeystoningWidget *widget;
-    void compute();
 };
 
 #endif // DEKEYSTONING_H

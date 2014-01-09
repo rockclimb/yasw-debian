@@ -22,6 +22,7 @@
 #include "dekeystoning.h"
 #include "cropping.h"
 #include "scaling.h"
+#include "colorcorrection.h"
 #include <QPrinter>
 
 /** \class FilterContainer
@@ -65,8 +66,19 @@ FilterContainer::FilterContainer( QWidget * parent)
     scalingFilter->setPreviousFilter(croppingFilter);
     connect(croppingFilter, SIGNAL(parameterChanged()),
             scalingFilter, SLOT(inputImageChanged()));
+
+    ColorCorrection *colorCorrection = new ColorCorrection(this);
+    tabToFilter.append(colorCorrection);
+    addTab(colorCorrection->getWidget(), colorCorrection->getName());
+    /* connect the filter to previous filter so it gets changes automaticaly */
+    colorCorrection->setPreviousFilter(scalingFilter);
+    connect(scalingFilter, SIGNAL(parameterChanged()),
+            colorCorrection, SLOT(inputImageChanged()));
+
+    // get informed when a tab changed
     connect(this, SIGNAL(currentChanged(int)),
             this, SLOT(tabChanged(int)));
+
 }
 
 FilterContainer::~FilterContainer()

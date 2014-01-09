@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -16,27 +16,28 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SCALING_H
-#define SCALING_H
+#ifndef COLORCORRECTIONGRAPHICSSCENE_H
+#define COLORCORRECTIONGRAPHICSSCENE_H
 
-#include "basefilter.h"
-#include "scalingwidget.h"
+#include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QColor>
+#include <QGraphicsSceneMouseEvent>
 
-class Scaling : public BaseFilter
+class ColorCorrectionGraphicsScene : public QGraphicsScene
 {
+    Q_OBJECT
 public:
-    Scaling(QObject * parent = 0);
-    QString getIdentifier();
-    QString getName();
-    QMap<QString, QVariant> getSettings();
-    void setSettings(QMap <QString, QVariant> settings);
-    qreal pageMilimeterHeight();
-    qreal pageMilimeterWidth();
+    ColorCorrectionGraphicsScene(QObject *parent = 0);
+    ~ColorCorrectionGraphicsScene();
+    QGraphicsPixmapItem *pixmapItem();
 protected:
-    void compute();
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+signals:
+    void pixmapClicked(QColor color);
 private:
-    ScalingWidget *widget;
-    QTransform scalingMatrix;
+    QGraphicsPixmapItem *privPixmapItem = NULL;
+    
 };
 
-#endif // SCALING_H
+#endif // COLORCORRECTIONGRAPHICSSCENE_H

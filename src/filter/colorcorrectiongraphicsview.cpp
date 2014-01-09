@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -16,28 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "basefiltergraphicsview.h"
-#include <QWheelEvent>
-#include <math.h>
+#include "colorcorrectiongraphicsview.h"
+#include <QImage>
 #include <QDebug>
+#include <QWheelEvent>
 
-BaseFilterGraphicsView::BaseFilterGraphicsView(QWidget *parent) : QGraphicsView(parent)
+
+ColorCorrectionGraphicsView::ColorCorrectionGraphicsView(QWidget *parent) :
+    QGraphicsView(parent)
 {
-    scene = new QGraphicsScene();
+    scene = new ColorCorrectionGraphicsScene();
     setScene(scene);
 
-    pixmapItem = new QGraphicsPixmapItem();
+    pixmapItem = scene->pixmapItem();
     scene->addItem(pixmapItem);
+
+    // forward the signal
+    connect (scene, SIGNAL(pixmapClicked(QColor)),
+             this, SLOT(colorFromScene(QColor)));
 }
 
-BaseFilterGraphicsView::~BaseFilterGraphicsView()
+ColorCorrectionGraphicsView::~ColorCorrectionGraphicsView()
 {
-    delete scene; // this includes all items in the scene so pixmapItem must not be explicitly deleted.
+    delete scene;
 }
 
-//FIXME: add another possibility to zoom (buttons, ctrl+-..).
+// FIXME: I would have prefered to inheritate this method from BaseFilterGraphicsView...
 void
-BaseFilterGraphicsView::wheelEvent(QWheelEvent *event)
+ColorCorrectionGraphicsView::wheelEvent(QWheelEvent *event)
 {
     if (event->modifiers().testFlag(Qt::ControlModifier)) {
         int numDegrees = event->delta() / 8;
@@ -49,7 +55,8 @@ BaseFilterGraphicsView::wheelEvent(QWheelEvent *event)
     }
 }
 
-void BaseFilterGraphicsView::setPixmap(const QPixmap pixmap)
+// Must reimplement as scene is another Class.
+void ColorCorrectionGraphicsView::setPixmap(const QPixmap pixmap)
 {
     scene->setSceneRect(pixmap.rect());
     pixmapItem->setPixmap(pixmap);
@@ -57,3 +64,10 @@ void BaseFilterGraphicsView::setPixmap(const QPixmap pixmap)
     /* Zoom the QGraphicsView to fit the new Pixmap */
     fitInView(pixmapItem, Qt::KeepAspectRatio);
 }
+
+void ColorCorrectionGraphicsView::colorFromScene(QColor color)
+{
+    emit pixmapClicked(color);
+}
+
+

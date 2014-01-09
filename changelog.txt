@@ -1,4 +1,8 @@
 ToDo / Roadmap
+ - FIXME: compute is called for colorcorrection even is preview is not checked
+ - FIXME: Color Correction: take pixel color from input image, NOT displayed image
+ - FIXME: preview colorcorrection on downscaled image. Find something else than qMin and qMax
+ - FIXME: set default settings for scaling and colorcorrection (when loading empty settings)
  - adapt pdf export
  - separate scaling filter from layout filter -> one may want to sets the settings differently (typicaly layout for all images)
  - Filter to fix image color / convert to black & white...
@@ -45,7 +49,9 @@ User requests:
 20130xxx; YASW 0.6 "at least it's a new release"
  - Progress dialogs for long operations
  - Performance optimisation (calculate only when seen on screen or exporting) & bug fixes
- - NEXT: propagate changes only explicitly (press a button)
+ - Removed doxygen documentation as it is not complete. I will comment in the source as much as possible, but
+   without the doxygen format.
+ - Color Correction Filter (Work in Progress)
 
 20130629; YASW 0.5 "release few but release often"
  - Key shortcuts

@@ -141,7 +141,6 @@ void BaseFilter::setPreviousFilter(BaseFilter *filter)
 
 void BaseFilter::refresh()
 {
-    qDebug() << "refresh";
     if (loadingSettings)
         return;
 
@@ -156,21 +155,6 @@ void BaseFilter::refresh()
         filterWidget->setPreview(outputPixmap);
     }
 }
-
-
-//// Checks if the image is to be recalculated and if so call compute()
-//void BaseFilter::recompute()
-//{
-//    if (reloadInputImage && previousFilter) {
-//        setImage(previousFilter->getOutputImage());
-//        reloadInputImage = false;
-//        mustRecalculate = true;
-//    }
-//    if (mustRecalculate) {
-//        compute();
-//        mustRecalculate = false;
-//    }
-//}
 
 // Do compute the outputPixmap with the help of all available parameters.
 void BaseFilter::compute()

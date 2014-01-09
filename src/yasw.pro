@@ -29,7 +29,6 @@ SOURCES += main.cpp \
     filter/basefilterwidget.cpp \
     filtercontainer.cpp \
     filter/dekeystoning/dekeystoningwidget.cpp \
-    filter/dekeystoning/dekeystoninggraphicsview.cpp \
     filter/dekeystoning/dekeystoning.cpp \
     filter/rotation/rotationwidget.cpp \
     filter/rotation/rotation.cpp \
@@ -43,7 +42,12 @@ SOURCES += main.cpp \
     imagetablewidget.cpp \
     filter/scaling/scaling.cpp \
     preferencesdialog.cpp \
-    filter/scaling/scalingwidget.cpp
+    filter/scaling/scalingwidget.cpp \
+    filter/colorcorrectionwidget.cpp \
+    filter/colorcorrection.cpp \
+    filter/dekeystoning/dekeystoninggraphicsview.cpp \
+    filter/colorcorrectiongraphicsview.cpp \
+    filter/colorcorrectiongraphicsscene.cpp
 HEADERS += mainwindow.h \
     filter/basefilter.h \
     filter/basefiltergraphicsview.h \
@@ -64,7 +68,11 @@ HEADERS += mainwindow.h \
     imagetablewidget.h \
     filter/scaling/scaling.h \
     preferencesdialog.h \
-    filter/scaling/scalingwidget.h
+    filter/scaling/scalingwidget.h \
+    filter/colorcorrectionwidget.h \
+    filter/colorcorrection.h \
+    filter/colorcorrectiongraphicsview.h \
+    filter/colorcorrectiongraphicsscene.h
 FORMS += mainwindow.ui \
     filter/basefilterwidget.ui \
     filter/dekeystoning/dekeystoningwidget.ui \
@@ -72,7 +80,8 @@ FORMS += mainwindow.ui \
     filter/cropping/croppingwidget.ui \
     imagetablewidget.ui \
     preferencesdialog.ui \
-    filter/scaling/scalingwidget.ui
+    filter/scaling/scalingwidget.ui \
+    filter/colorcorrectionwidget.ui
 INCLUDEPATH += filter \
     filter/dekeystoning \
     filter/rotation \
@@ -81,10 +90,10 @@ INCLUDEPATH += filter \
 RESOURCES += icons/icons.qrc
 
 OTHER_FILES += \
-    ../documentation/doxygen-mainpage.txt \
     ../changelog.txt \
     ../install.txt \
-    ../documentation/gpl.txt \
+    ../gpl.txt \
+    ../developpers.txt \
     ../README
 
 static {

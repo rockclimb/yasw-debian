@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -16,22 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef BASEFILTERGRAPHICSVIEW_H
-#define BASEFILTERGRAPHICSVIEW_H
-
+#ifndef COLORCORRECTIONGRAPHICSVIEW_H
+#define COLORCORRECTIONGRAPHICSVIEW_H
+#include "colorcorrectiongraphicsscene.h"
+#include <QColor>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
-#include <QGraphicsPixmapItem>
 
-class BaseFilterGraphicsView : public QGraphicsView {
+class ColorCorrectionGraphicsView : public QGraphicsView
+{
     Q_OBJECT
 public:
-    BaseFilterGraphicsView(QWidget *parent);
-    ~BaseFilterGraphicsView();
+    ColorCorrectionGraphicsView(QWidget *parent = 0);
+    ~ColorCorrectionGraphicsView();
     void setPixmap(const QPixmap pixmap);
+
+public slots:
+    void colorFromScene(QColor color);
+signals:
+    void pixmapClicked(QColor color);
 protected:
     void wheelEvent(QWheelEvent *event);
-    QGraphicsScene *scene = NULL;
+//    QGraphicsScene *scene = NULL;
+    ColorCorrectionGraphicsScene *scene = NULL;
     QGraphicsPixmapItem *pixmapItem = NULL;
 };
 
-#endif // BASEFILTERGRAPHICSVIEW_H
+#endif // COLORCORRECTIONGRAPHICSVIEW_H

@@ -16,27 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef SCALING_H
-#define SCALING_H
+#ifndef COLORCORRECTION_H
+#define COLORCORRECTION_H
 
 #include "basefilter.h"
-#include "scalingwidget.h"
+#include "colorcorrectionwidget.h"
 
-class Scaling : public BaseFilter
+class ColorCorrection : public BaseFilter
 {
 public:
-    Scaling(QObject * parent = 0);
+    ColorCorrection(QObject * parent = 0);
     QString getIdentifier();
     QString getName();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
-    qreal pageMilimeterHeight();
-    qreal pageMilimeterWidth();
 protected:
     void compute();
 private:
-    ScalingWidget *widget;
-    QTransform scalingMatrix;
+    ColorCorrectionWidget *widget;
 };
 
-#endif // SCALING_H
+#endif // COLORCORRECTION_H

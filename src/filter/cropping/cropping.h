@@ -31,9 +31,10 @@ public:
     QString getName();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
+protected:
+    void compute();
 private:
     CroppingWidget *widget;
-    void compute();
 };
 
 #endif // CROPPING_H
