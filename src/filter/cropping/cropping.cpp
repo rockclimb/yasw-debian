@@ -34,10 +34,11 @@ Cropping::Cropping(QObject *parent)
     }
 }
 
-void Cropping::compute() {
+QImage Cropping::filter(QImage inputImage)
+{
     QRect rectangle = widget->rectangle();
 
-    outputPixmap = inputPixmap.copy(rectangle);
+    return inputImage.copy(rectangle);
 }
 
 /** \brief Returns a universal name for this filter.

@@ -33,7 +33,7 @@ public:
     void setSettings(QMap <QString, QVariant> settings);
 
 protected:
-    void compute();
+    virtual QImage filter(QImage inputImage);
 
 private:
     DekeystoningWidget *widget;

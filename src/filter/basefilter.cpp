@@ -150,7 +150,7 @@ void BaseFilter::refresh()
         mustRecalculate = true;
     }
     if (mustRecalculate) {
-        compute();
+        outputPixmap = QPixmap::fromImage(filter(inputPixmap.toImage()));
         mustRecalculate = false;
         filterWidget->setPreview(outputPixmap);
     }
@@ -159,6 +159,10 @@ void BaseFilter::refresh()
 // Do compute the outputPixmap with the help of all available parameters.
 void BaseFilter::compute()
 {
-    outputPixmap = inputPixmap;
+    outputPixmap = QPixmap::fromImage(filter(inputPixmap.toImage()));
 }
 
+QImage BaseFilter::filter(QImage inputImage)
+{
+    return inputImage;
+}

@@ -34,8 +34,9 @@ public:
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
 
-public slots:
-    void compute();
+private:
+    virtual QImage filter(QImage inputImage);
+
 
 private:
     RotationWidget *widget;

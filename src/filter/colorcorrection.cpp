@@ -86,6 +86,7 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = false;
 }
 
+
 /* Scales every pixel value of the image so that it matches the choosen White and Black points.
  *  For every color (here red) whe have:
  *  - an intensity "red"
@@ -100,10 +101,9 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
  * NOTE: performance improvements might be possible (use of scanline() or preview a scaled image)
  * NOTE: move this code to an ImageManipulation class?
  */
-void ColorCorrection::compute()
+QImage ColorCorrection::filter(QImage inputImage)
 {
-    QImage image = inputPixmap.toImage().convertToFormat(QImage::Format_ARGB32);
-    QImage outputImage(image.width(), image.height(), QImage::Format_ARGB32);
+    QImage outputImage(inputImage.width(), inputImage.height(), QImage::Format_ARGB32_Premultiplied);
 
     int x, y; // coordinates in the image for the for() loops
     QRgb pixelColor;
@@ -125,17 +125,17 @@ void ColorCorrection::compute()
     redDelta = qMax(1, redWhite - redBlack);
     greenDelta = qMax(1, greenWhite - greenBlack);
     blueDelta = qMax(1, blueWhite - blueBlack);
-    int imageWidth = image.width();
-    int imageHeight = image.height();
+    int imageWidth = inputImage.width();
+    int imageHeight = inputImage.height();
 
     for (x = 0; x < imageWidth; x++) {
         for (y = 0; y < imageHeight; y++) {
-            pixelColor = image.pixel(x,y);
+            pixelColor = inputImage.pixel(x,y);
             redNew =   qMax(0, qMin(255, qRed(pixelColor)   * 255 / redDelta   - redBlack));
             greenNew = qMax(0, qMin(255, qGreen(pixelColor) * 255 / greenDelta - greenBlack));
             blueNew =  qMax(0, qMin(255, qBlue(pixelColor)  * 255 / blueDelta  - blueBlack));
             outputImage.setPixel(x, y, qRgb(redNew, greenNew, blueNew));
         }
     }
-    outputPixmap = QPixmap::fromImage(outputImage);
+    return outputImage;
 }

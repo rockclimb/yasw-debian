@@ -32,7 +32,8 @@ public:
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
 protected:
-    void compute();
+    virtual QImage filter(QImage inputImage);
+
 private:
     CroppingWidget *widget;
 };

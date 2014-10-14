@@ -26,6 +26,7 @@
 #include <QVariant>
 #include <QString>
 #include "basefilterwidget.h"
+#include <QImage>
 
 
 class BaseFilter : public QObject
@@ -70,6 +71,7 @@ protected:
     // when true, do not recalculate (this is not an user interaction)
     bool loadingSettings = false;
     virtual void compute();
+    virtual QImage filter(QImage inputImage);
 
 private:
     BaseFilterWidget* widget;

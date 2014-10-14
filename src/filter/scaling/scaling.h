@@ -33,7 +33,8 @@ public:
     qreal pageMilimeterHeight();
     qreal pageMilimeterWidth();
 protected:
-    void compute();
+    virtual QImage filter(QImage inputImage);
+
 private:
     ScalingWidget *widget;
     QTransform scalingMatrix;

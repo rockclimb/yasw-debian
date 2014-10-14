@@ -71,7 +71,7 @@ void Dekeystoning::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = false;
 }
 
-void Dekeystoning::compute()
+QImage Dekeystoning::filter(QImage inputImage)
 {
     QPolygonF polygon = widget->polygon();
 
@@ -79,7 +79,7 @@ void Dekeystoning::compute()
     /* it might not be possbible to calculate a treansformation matrix */
     if (!QTransform::quadToSquare(polygon, transformMatrix)) {
         qDebug() << "No transformation exists for this";
-        return;
+        return QImage();
     }
 
     /* As transformMatrix transforms the polygon to a unit square (1px * 1px), we have
@@ -91,6 +91,7 @@ void Dekeystoning::compute()
 
     QTransform transformationMatrix = transformMatrix * scaleMatrix;
 
-    outputPixmap = inputPixmap.transformed(transformationMatrix);
+    return inputImage.transformed(transformationMatrix);
+
 }
 

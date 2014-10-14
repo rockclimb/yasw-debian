@@ -80,7 +80,7 @@ qreal Scaling::pageMilimeterWidth()
     return widget->pageMilimeterWidth();
 }
 
-void Scaling::compute()
+QImage Scaling::filter(QImage inputImage)
 {
     qreal imageWidth = widget->imagePixelWidth();
     qreal imageHeight = widget->imagePixelHeight();
@@ -90,7 +90,7 @@ void Scaling::compute()
     qreal leftMargin, topMargin;
 
     if (imageWidth == 0 || imageHeight == 0 || inputPixmap.isNull()) {
-        outputPixmap = QPixmap();
+        return QImage();
     } else {
         if (layout == ScalingWidget::MarginLayout) {
             leftMargin = widget->leftMargin();
@@ -139,12 +139,12 @@ void Scaling::compute()
         }
 
         QSize outputImageSize = QSize(imageWidth, imageHeight);
-        QPixmap scaledImage = inputPixmap.scaled(outputImageSize);
-        QPixmap page = QPixmap(pageWidth, pageHeight);
+        QImage scaledImage = inputImage.scaled(outputImageSize);
+        QImage page = QImage(pageWidth, pageHeight, QImage::Format_ARGB32_Premultiplied);
         //NOTE: fill color could be a parameter. Wait for User feedback ;-)
         page.fill(Qt::white);
         QPainter painter(&page);
-        painter.drawPixmap(leftMargin, topMargin, scaledImage);
-        outputPixmap = page;
+        painter.drawImage(leftMargin, topMargin, scaledImage);
+        return page;
     }
 }

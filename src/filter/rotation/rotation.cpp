@@ -49,11 +49,11 @@ QString Rotation::getName()
     return tr("Rotation");
 }
 
-void Rotation::compute()
+QImage Rotation::filter(QImage inputImage)
 {
     rotationMatrix.reset();
     rotationMatrix.rotate(widget->rotation());
-    outputPixmap = inputPixmap.transformed(rotationMatrix);
+    return inputImage.transformed(rotationMatrix);
 }
 
 /** \brief Get filter settings
