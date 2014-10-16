@@ -38,19 +38,18 @@ PreferencesDialog::~PreferencesDialog()
     delete ui;
 }
 
-/* TODO: is this the right way to pass the settings? What I need is a reference */
 void PreferencesDialog::setSettings(QSettings *newSettings)
 {
     QColor color;
     settings = newSettings;
 
-    color = settings->value("selectionColor").value<QColor>();
+    color = QColor(settings->value("selectionColor").toString());
     if (!color.isValid()) {
         color = selectionColor;
     }
     setSelectionColor(color);
 
-    color = settings->value("backgroundColor").value<QColor>();
+    color = QColor(settings->value("backgroundColor").toString());
     if (!color.isValid()) {
         color = backgroundColor;
     }
@@ -79,11 +78,11 @@ void PreferencesDialog::setSelectionColor(QColor color)
     }
 
     selectionColor = color;
-    palette.setColor(QPalette::ButtonText, color);
+    palette.setColor(QPalette::Button, color);
     ui->selectionColorButton->setPalette(palette);
 
     if (settings) {
-        settings->setValue("selectionColor", color);
+        settings->setValue("selectionColor", color.name());
     }
 
     emit(selectionColorChanged(color));
@@ -98,11 +97,11 @@ void PreferencesDialog::setBackgroundColor(QColor color)
     }
 
     backgroundColor = color;
-    palette.setColor(QPalette::ButtonText, color);
+    palette.setColor(QPalette::Button, color);
     ui->backgroundColorButton->setPalette(palette);
 
     if (settings) {
-        settings->setValue("backgroundColor", color);
+        settings->setValue("backgroundColor", color.name());
     }
 
     emit(backgroundColorChanged(color));
