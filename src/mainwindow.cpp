@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -27,6 +27,7 @@
 #include <QtXml/QDomDocument>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "constants.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -296,7 +297,7 @@ void MainWindow::on_action_Close_triggered()
 
 void MainWindow::on_action_About_triggered()
 {
-    QMessageBox::about(this, tr("Yet Another Scan Wizard Version %1").arg(VERSION),
+    QMessageBox::about(this, tr("Yet Another Scan Wizard Version: %1").arg(VERSION),
                        tr("Yet Another Scan Wizard (YASW) is an application used to correct images taken "
                           "with a camera while scanning a book.\n\n"
 

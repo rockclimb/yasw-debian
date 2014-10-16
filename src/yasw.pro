@@ -17,8 +17,6 @@
 
 # Disable warning about non-static data member initializers.
 # No idea if this works on other platforms, old platforms will probably do not support it.
-DEFINES += "VERSION=0.6"
-
 QMAKE_CXXFLAGS += -std=c++11
 TARGET = yasw
 TEMPLATE = app
@@ -73,7 +71,8 @@ HEADERS += mainwindow.h \
     filter/colorcorrectionwidget.h \
     filter/colorcorrection.h \
     filter/colorcorrectiongraphicsview.h \
-    filter/colorcorrectiongraphicsscene.h
+    filter/colorcorrectiongraphicsscene.h \
+    constants.h
 FORMS += mainwindow.ui \
     filter/basefilterwidget.ui \
     filter/dekeystoning/dekeystoningwidget.ui \

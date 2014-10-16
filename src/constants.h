@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -16,28 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "dekeystoningline.h"
-#include "dekeystoningcorner.h"
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
-/*! \class DekeystoningLine
-    \brief Line of the quadrilateral used to define how to dekeystone
+static const char VERSION[] = "git master for 0.6";
 
-    The lines are updated when the corners are moved. The corners call trackCorners.
-  */
-DekeystoningLine::DekeystoningLine(DekeystoningCorner *from, DekeystoningCorner *to)
-{
-    fromCorner = from;
-    fromCorner->registerLine(this);
-    toCorner = to;
-    toCorner->registerLine(this);
-
-    trackCorners();
-}
-
-/** \brief redraw the line */
-void DekeystoningLine::trackCorners()
-{
-    setLine(QLineF(fromCorner->scenePos(), toCorner->scenePos()));
-}
-
-
+#endif // CONSTANTS_H
