@@ -30,6 +30,8 @@ public:
     QString getName();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
+    void settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> settings);
+    QMap<QString, QVariant> dom2Settings(QDomElement &filterElement);
     qreal pageMilimeterHeight();
     qreal pageMilimeterWidth();
 protected:

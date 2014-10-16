@@ -129,7 +129,23 @@ void BaseFilter::setSettings(QMap<QString, QVariant> /* settings */)
 {
 //    loadingSettings = true;
     /* Ignore settings, as there is nothing to set */
-//    loadingSettings = false;
+    //    loadingSettings = false;
+}
+
+// Dummy function that create a node for filter that do not implement this virtual function
+void BaseFilter::settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> /* settings */)
+{
+    QDomElement filterElement = doc.createElement(getIdentifier());
+    QDomComment commentElement = doc.createComment("Created by BaseFilter");
+    imageElement.appendChild(filterElement);
+    filterElement.appendChild(commentElement);
+    return;
+}
+
+QMap<QString, QVariant> BaseFilter::dom2Settings(QDomElement & /* filterElement */)
+{
+    /* As BaseFilter does nothing, there are no settings to transform */
+    return QMap<QString, QVariant>();
 }
 
 void BaseFilter::setPreviousFilter(BaseFilter *filter)

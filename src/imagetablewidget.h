@@ -22,6 +22,7 @@
 
 #include <QWidget>
 #include <QTableWidgetItem>
+#include <QtXml/QDomDocument>
 #include "filtercontainer.h"
 
 namespace Ui {
@@ -36,8 +37,8 @@ public:
     explicit ImageTableWidget(QWidget *parent = 0);
     ~ImageTableWidget();
     void setFilterContainer(FilterContainer *container);
-    QMap<QString, QVariant> getSettings();
-    bool setSettings(QMap<QString, QVariant> settings);
+    void settings2Dom(QDomDocument &doc, QDomElement &parent);
+    bool dom2Settings(QDomElement &rootElement);
     void clear();
     void exportToFolder(QString folder);
     void exportToPdf(QString pdfFile);

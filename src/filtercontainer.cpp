@@ -67,13 +67,14 @@ FilterContainer::FilterContainer( QWidget * parent)
     connect(croppingFilter, SIGNAL(parameterChanged()),
             scalingFilter, SLOT(inputImageChanged()));
 
-    ColorCorrection *colorCorrection = new ColorCorrection(this);
-    tabToFilter.append(colorCorrection);
-    addTab(colorCorrection->getWidget(), colorCorrection->getName());
-    /* connect the filter to previous filter so it gets changes automaticaly */
-    colorCorrection->setPreviousFilter(scalingFilter);
-    connect(scalingFilter, SIGNAL(parameterChanged()),
-            colorCorrection, SLOT(inputImageChanged()));
+// Disabling Collor Corection for now as it still Work in Progress
+//    ColorCorrection *colorCorrection = new ColorCorrection(this);
+//    tabToFilter.append(colorCorrection);
+//    addTab(colorCorrection->getWidget(), colorCorrection->getName());
+//    /* connect the filter to previous filter so it gets changes automaticaly */
+//    colorCorrection->setPreviousFilter(scalingFilter);
+//    connect(scalingFilter, SIGNAL(parameterChanged()),
+//            colorCorrection, SLOT(inputImageChanged()));
 
     // get informed when a tab changed
     connect(this, SIGNAL(currentChanged(int)),
@@ -160,6 +161,47 @@ void FilterContainer::setSettings(QMap<QString, QVariant> settings)
             filter->setSettings(QMap<QString, QVariant>());
         }
     }
+}
+
+/* Fills the parent with filter DomEmelents and ther parameters
+   We have to provide the parameters as they are stored in the calling Class (ImageTableWidget)
+   This function is called when serializing the settings into an XML file.
+ */
+void FilterContainer::settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> settings)
+{
+    BaseFilter *filter;
+
+    foreach (filter, tabToFilter) {
+        if (settings.contains(filter->getIdentifier())) {
+            filter->settings2Dom(doc, imageElement, settings[filter->getIdentifier()].toMap());
+        }
+    }
+}
+
+// Transforms the subtags from <image> into filter settings QMap.
+// NOTE: It might be interesting to get ride of the QMap and only use DOM for the whole Settings.
+QMap<QString, QVariant> FilterContainer::dom2Settings(QDomElement &imageElement)
+{
+    QDomElement filterElement;
+    BaseFilter *filter;
+    QMap<QString, QVariant> settings;
+
+//    QString s;
+//    QTextStream str(&s, QIODevice::WriteOnly);
+//    imageElement.save(str, 2);
+//    qDebug() << qPrintable(s);
+
+    filterElement = imageElement.firstChildElement();
+
+    while (!filterElement.isNull()) {
+        foreach (filter, tabToFilter) {
+            if (filterElement.tagName() == filter->getIdentifier()) {
+                settings[filter->getIdentifier()] = filter->dom2Settings(filterElement);
+            }
+        }
+        filterElement = filterElement.nextSiblingElement();
+    }
+    return settings;
 }
 
 /** \brief Compute and return the resulting image above all filter

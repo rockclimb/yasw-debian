@@ -556,14 +556,12 @@ void ImageTableWidget::removeSelected()
     delete takeItem(currentRow, currentColumn);
 }
 
-
-
-QMap<QString, QVariant> ImageTableWidget::getSettings()
+void ImageTableWidget::settings2Dom(QDomDocument &doc, QDomElement &parent)
 {
-    QMap<QString, QVariant> settings;
-    QTableWidgetItem *item;
     int row;
-    QString key;
+    QTableWidgetItem *item;
+    QDomElement imageElement;
+    QMap<QString, QVariant> settings;
 
     // Save the settings of current filter before saving
     settings = filterContainer->getSettings();
@@ -572,59 +570,88 @@ QMap<QString, QVariant> ImageTableWidget::getSettings()
         item->setData(ImagePreferences, settings);
     settings.clear();
 
+
     for (row = 0; row < itemCount[leftSide]; row++) {
         item = ui->images->item(row, leftSide);
-        key = QString("%1_Left_").arg(row, leftSide) + item->data(ImageFileName).toString();
-        settings[key] = item->data(ImagePreferences).toMap();
+
+        // Save the image attributes
+        imageElement = doc.createElement("image");
+        imageElement.setAttribute("side", "left");
+        imageElement.setAttribute("filename", item->data(ImageFileName).toString());
+        parent.appendChild(imageElement);
+
+        // Save the filter settings
+        settings = item->data(ImagePreferences).toMap();
+        filterContainer->settings2Dom(doc, imageElement, settings);
+
     }
     for (row = 0; row < itemCount[rightSide]; row++) {
         item = ui->images->item(row, rightSide);
-        key = QString("%1_Right_").arg(row, rightSide) + item->data(ImageFileName).toString();
-        settings[key] = item->data(ImagePreferences).toMap();
+
+        // Save the image attributes
+        imageElement = doc.createElement("image");
+        imageElement.setAttribute("side", "right");
+        imageElement.setAttribute("filename", item->data(ImageFileName).toString());
+        parent.appendChild(imageElement);
+
+        // Save the filter settings
+        settings = item->data(ImagePreferences).toMap();
+        filterContainer->settings2Dom(doc, imageElement, settings);
     }
 
-    return settings;
+
+
+
 }
 
-bool ImageTableWidget::setSettings(QMap<QString, QVariant> settings)
+bool ImageTableWidget::dom2Settings(QDomElement &rootElement)
 {
-    QString key;
-    int row;
+    QDomElement imageElement;
     QString sideString;
     ImageTableWidget::ImageSide side;
+    int progress = 1;
     QString filename;
 
-    int progress = 0;
-    QProgressDialog progressDialog("Loading project...", "Abort", 0, settings.size());
+    int numberImages = rootElement.elementsByTagName("image").size();
+
+    QProgressDialog progressDialog("Loading project...", "Abort", 1, numberImages);
     progressDialog.setWindowModality(Qt::WindowModal);
+
+    QMap<QString, QVariant> settings;
 
     clear();
 
-    foreach (key, settings.keys()) {
+    imageElement = rootElement.firstChildElement("image");
+    while (!imageElement.isNull()) {
         // update progress dialog
         progressDialog.setValue(progress);
-        progress++;
         if (progressDialog.wasCanceled()) {
             return false;
         }
         // load image
-        row = key.section("_", 0, 0).toInt();
-        sideString = key.section("_", 1, 1);
-        if (sideString == "Left") {
+        sideString = imageElement.attribute("side");
+        if (sideString == "left") {
             side = leftSide;
-        } else {
-            //NOTE: this is not nice, we should check if sideString == "Right"
+        } else if (sideString == "right") {
             side = rightSide;
+        } else {
+            // Project file is not OK => cancel Loading
+            // FIXME: signal the error to the User?
+            progressDialog.cancel();
+            return false;
         }
-        filename = key.section("_", 2);
-        if (row >= 0 && filename.length() > 0) {
-            appendImageToSide(filename, side, settings[key].toMap());
-        }
+        filename = imageElement.attribute("filename");
+        // FIXME: settings
+        settings = filterContainer->dom2Settings(imageElement);
+        appendImageToSide(filename, side, settings);
+        imageElement = imageElement.nextSiblingElement("image");
+        progress++;
     }
-    progressDialog.setValue(settings.size());
+    progressDialog.setValue(numberImages);
     return true;
 }
 
+// Empty the widget from all images;
 void ImageTableWidget::clear()
 {
     //FIXME: is memory cleared?

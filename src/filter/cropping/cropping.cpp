@@ -75,5 +75,55 @@ void Cropping::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = false;
 }
 
+void Cropping::settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> settings)
+{
+    QDomElement filter = doc.createElement(getIdentifier());
+    imageElement.appendChild(filter);
+
+    QDomElement pointElement;
+    QPointF point;
+
+    QString corner;
+    QStringList cornerNames;
+    int i;
+
+    // Iterate through cornerNames to save all Positions
+    cornerNames << "bottomRightCorner" << "topLeftCorner";
+    for (i = 0; i < cornerNames.size(); i++) {
+        corner = cornerNames.at(i);
+        if (settings.contains(corner)) {
+            pointElement = doc.createElement(corner);
+            point = settings[corner].toPoint();
+            pointElement.setAttribute("x", point.x());
+            pointElement.setAttribute("y", point.y());
+            filter.appendChild(pointElement);
+        }
+    }
+}
+
+QMap<QString, QVariant> Cropping::dom2Settings(QDomElement &filterElement)
+{
+    QMap<QString, QVariant> settings;
+    QStringList cornerNames;
+    QString corner;
+    int i;
+    QDomElement cornerElement;
+
+    // Iterate through cornerNames to save all Positions
+    cornerNames << "bottomRightCorner" << "topLeftCorner";
+
+    for (i = 0; i < cornerNames.size(); i++) {
+        corner = cornerNames.at(i);
+
+        cornerElement = filterElement.firstChildElement(corner);
+
+        if (!cornerElement.isNull()) {
+            settings[corner] = QPointF(cornerElement.attribute("x").toDouble(),
+                                       cornerElement.attribute("y").toDouble());
+        }
+    }
+    return settings;
+}
+
 
 

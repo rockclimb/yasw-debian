@@ -88,3 +88,22 @@ void Rotation::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = false;
 }
 
+void Rotation::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)
+{
+    QDomElement filter = doc.createElement(getIdentifier());
+    parent.appendChild(filter);
+    if (settings.contains("rotation"))
+        filter.setAttribute("angle", settings["rotation"].toUInt());
+    else
+        filter.setAttribute("angle", 0);
+}
+
+QMap<QString, QVariant> Rotation::dom2Settings(QDomElement &filterElement)
+{
+    QMap<QString, QVariant> settings;
+
+    settings["rotation"] = filterElement.attribute("angle", "0").toInt();
+
+    return settings;
+}
+

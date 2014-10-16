@@ -25,6 +25,7 @@
 #include <QMap>
 #include <QVariant>
 #include <QString>
+#include <QtXml/QDomDocument>
 #include "basefilterwidget.h"
 #include <QImage>
 
@@ -44,6 +45,8 @@ public:
 
     virtual QMap<QString, QVariant> getSettings();
     virtual void setSettings(QMap <QString, QVariant> settings);
+    virtual void settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> settings);
+    virtual QMap<QString, QVariant> dom2Settings(QDomElement &filterElement);
 
     void setPreviousFilter(BaseFilter *filter);
     void refresh();

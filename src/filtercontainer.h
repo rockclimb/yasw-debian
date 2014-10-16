@@ -23,6 +23,7 @@
 #include <QMap>
 #include <QVariant>
 #include <QString>
+#include <QtXml/QDomDocument>
 #include "basefilter.h"
 #include "abstractfilterwidget.h"
 #include "scaling.h"
@@ -36,6 +37,8 @@ public:
 
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap<QString, QVariant> settings);
+    void settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> settings);
+    QMap<QString, QVariant> dom2Settings(QDomElement &imageElement);
     QPixmap getResultImage();
     QMap<QString, QVariant> getPageSize();
     QString currentFilter();

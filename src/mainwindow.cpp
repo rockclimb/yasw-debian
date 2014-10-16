@@ -24,6 +24,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QColor>
+#include <QtXml/QDomDocument>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -107,33 +108,38 @@ void MainWindow::on_action_SaveAs_triggered()
         setProjectFileName(fileName);
 }
 
-/** \brief Save project settings to file
+/** Save project settings to an XML File
 
-  @returns true if successful; false on failure
+  returns true if successful; false on failure
   This private member is used to avoid dupplicate code betwenn save and save as.
-
   */
 bool MainWindow::saveProjectSettings(QString fileName)
 {
-    QMap<QString, QVariant> settings;
-
-    settings = ui->imageList->getSettings();
-
     // FIXME: Save QStream version and yast Version
     QFile file(fileName);
-    if (file.open(QIODevice::WriteOnly)) {
-        QDataStream out(&file);
-        out << settings;
-        file.close();
-        return true;
+    if (!file.open(QFile::WriteOnly | QFile::Text)) {
+        // Failure
+        QMessageBox::critical(this,
+            tr("Could not save Project"),
+            tr("A problem occured while saving file \"%1\". The project could not be saved")
+                          .arg(fileName)
+                              );
+        return false;
     }
-    // else, we signal a failure
-    QMessageBox::critical(this,
-        tr("Could not save Project"),
-        tr("A problem occured while saving file \"%1\". The project could not be saved")
-                      .arg(fileName)
-                          );
-    return false;
+
+    QDomDocument doc;
+    QDomElement yasw = doc.createElement("YASW");
+    doc.appendChild(yasw);
+    yasw.setAttribute("version", VERSION);
+
+    ui->imageList->settings2Dom(doc, yasw);
+
+
+    QTextStream out(&file);
+    doc.save(out, 4);
+    file.close();
+
+    return true;
 }
 /* \Brief Sets the current project name in the title bar and inserts it to the recent projects.
 
@@ -192,12 +198,40 @@ void MainWindow::loadProject(QString fileName)
     QMap<QString, QVariant> settings;
 
     QFile file(fileName);
-    if (file.open(QIODevice::ReadOnly)) {
-        QDataStream in(&file);
-        in >> settings;
-        file.close();
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        // Failure
+        QMessageBox::critical(this,
+            tr("Could not load Project"),
+            tr("A problem occured while loading file \"%1\"")
+                          .arg(fileName)
+                              );
+        return;
     }
-    if(ui->imageList->setSettings(settings)) {
+
+    QDomDocument doc;
+    QString errMsg;
+    int errLine, errColumn;
+    if (!doc.setContent(&file, false, &errMsg, &errLine, &errColumn)) {
+        QMessageBox::critical(this,
+                              tr("Could not load Project"),
+                              tr("A problem occured while parsing file \"%1\" :\n"
+                                 "Line %2, Column %3: %4")
+                              .arg(fileName, QString::number(errLine),
+                                   QString::number(errColumn), errMsg));
+        return;
+    }
+
+    QDomElement rootElement = doc.documentElement();
+    if (rootElement.tagName() != "YASW") {
+        QMessageBox::critical(this,
+            tr("Could not load Project"),
+            tr("\"%1\" is not a valid YASW project file")
+                          .arg(fileName)
+                              );
+        return;
+    }
+
+    if (ui->imageList->dom2Settings(rootElement)) {
         setProjectFileName(fileName);
     } else {
         // Something went wrong -> clear the project.

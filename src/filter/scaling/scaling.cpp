@@ -70,6 +70,71 @@ void Scaling::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = false;
 }
 
+void Scaling::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)
+{
+    QDomElement filter = doc.createElement(getIdentifier());
+    parent.appendChild(filter);
+
+    QString attribute;
+    QStringList attributeNames;
+    int i;
+
+    // Iterate through attributeNames to save all double
+    attributeNames << "imageWidth" << "imageHeight" << "DPI";
+    attributeNames << "leftMargin" << "rightMargin" << "topMargin" << "bottomMargin";
+    attributeNames << "pageWidth" << "pageHeight";
+
+    for (i = 0; i < attributeNames.size(); i++) {
+        attribute = attributeNames.at(i);
+        if (settings.contains(attribute)) {
+            filter.setAttribute(attribute, settings[attribute].toDouble());
+        }
+    }
+
+    // Iterate through attributeNames to save all int
+    attributeNames.clear();
+    attributeNames << "horizontalAlignment" << "verticalAlignment" << "unit" << "layout";
+    for (i = 0; i < attributeNames.size(); i++) {
+        attribute = attributeNames.at(i);
+        if (settings.contains(attribute)) {
+            filter.setAttribute(attribute, settings[attribute].toInt());
+        }
+    }
+}
+
+QMap<QString, QVariant> Scaling::dom2Settings(QDomElement &filterElement)
+{
+    QMap<QString, QVariant> settings;
+    QString attribute;
+    QStringList attributeNames;
+    int i;
+    QDomElement cornerElement;
+
+    // Iterate through attributeNames to save all double
+    attributeNames << "imageWidth" << "imageHeight" << "DPI";
+    attributeNames << "leftMargin" << "rightMargin" << "topMargin" << "bottomMargin";
+    attributeNames << "pageWidth" << "pageHeight";
+
+    for (i = 0; i < attributeNames.size(); i++) {
+        attribute = attributeNames.at(i);
+        if (filterElement.hasAttribute(attribute)) {
+            settings[attribute] = filterElement.attribute(attribute).toDouble();
+        }
+    }
+
+    // Iterate through attributeNames to save all int
+    attributeNames.clear();
+    attributeNames << "horizontalAlignment" << "verticalAlignment" << "unit" << "layout";
+    for (i = 0; i < attributeNames.size(); i++) {
+        attribute = attributeNames.at(i);
+        if (filterElement.hasAttribute(attribute)) {
+            settings[attribute] = filterElement.attribute(attribute).toInt();
+        }
+    }
+
+    return settings;
+}
+
 qreal Scaling::pageMilimeterHeight()
 {
     return widget->pageMilimeterHeight();
