@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "preferencesdialog.h"
-#include "ui_preferencesdialog.h"
 #include <QColorDialog>
 #include <QColor>
 #include <QPalette>
 #include <QDebug>
+
+#include "preferencesdialog.h"
+#include "ui_preferencesdialog.h"
+#include "constants.h"
 
 PreferencesDialog::PreferencesDialog(QWidget *parent) :
     QDialog(parent),
@@ -31,6 +33,9 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     setSelectionColor(Qt::red);
     setBackgroundColor(Qt::lightGray);
+
+    ui->unit->insertItems(0, Constants::displayUnits);
+    setDisplayUnit("pixel");
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -54,6 +59,9 @@ void PreferencesDialog::setSettings(QSettings *newSettings)
         color = backgroundColor;
     }
     setBackgroundColor(color);
+
+    QString unit = settings->value("displayUnit").toString();
+    setDisplayUnit(unit);
 }
 
 void PreferencesDialog::on_selectionColorButton_clicked()
@@ -107,10 +115,29 @@ void PreferencesDialog::setBackgroundColor(QColor color)
     emit(backgroundColorChanged(color));
 }
 
+void PreferencesDialog::setDisplayUnit(QString unit)
+{
+    if (!Constants::displayUnits.contains(unit)) // unit unknown? Do nothing.
+        return;
+
+    ui->unit->setCurrentIndex(Constants::displayUnits.indexOf(unit));
+
+    if (settings) {
+        settings->setValue("displayUnit", unit);
+    }
+}
+
 void PreferencesDialog::on_backgroundColorButton_clicked()
 {
     QColor color;
 
     color = QColorDialog::getColor(backgroundColor, this, tr("Choose a background color"));
     setBackgroundColor(color);
+}
+
+void PreferencesDialog::on_unit_currentIndexChanged(const QString &defaultUnit)
+{
+    if (settings) {
+        settings->setValue("displayUnit", defaultUnit);
+    }
 }

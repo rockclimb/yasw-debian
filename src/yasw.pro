@@ -46,7 +46,8 @@ SOURCES += main.cpp \
     filter/colorcorrection.cpp \
     filter/dekeystoning/dekeystoninggraphicsview.cpp \
     filter/colorcorrectiongraphicsview.cpp \
-    filter/colorcorrectiongraphicsscene.cpp
+    filter/colorcorrectiongraphicsscene.cpp \
+    constants.cpp
 HEADERS += mainwindow.h \
     filter/basefilter.h \
     filter/basefiltergraphicsview.h \

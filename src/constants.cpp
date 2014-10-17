@@ -16,20 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
 
-#include <QStringList>
+#include "constants.h"
 
-
-static const char VERSION[] = "git master for 0.6";
-
-class Constants
-{
-public:
-    static QStringList displayUnits;
-};
-
-
-
-#endif // CONSTANTS_H
+QStringList Constants::displayUnits = QStringList() << "pixel"
+                                                    << "milimeter"
+                                                    << "inch";

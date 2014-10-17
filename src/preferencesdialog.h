@@ -41,19 +41,24 @@ private slots:
 
     void on_backgroundColorButton_clicked();
 
+    void on_unit_currentIndexChanged(const QString &defaultUnit);
+
 private:
     void setSelectionColor(QColor color);
     void setBackgroundColor(QColor color);
+    void setDisplayUnit(QString unit);
+
 
     Ui::PreferencesDialog *ui;
     QColor selectionColor;
     QSettings *settings = NULL;
     QColor backgroundColor;
+    QString displayUnit;
 
 signals:
     void selectionColorChanged(QColor color);
     void backgroundColorChanged(QColor color);
-
+    void displayUnitChanged(QString unit);
 };
 
 #endif // PREFERENCESDIALOG_H
