@@ -16,14 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "filtercontainer.h"
+
+#include <QPrinter>
 #include <QDebug>
+
+#include "filtercontainer.h"
 #include "rotation.h"
 #include "dekeystoning.h"
 #include "cropping.h"
-#include "scaling.h"
+#include "scalefilter.h"
 #include "colorcorrection.h"
-#include <QPrinter>
+
 
 /** \class FilterContainer
     \brief A customised QTabWidget to display the different filters.
@@ -59,13 +62,13 @@ FilterContainer::FilterContainer( QWidget * parent)
             croppingFilter, SLOT(inputImageChanged()));
     croppingFilter->setPreviousFilter(dekeystoningFilter);
 
-    scalingFilter = new Scaling(this);
-    tabToFilter.append(scalingFilter);
-    addTab(scalingFilter->getWidget(), scalingFilter->getName());
+    ScaleFilter *scaleFilter = new ScaleFilter(this);
+    tabToFilter.append(scaleFilter);
+    addTab(scaleFilter->getWidget(), scaleFilter->getName());
     /* connect the filter to previous filter so it gets changes automaticaly */
-    scalingFilter->setPreviousFilter(croppingFilter);
+    scaleFilter->setPreviousFilter(croppingFilter);
     connect(croppingFilter, SIGNAL(parameterChanged()),
-            scalingFilter, SLOT(inputImageChanged()));
+            scaleFilter, SLOT(inputImageChanged()));
 
 // Disabling Collor Corection for now as it still Work in Progress
 //    ColorCorrection *colorCorrection = new ColorCorrection(this);
@@ -108,6 +111,11 @@ void FilterContainer::setSelectionColor(QColor color)
 void FilterContainer::setBackgroundColor(QColor color)
 {
     emit(backgroundColorChanged(color));
+}
+
+void FilterContainer::setDisplayUnit(QString unit)
+{
+    emit(displayUnitChanged(unit));
 }
 
 void FilterContainer::tabChanged(int index)
@@ -223,8 +231,9 @@ QMap<QString, QVariant> FilterContainer::getPageSize()
     QMap<QString, QVariant> imageSize;
     qreal width, height;
 
-    width = scalingFilter->pageMilimeterWidth();
-    height = scalingFilter->pageMilimeterHeight();
+    // FIXME: LayoutFilter
+    width = 0; // scalingFilter->pageMilimeterWidth();
+    height = 0; // scalingFilter->pageMilimeterHeight();
 
     imageSize["unit"] = QPrinter::Millimeter;
     imageSize["size"] = QSize(width, height);

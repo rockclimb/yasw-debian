@@ -22,3 +22,8 @@
 QStringList Constants::displayUnits = QStringList() << "pixel"
                                                     << "milimeter"
                                                     << "inch";
+QStringList Constants::dpiList = QStringList() << "150"
+                                               << "300"
+                                               << "600";
+
+qreal const Constants::milimeterPerInch = 25.4;     // 1 inch = 25,4 mm

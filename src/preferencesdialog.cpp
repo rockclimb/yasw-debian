@@ -64,6 +64,11 @@ void PreferencesDialog::setSettings(QSettings *newSettings)
     setDisplayUnit(unit);
 }
 
+QString PreferencesDialog::displayUnit()
+{
+    return ui->unit->currentText();
+}
+
 void PreferencesDialog::on_selectionColorButton_clicked()
 {
     QColor color;
@@ -135,9 +140,11 @@ void PreferencesDialog::on_backgroundColorButton_clicked()
     setBackgroundColor(color);
 }
 
-void PreferencesDialog::on_unit_currentIndexChanged(const QString &defaultUnit)
+void PreferencesDialog::on_unit_currentIndexChanged(const QString &unit)
 {
     if (settings) {
-        settings->setValue("displayUnit", defaultUnit);
+        settings->setValue("displayUnit", unit);
     }
+
+    emit(displayUnitChanged(unit));
 }

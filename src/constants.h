@@ -24,10 +24,13 @@
 
 static const char VERSION[] = "git master for 0.6";
 
+
 class Constants
 {
 public:
     static QStringList displayUnits;
+    static QStringList dpiList;
+    static qreal const milimeterPerInch ; //= 25.4;
 };
 
 

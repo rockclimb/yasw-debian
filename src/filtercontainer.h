@@ -26,7 +26,7 @@
 #include <QtXml/QDomDocument>
 #include "basefilter.h"
 #include "abstractfilterwidget.h"
-#include "scaling.h"
+#include "scalefilter.h"
 
 class FilterContainer : public QTabWidget
 {
@@ -48,20 +48,19 @@ public slots:
     void setImage(QPixmap pixmap);
     void setSelectionColor(QColor color);
     void setBackgroundColor(QColor color);
-
+    void setDisplayUnit(QString unit);
 
 private:
     QList<BaseFilter *> tabToFilter;
     int oldIndex = 0; //stores the last selected index, at init = first tab
-    Scaling *scalingFilter;
 
 signals:
+    // Propagates changes to global configuration paramters
     void selectionColorChanged(QColor color);
     void backgroundColorChanged(QColor color);
-    /** \brief Emited when a user changes the Tab
-
-      Used by imageTableWidget to propagate the settings to other images.
-    */
+    void displayUnitChanged(QString unit);
+    // Emited when a user changes the Tab
+    // Used by imageTableWidget to propagate the settings to other images.
     void filterChanged(QString oldFilterID);
 
 

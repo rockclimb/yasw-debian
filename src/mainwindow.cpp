@@ -45,15 +45,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     preferencesDialog = new PreferencesDialog();
 
-    /* Transmit global preferences changes to the filter container.
-       The filter container will retransmit the changes to the filter who subscribed to its signal
-       NOTE: next time a preference is added, englobe all signals into a global "preferences changed"
-             one: this is to much handwork.
-    */
+//  Transmit global preferences changes to the filter container.
+//  The filter container will retransmit the changes to the filter who subscribed to its signal
     connect(preferencesDialog, SIGNAL(selectionColorChanged(QColor)),
             ui->filterContainer, SLOT(setSelectionColor(QColor)));
     connect(preferencesDialog, SIGNAL(backgroundColorChanged(QColor)),
             ui->filterContainer, SLOT(setBackgroundColor(QColor)));
+    connect(preferencesDialog, SIGNAL(displayUnitChanged(QString)),
+            ui->filterContainer, SLOT(setDisplayUnit(QString)));
+
 
     preferencesDialog->setSettings(settings);
 }

@@ -40,14 +40,16 @@ SOURCES += main.cpp \
     filter/dekeystoning/dekeystoningcorner.cpp \
     imagetablewidget.cpp \
     filter/scaling/scaling.cpp \
-    preferencesdialog.cpp \
     filter/scaling/scalingwidget.cpp \
+    filter/scalewidget.cpp \
+    preferencesdialog.cpp \
     filter/colorcorrectionwidget.cpp \
     filter/colorcorrection.cpp \
     filter/dekeystoning/dekeystoninggraphicsview.cpp \
     filter/colorcorrectiongraphicsview.cpp \
     filter/colorcorrectiongraphicsscene.cpp \
-    constants.cpp
+    constants.cpp \
+    filter/scalefilter.cpp
 HEADERS += mainwindow.h \
     filter/basefilter.h \
     filter/basefiltergraphicsview.h \
@@ -67,13 +69,15 @@ HEADERS += mainwindow.h \
     filter/dekeystoning/dekeystoningcorner.h \
     imagetablewidget.h \
     filter/scaling/scaling.h \
+    filter/scalewidget.h \
     preferencesdialog.h \
     filter/scaling/scalingwidget.h \
     filter/colorcorrectionwidget.h \
     filter/colorcorrection.h \
     filter/colorcorrectiongraphicsview.h \
     filter/colorcorrectiongraphicsscene.h \
-    constants.h
+    constants.h \
+    filter/scalefilter.h
 FORMS += mainwindow.ui \
     filter/basefilterwidget.ui \
     filter/dekeystoning/dekeystoningwidget.ui \
@@ -82,6 +86,7 @@ FORMS += mainwindow.ui \
     imagetablewidget.ui \
     preferencesdialog.ui \
     filter/scaling/scalingwidget.ui \
+    filter/scalewidget.ui \
     filter/colorcorrectionwidget.ui
 INCLUDEPATH += filter \
     filter/dekeystoning \

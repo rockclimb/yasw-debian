@@ -35,13 +35,14 @@ public:
     explicit PreferencesDialog(QWidget *parent = 0);
     ~PreferencesDialog();
     void setSettings(QSettings *newSettings);
+    QString displayUnit();
     
 private slots:
     void on_selectionColorButton_clicked();
 
     void on_backgroundColorButton_clicked();
 
-    void on_unit_currentIndexChanged(const QString &defaultUnit);
+    void on_unit_currentIndexChanged(const QString &unit);
 
 private:
     void setSelectionColor(QColor color);
@@ -53,7 +54,6 @@ private:
     QColor selectionColor;
     QSettings *settings = NULL;
     QColor backgroundColor;
-    QString displayUnit;
 
 signals:
     void selectionColorChanged(QColor color);
