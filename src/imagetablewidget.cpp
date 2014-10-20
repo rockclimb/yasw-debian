@@ -23,7 +23,10 @@
 #include <QPainter>
 #include <QDebug>
 #include <QProgressDialog>
+
 #include "imagetablewidget.h"
+#include "constants.h"
+
 #include "ui_imagetablewidget.h"
 
 //TODO: comment this file, most comments from the old imagelistwidget shall match
@@ -510,7 +513,6 @@ void ImageTableWidget::selectLeftImage()
     ui->images->setCurrentCell(row, side);
 }
 
-
 QTableWidgetItem * ImageTableWidget::takeItem(int row, int side)
 {
     int i;
@@ -556,7 +558,7 @@ void ImageTableWidget::removeSelected()
     delete takeItem(currentRow, currentColumn);
 }
 
-void ImageTableWidget::settings2Dom(QDomDocument &doc, QDomElement &parent)
+void ImageTableWidget::saveProjectParameters(QDomDocument &doc, QDomElement &parent)
 {
     int row;
     QTableWidgetItem *item;
@@ -569,7 +571,6 @@ void ImageTableWidget::settings2Dom(QDomDocument &doc, QDomElement &parent)
     if (item)
         item->setData(ImagePreferences, settings);
     settings.clear();
-
 
     for (row = 0; row < itemCount[leftSide]; row++) {
         item = ui->images->item(row, leftSide);
@@ -604,7 +605,8 @@ void ImageTableWidget::settings2Dom(QDomDocument &doc, QDomElement &parent)
 
 }
 
-bool ImageTableWidget::dom2Settings(QDomElement &rootElement)
+// This function loads the parameter from XML (DOM) int yasw
+bool ImageTableWidget::loadProjectParameters(QDomElement &rootElement)
 {
     QDomElement imageElement;
     QString sideString;
@@ -612,14 +614,16 @@ bool ImageTableWidget::dom2Settings(QDomElement &rootElement)
     int progress = 1;
     QString filename;
 
+
+    clear();
+
+    // Load all Images
     int numberImages = rootElement.elementsByTagName("image").size();
 
     QProgressDialog progressDialog("Loading project...", "Abort", 1, numberImages);
     progressDialog.setWindowModality(Qt::WindowModal);
 
     QMap<QString, QVariant> settings;
-
-    clear();
 
     imageElement = rootElement.firstChildElement("image");
     while (!imageElement.isNull()) {
@@ -783,6 +787,8 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
     progressDialog.setValue(maxProgress);
     ui->images->setCurrentItem(currentItem);
 }
+
+
 
 
 

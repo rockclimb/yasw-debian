@@ -37,8 +37,10 @@ public:
     explicit ImageTableWidget(QWidget *parent = 0);
     ~ImageTableWidget();
     void setFilterContainer(FilterContainer *container);
-    void settings2Dom(QDomDocument &doc, QDomElement &parent);
-    bool dom2Settings(QDomElement &rootElement);
+    // save YASW into XML
+    void saveProjectParameters(QDomDocument &doc, QDomElement &parent);
+    // load XML int YASW
+    bool loadProjectParameters(QDomElement &rootElement);
     void clear();
     void exportToFolder(QString folder);
     void exportToPdf(QString pdfFile);
@@ -57,7 +59,6 @@ public slots:
     void selectNextImage();
     void selectRightImage();
     void selectLeftImage();
-
 
 private:
     Ui::ImageTableWidget *ui;
@@ -80,7 +81,6 @@ private:
 
 signals:
     void pixmapChanged (QPixmap newPixmap);
-
 };
 
 #endif // IMAGETABLEWIDGET_H

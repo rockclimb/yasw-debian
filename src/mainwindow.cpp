@@ -53,6 +53,9 @@ MainWindow::MainWindow(QWidget *parent) :
             ui->filterContainer, SLOT(setBackgroundColor(QColor)));
     connect(preferencesDialog, SIGNAL(displayUnitChanged(QString)),
             ui->filterContainer, SLOT(setDisplayUnit(QString)));
+    connect(preferencesDialog, SIGNAL(dpiChanged(int)),
+            ui->filterContainer, SLOT(setDPI(int)));
+
 
 
     preferencesDialog->setSettings(settings);
@@ -129,12 +132,12 @@ bool MainWindow::saveProjectSettings(QString fileName)
     }
 
     QDomDocument doc;
-    QDomElement yasw = doc.createElement("YASW");
+    QDomElement yasw = doc.createElement("yasw");
     doc.appendChild(yasw);
     yasw.setAttribute("version", VERSION);
 
-    ui->imageList->settings2Dom(doc, yasw);
-
+    preferencesDialog->saveProjectParameters(doc, yasw);
+    ui->imageList->saveProjectParameters(doc, yasw);
 
     QTextStream out(&file);
     doc.save(out, 4);
@@ -197,6 +200,7 @@ void MainWindow::addRecentProject(QString fileName)
 void MainWindow::loadProject(QString fileName)
 {
     QMap<QString, QVariant> settings;
+    bool loadingOK = true;
 
     QFile file(fileName);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
@@ -223,7 +227,7 @@ void MainWindow::loadProject(QString fileName)
     }
 
     QDomElement rootElement = doc.documentElement();
-    if (rootElement.tagName() != "YASW") {
+    if (rootElement.tagName() != "yasw") {
         QMessageBox::critical(this,
             tr("Could not load Project"),
             tr("\"%1\" is not a valid YASW project file")
@@ -232,7 +236,10 @@ void MainWindow::loadProject(QString fileName)
         return;
     }
 
-    if (ui->imageList->dom2Settings(rootElement)) {
+    // if loadingError is true, the function after || will not be called.
+    loadingOK = loadingOK && preferencesDialog->loadProjectParameters(rootElement);
+    loadingOK = loadingOK && ui->imageList->loadProjectParameters(rootElement);
+    if (loadingOK) {
         setProjectFileName(fileName);
     } else {
         // Something went wrong -> clear the project.

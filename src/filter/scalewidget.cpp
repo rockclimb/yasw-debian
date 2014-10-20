@@ -22,13 +22,8 @@ ScaleWidget::ScaleWidget(QWidget *parent) :
     doubleValidator->setNotation(QDoubleValidator::StandardNotation);
     ui->imageHeight->setValidator(doubleValidator);
     ui->imageWidth->setValidator(doubleValidator);
-    ui->dpi->setValidator(doubleValidator);
 
-    connect(ui->dpi->lineEdit(), SIGNAL(editingFinished()),
-            this, SLOT(dpiFormChanged()));
-
-    ui->dpi->insertItems(0, Constants::dpiList);
-    setDpi(300);
+    setDPI(Constants::DEFAULT_DPI);
 }
 
 ScaleWidget::~ScaleWidget()
@@ -41,10 +36,10 @@ void ScaleWidget::setPixmap(QPixmap pixmap)
 {
     inputPixmap = pixmap;
     if (!pixmap.isNull()
-            && ui->imageWidth->text().length() == 0
-            && ui->imageHeight->text().length() == 0) {
-        ui->imageWidth->setText(QString::number(pixmap.width()));
-        ui->imageHeight->setText(QString::number(pixmap.height()));
+            && pxImageWidth == 0
+            && pxImageHeight == 0) {
+        ui->imageWidth->setText(QString::number(pixmap.width() * factorPixeltoDisplayUnit));
+        ui->imageHeight->setText(QString::number(pixmap.height() * factorPixeltoDisplayUnit));
     }
     if (!preview()) {
         ui->view->setPixmap(pixmap);
@@ -79,8 +74,6 @@ QMap<QString, QVariant> ScaleWidget::getSettings()
 
     settings["pxImageWidth"] = pxImageWidth;
     settings["pxImageHeight"] = pxImageHeight;
-    settings["dpi"] = dpi;
-
     return settings;
 }
 
@@ -88,7 +81,6 @@ void ScaleWidget::setSettings(QMap<QString, QVariant> settings)
 {
     pxImageWidth = settings["pxImageWidth"].toDouble();
     pxImageHeight = settings["pxImageHeight"].toDouble();
-    setDpi(settings["dpi"].toDouble());
 
     // Update form input
     setDisplayUnit(displayUnit);
@@ -118,8 +110,8 @@ void ScaleWidget::setDisplayUnit(QString unit)
     ui->lbUnitWidth->setText(unit);
 
     QString newImageWidth, newImageHeight;
-    newImageWidth = QString::number(pxImageWidth * factorPixeltoDisplayUnit);
-    newImageHeight = QString::number(pxImageHeight * factorPixeltoDisplayUnit);
+    newImageWidth = QString::number(pxImageWidth * factorPixeltoDisplayUnit, 'f', 3);
+    newImageHeight = QString::number(pxImageHeight * factorPixeltoDisplayUnit, 'f', 3);
 
     ui->imageWidth->setText(newImageWidth);
     ui->imageHeight->setText(newImageHeight);
@@ -138,14 +130,7 @@ void ScaleWidget::on_preview_toggled(bool checked)
         ui->view->setPixmap(inputPixmap);
 }
 
-// FIXME: this slot should disapear
-/** \brief Slot to call when a parameter of the filter changes
-
- This is an agregator for all changed signals. It has multiple functions:
-    - display calculated width and height of the resulting image.
-    - emit a signel signalPropertyChanged, wich is used by the Scale class to
-      recalculate the resulting image.
- */
+// When a parameter is changed, the resulting Image Sizes are recalculated with this function.
 void ScaleWidget::updateResultingSizes()
 {
     ui->pixelImageWidth->setText(QString::number(pxImageWidth, 'f', 3));
@@ -158,58 +143,15 @@ void ScaleWidget::updateResultingSizes()
                 QString::number(pxImageHeight / dpi * Constants::milimeterPerInch, 'f', 3));
 }
 
-void ScaleWidget::setDpi(qreal newDpi)
+void ScaleWidget::setDPI(int newDpi)
 {
-    if (newDpi <= 0) // we only accept positive DPI
+    if (newDpi < Constants::MIN_DPI) // we only accept positive DPI
+        return;
+
+    if (dpi == newDpi) // do nothing when nothing changes.
         return;
 
     dpi = newDpi;
-
-    // we check if dpi is an integer. If so, we display it with precision = 0
-    int precision = 3;
-    qreal rest = newDpi - qFloor(newDpi);
-    if (rest == 0) {
-        precision = 0;
-    }
-
-    QString dpiString;
-    dpiString = QString::number(dpi, 'f', precision);
-    if (Constants::dpiList.contains(dpiString)) {
-        ui->dpi->setCurrentIndex(Constants::dpiList.indexOf(dpiString));
-    } else {
-        ui->dpi->setEditText(dpiString);
-    }
-}
-
-void ScaleWidget::on_imageWidth_editingFinished()
-{
-    pxImageWidth = ui->imageWidth->text().toDouble() / factorPixeltoDisplayUnit;
-
-    updateResultingSizes();
-    emit parameterChanged();
-}
-
-void ScaleWidget::on_imageHeight_editingFinished()
-{
-    pxImageHeight = ui->imageHeight->text().toDouble() / factorPixeltoDisplayUnit;
-
-    updateResultingSizes();
-    emit parameterChanged();
-}
-
-void ScaleWidget::dpiFormChanged()
-{
-
-    qreal newDPI = ui->dpi->currentText().toDouble();
-
-    if (dpi == newDPI) // do nothing when nothing changes.
-        return;
-
-    if (newDPI <= 0) {  // We don't accept DPI <= 0, but this should never happen (Validator on Form)
-        setDpi(dpi);    // Reset to the old value
-    } else {
-        dpi = newDPI;
-    }
 
     switch (Constants::displayUnits.indexOf(displayUnit)) {
         case 0:     // pixel
@@ -229,15 +171,20 @@ void ScaleWidget::dpiFormChanged()
     emit parameterChanged();
 }
 
-void ScaleWidget::on_dpi_textChanged(const QString &stringDPI)
+void ScaleWidget::on_imageWidth_editingFinished()
 {
-    qreal dpi = stringDPI.toDouble();
+    pxImageWidth = ui->imageWidth->text().toDouble() / factorPixeltoDisplayUnit;
 
-    if (dpi <= 0.001) {
-        ui->dpi->setStyleSheet("background-color: rgb(255, 0, 0);");
-    } else {
-        ui->dpi->setStyleSheet("");
-    }
+    updateResultingSizes();
+    emit parameterChanged();
+}
+
+void ScaleWidget::on_imageHeight_editingFinished()
+{
+    pxImageHeight = ui->imageHeight->text().toDouble() / factorPixeltoDisplayUnit;
+
+    updateResultingSizes();
+    emit parameterChanged();
 }
 
 void ScaleWidget::on_imageWidth_textEdited(const QString &strValue)

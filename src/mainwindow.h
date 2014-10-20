@@ -56,10 +56,10 @@ private slots:
 
 private:
     bool saveProjectSettings(QString fileName);
-    void setProjectFileName(QString fileName);
-
-    void addRecentProject(QString fileName);
     void loadProject(QString fileName);
+
+    void setProjectFileName(QString fileName);
+    void addRecentProject(QString fileName);
 
     Ui::MainWindow *ui;
     QString projectFileName;

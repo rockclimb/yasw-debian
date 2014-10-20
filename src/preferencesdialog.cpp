@@ -20,6 +20,7 @@
 #include <QColor>
 #include <QPalette>
 #include <QDebug>
+#include <QLineEdit>
 
 #include "preferencesdialog.h"
 #include "ui_preferencesdialog.h"
@@ -36,6 +37,16 @@ PreferencesDialog::PreferencesDialog(QWidget *parent) :
 
     ui->unit->insertItems(0, Constants::displayUnits);
     setDisplayUnit("pixel");
+
+    QIntValidator *dpiValidator = new QIntValidator();
+    dpiValidator->setBottom(Constants::MIN_DPI);
+    ui->dpi->setValidator(dpiValidator);
+
+    connect(ui->dpi->lineEdit(), SIGNAL(editingFinished()),
+            this, SLOT(dpiFormChanged()));
+
+    ui->dpi->insertItems(0, Constants::dpiList);
+    setDPI(Constants::DEFAULT_DPI);
 }
 
 PreferencesDialog::~PreferencesDialog()
@@ -67,6 +78,48 @@ void PreferencesDialog::setSettings(QSettings *newSettings)
 QString PreferencesDialog::displayUnit()
 {
     return ui->unit->currentText();
+}
+
+void PreferencesDialog::setDPI(int newDpi)
+{
+    if (newDpi <= Constants::MIN_DPI) // we only accept positive DPI
+        return;
+
+    dpi = newDpi;
+
+    QString dpiString = QString::number(dpi, 'f', 0);
+    if (Constants::dpiList.contains(dpiString)) {
+        ui->dpi->setCurrentIndex(Constants::dpiList.indexOf(dpiString));
+    } else {
+        ui->dpi->setEditText(dpiString);
+    }
+
+    emit(dpiChanged(dpi));
+}
+
+void PreferencesDialog::saveProjectParameters(QDomDocument &doc, QDomElement &rootElement)
+{
+    QDomElement parameter = doc.createElement("global");
+    parameter.setAttribute("DPI", dpi);
+    rootElement.appendChild(parameter);
+}
+
+bool PreferencesDialog::loadProjectParameters(QDomElement &rootElement)
+{
+    QDomElement parameter = rootElement.firstChildElement("global");
+    if (parameter.isNull())
+        return false;
+    setDPI(parameter.attribute("DPI", QString::number(Constants::DEFAULT_DPI, 'f', 0)).toInt());
+    return true;
+}
+
+// We don't want the dialog to close when pressing enter or the user might not see that his DPI
+// has not been taken into account
+void PreferencesDialog::keyPressEvent(QKeyEvent *evt)
+{
+    if(evt->key() == Qt::Key_Enter || evt->key() == Qt::Key_Return)
+        return;
+    QDialog::keyPressEvent(evt);
 }
 
 void PreferencesDialog::on_selectionColorButton_clicked()
@@ -147,4 +200,31 @@ void PreferencesDialog::on_unit_currentIndexChanged(const QString &unit)
     }
 
     emit(displayUnitChanged(unit));
+}
+
+void PreferencesDialog::on_dpi_editTextChanged(const QString &stringDPI)
+{
+    qreal dpi = stringDPI.toDouble();
+
+    if (dpi < Constants::MIN_DPI) {
+        ui->dpi->setStyleSheet("background-color: rgb(255, 0, 0);");
+    } else {
+        ui->dpi->setStyleSheet("");
+    }
+}
+
+void PreferencesDialog::dpiFormChanged()
+{
+    int newDPI = ui->dpi->currentText().toInt();
+
+    if (dpi == newDPI) // do nothing when nothing changes.
+        return;
+
+    if (newDPI < Constants::MIN_DPI) {  // We don't accept small DPI, but this should never happen (Validator on Form)
+        return;
+    }
+
+    dpi = newDPI;
+
+    emit dpiChanged(dpi);
 }

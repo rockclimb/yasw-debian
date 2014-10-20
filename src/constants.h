@@ -31,6 +31,9 @@ public:
     static QStringList displayUnits;
     static QStringList dpiList;
     static qreal const milimeterPerInch ; //= 25.4;
+
+    static int const MIN_DPI = 10;
+    static int const DEFAULT_DPI = 300;
 };
 
 

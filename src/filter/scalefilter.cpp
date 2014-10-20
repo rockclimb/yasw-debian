@@ -34,6 +34,8 @@ ScaleFilter::ScaleFilter(QObject * parent) : BaseFilter(parent)
                 widget, SLOT(setBackgroundColor(QColor)));
         connect(parent, SIGNAL(displayUnitChanged(QString)),
                 this, SLOT(setDisplayUnit(QString)));
+        connect(parent, SIGNAL(dpiChanged(int)),
+                widget, SLOT(setDPI(int)));
     }
 }
 

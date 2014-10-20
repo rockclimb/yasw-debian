@@ -26,24 +26,22 @@ public:
 
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
-
     void setDisplayUnit(QString unit);
+
+
 public slots:
     void setBackgroundColor(QColor color);
+    void setDPI(int newDpi);
 
 private slots:
     void on_preview_toggled(bool checked);
     void on_imageWidth_editingFinished();
     void on_imageHeight_editingFinished();
-    void dpiFormChanged();
-
-    void on_dpi_textChanged(const QString &stringDPI);
     void on_imageWidth_textEdited(const QString &strValue);
     void on_imageHeight_textEdited(const QString &strValue);
 
 private:
     void updateResultingSizes();
-    void setDpi(qreal newDpi);
 
     Ui::ScaleWidget *ui;
     QDoubleValidator *doubleValidator;
@@ -53,7 +51,7 @@ private:
 
     qreal pxImageWidth = 0;
     qreal pxImageHeight = 0;
-    qreal dpi = 300;
+    qreal dpi = 1;
 };
 
 #endif // SCALEWIDGET_H

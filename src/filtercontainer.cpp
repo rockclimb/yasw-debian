@@ -26,7 +26,7 @@
 #include "cropping.h"
 #include "scalefilter.h"
 #include "colorcorrection.h"
-
+#include "scaling.h"
 
 /** \class FilterContainer
     \brief A customised QTabWidget to display the different filters.
@@ -116,6 +116,11 @@ void FilterContainer::setBackgroundColor(QColor color)
 void FilterContainer::setDisplayUnit(QString unit)
 {
     emit(displayUnitChanged(unit));
+}
+
+void FilterContainer::setDPI(int dpi)
+{
+    emit(dpiChanged(dpi));
 }
 
 void FilterContainer::tabChanged(int index)

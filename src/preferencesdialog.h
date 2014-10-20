@@ -22,6 +22,9 @@
 #include <QDialog>
 #include <QColor>
 #include <QSettings>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QKeyEvent>
 
 namespace Ui {
 class PreferencesDialog;
@@ -36,13 +39,23 @@ public:
     ~PreferencesDialog();
     void setSettings(QSettings *newSettings);
     QString displayUnit();
+    void setDPI(int newDpi);
+
+    // save YASW into XML
+    void saveProjectParameters(QDomDocument &doc, QDomElement &rootElement);
+    // load XML int YASW
+    bool loadProjectParameters(QDomElement &rootElement);
+    void keyPressEvent(QKeyEvent *evt);
+
+public slots:
+    void dpiFormChanged();
     
 private slots:
     void on_selectionColorButton_clicked();
-
     void on_backgroundColorButton_clicked();
-
     void on_unit_currentIndexChanged(const QString &unit);
+    void on_dpi_editTextChanged(const QString &stringDPI);
+
 
 private:
     void setSelectionColor(QColor color);
@@ -55,10 +68,13 @@ private:
     QSettings *settings = NULL;
     QColor backgroundColor;
 
+    int dpi = 0;
+
 signals:
     void selectionColorChanged(QColor color);
     void backgroundColorChanged(QColor color);
     void displayUnitChanged(QString unit);
+    void dpiChanged(int dpi);
 };
 
 #endif // PREFERENCESDIALOG_H
