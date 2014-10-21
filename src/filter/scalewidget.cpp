@@ -38,8 +38,9 @@ void ScaleWidget::setPixmap(QPixmap pixmap)
     if (!pixmap.isNull()
             && pxImageWidth == 0
             && pxImageHeight == 0) {
-        ui->imageWidth->setText(QString::number(pixmap.width() * factorPixeltoDisplayUnit));
-        ui->imageHeight->setText(QString::number(pixmap.height() * factorPixeltoDisplayUnit));
+        pxImageWidth = pixmap.width();
+        pxImageHeight = pixmap.height();
+        updateFormSizes();
     }
     if (!preview()) {
         ui->view->setPixmap(pixmap);
@@ -85,7 +86,7 @@ void ScaleWidget::setSettings(QMap<QString, QVariant> settings)
     // Update form input
     setDisplayUnit(displayUnit);
     // Update rest of form
-    updateResultingSizes();
+    updateFormSizes();
 
 }
 
@@ -109,12 +110,7 @@ void ScaleWidget::setDisplayUnit(QString unit)
     ui->lbUnitHeight->setText(unit);
     ui->lbUnitWidth->setText(unit);
 
-    QString newImageWidth, newImageHeight;
-    newImageWidth = QString::number(pxImageWidth * factorPixeltoDisplayUnit, 'f', 3);
-    newImageHeight = QString::number(pxImageHeight * factorPixeltoDisplayUnit, 'f', 3);
-
-    ui->imageWidth->setText(newImageWidth);
-    ui->imageHeight->setText(newImageHeight);
+    updateFormSizes();
 }
 
 void ScaleWidget::setBackgroundColor(QColor color)
@@ -130,9 +126,15 @@ void ScaleWidget::on_preview_toggled(bool checked)
         ui->view->setPixmap(inputPixmap);
 }
 
-// When a parameter is changed, the resulting Image Sizes are recalculated with this function.
-void ScaleWidget::updateResultingSizes()
+// When a parameter is changed, the input and resulting Image Sizes are recalculated with this function.
+void ScaleWidget::updateFormSizes()
 {
+    QString newImageWidth, newImageHeight;
+    newImageWidth = QString::number(pxImageWidth * factorPixeltoDisplayUnit, 'f', 3);
+    newImageHeight = QString::number(pxImageHeight * factorPixeltoDisplayUnit, 'f', 3);
+
+    ui->imageWidth->setText(newImageWidth);
+    ui->imageHeight->setText(newImageHeight);
     ui->pixelImageWidth->setText(QString::number(pxImageWidth, 'f', 3));
     ui->pixelImageHeight->setText(QString::number(pxImageHeight, 'f', 3));
     ui->inchImageWidth->setText(QString::number(pxImageWidth / dpi, 'f', 3));
@@ -167,7 +169,7 @@ void ScaleWidget::setDPI(int newDpi)
         // Default will not happen, we check the unit before setting displayUnit
     }
 
-    updateResultingSizes();
+    updateFormSizes();
     emit parameterChanged();
 }
 
@@ -175,7 +177,7 @@ void ScaleWidget::on_imageWidth_editingFinished()
 {
     pxImageWidth = ui->imageWidth->text().toDouble() / factorPixeltoDisplayUnit;
 
-    updateResultingSizes();
+    updateFormSizes();
     emit parameterChanged();
 }
 
@@ -183,7 +185,7 @@ void ScaleWidget::on_imageHeight_editingFinished()
 {
     pxImageHeight = ui->imageHeight->text().toDouble() / factorPixeltoDisplayUnit;
 
-    updateResultingSizes();
+    updateFormSizes();
     emit parameterChanged();
 }
 

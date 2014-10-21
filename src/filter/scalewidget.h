@@ -41,7 +41,7 @@ private slots:
     void on_imageHeight_textEdited(const QString &strValue);
 
 private:
-    void updateResultingSizes();
+    void updateFormSizes();
 
     Ui::ScaleWidget *ui;
     QDoubleValidator *doubleValidator;
