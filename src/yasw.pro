@@ -39,8 +39,6 @@ SOURCES += main.cpp \
     filter/dekeystoning/dekeystoningline.cpp \
     filter/dekeystoning/dekeystoningcorner.cpp \
     imagetablewidget.cpp \
-    filter/scaling/scaling.cpp \
-    filter/scaling/scalingwidget.cpp \
     filter/scalewidget.cpp \
     preferencesdialog.cpp \
     filter/colorcorrectionwidget.cpp \
@@ -70,12 +68,10 @@ HEADERS += mainwindow.h \
     filter/dekeystoning/dekeystoningline.h \
     filter/dekeystoning/dekeystoningcorner.h \
     imagetablewidget.h \
-    filter/scaling/scaling.h \
     filter/scalewidget.h \
     filter/layoutfilter.h \
     filter/layoutwidget.h \
     preferencesdialog.h \
-    filter/scaling/scalingwidget.h \
     filter/colorcorrectionwidget.h \
     filter/colorcorrection.h \
     filter/colorcorrectiongraphicsview.h \
@@ -89,15 +85,13 @@ FORMS += mainwindow.ui \
     filter/cropping/croppingwidget.ui \
     imagetablewidget.ui \
     preferencesdialog.ui \
-    filter/scaling/scalingwidget.ui \
     filter/scalewidget.ui \
     filter/layoutwidget.ui \
     filter/colorcorrectionwidget.ui
 INCLUDEPATH += filter \
     filter/dekeystoning \
     filter/rotation \
-    filter/cropping \
-    filter/scaling
+    filter/cropping
 RESOURCES += icons/icons.qrc
 
 OTHER_FILES += \

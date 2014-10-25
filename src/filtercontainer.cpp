@@ -23,7 +23,6 @@
 #include "cropping.h"
 #include "scalefilter.h"
 #include "colorcorrection.h"
-#include "scaling.h"
 #include "layoutfilter.h"
 
 #include <QPrinter>
@@ -84,8 +83,8 @@ FilterContainer::FilterContainer( QWidget * parent)
 //    tabToFilter.append(colorCorrection);
 //    addTab(colorCorrection->getWidget(), colorCorrection->getName());
 //    /* connect the filter to previous filter so it gets changes automaticaly */
-//    colorCorrection->setPreviousFilter(scalingFilter);
-//    connect(scalingFilter, SIGNAL(parameterChanged()),
+//    colorCorrection->setPreviousFilter(layoutFilter);
+//    connect(layoutFilter, SIGNAL(parameterChanged()),
 //            colorCorrection, SLOT(inputImageChanged()));
 
     // get informed when a tab changed
