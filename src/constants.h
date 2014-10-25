@@ -34,6 +34,12 @@ public:
 
     static int const MIN_DPI = 10;
     static int const DEFAULT_DPI = 300;
+
+    // Constants for Layout Filter & Widget
+    enum horizintalAlignmentEnum {LeftHAlignment, CenterHAlignment, RightHAlignment};
+    enum verticalAlignmentEnum {TopVAlignment, CenterVAlignment, BottomVAlignment};
+    static QStringList horizontalAlignment;
+    static QStringList verticalAlignment;
 };
 
 

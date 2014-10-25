@@ -16,7 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "scalefilter.h"
+
 #include <QDebug>
 #include <QPainter>
 
@@ -84,7 +86,7 @@ void ScaleFilter::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QStr
     int i;
 
     // Iterate through attributeNames to save all double
-    attributeNames << "pxImageWidth" << "pxImageHeight" << "dpi";
+    attributeNames << "pxImageWidth" << "pxImageHeight";
 
     for (i = 0; i < attributeNames.size(); i++) {
         attribute = attributeNames.at(i);
@@ -104,7 +106,7 @@ QMap<QString, QVariant> ScaleFilter::dom2Settings(QDomElement &filterElement)
     QDomElement cornerElement;
 
     // Iterate through attributeNames to save all double
-    attributeNames << "pxImageWidth" << "pxImageHeight" << "dpi";
+    attributeNames << "pxImageWidth" << "pxImageHeight";
 
     for (i = 0; i < attributeNames.size(); i++) {
         attribute = attributeNames.at(i);

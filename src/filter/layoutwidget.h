@@ -17,32 +17,34 @@
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SCALEWIDGET_H
-#define SCALEWIDGET_H
+#ifndef LAYOUTWIDGET_H
+#define LAYOUTWIDGET_H
 
-#include "abstractfilterwidget.h"
-
-#include <QDoubleValidator>
 #include <QWidget>
+#include "abstractfilterwidget.h"
+#include <QDoubleValidator>
 
 
 namespace Ui {
-class ScaleWidget;
+class LayoutWidget;
 }
 
-class ScaleWidget : public AbstractFilterWidget
+class LayoutWidget : public AbstractFilterWidget
 {
     Q_OBJECT
     
 public:
-    explicit ScaleWidget(QWidget *parent = 0);
-    ~ScaleWidget();
+    explicit LayoutWidget(QWidget *parent = 0);
+    ~LayoutWidget();
     
     void setPixmap(QPixmap pixmap);
     void setPreview(QPixmap pixmap);
     bool preview();
-    double imagePixelHeight();
-    double imagePixelWidth();
+    double pagePixelHeight();
+    double pagePixelWidth();
+    // NOTE: It might be cleaner to use an Enum referencing an array of char*...
+    QString verticalAlignement();
+    QString horizontalAlignement();
 
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
@@ -55,23 +57,25 @@ public slots:
 
 private slots:
     void on_preview_toggled(bool checked);
-    void on_imageWidth_editingFinished();
-    void on_imageHeight_editingFinished();
-    void on_imageWidth_textEdited(const QString &strValue);
-    void on_imageHeight_textEdited(const QString &strValue);
+    void on_pageWidth_editingFinished();
+    void on_pageHeight_editingFinished();
+    void on_pageWidth_textEdited(const QString &strValue);
+    void on_pageHeight_textEdited(const QString &strValue);
+    void on_horizontalAlignment_currentIndexChanged(int /*index*/);
+    void on_verticalAlignment_currentIndexChanged(int /*index*/);
 
 private:
     void updateFormSizes();
 
-    Ui::ScaleWidget *ui;
+    Ui::LayoutWidget *ui;
     QDoubleValidator *doubleValidator;
     int lastUnitIndex = 0;
     QString displayUnit;
     qreal factorPixeltoDisplayUnit = 1;
 
-    qreal pxImageWidth = 0;
-    qreal pxImageHeight = 0;
+    qreal pxPageWidth = 0;
+    qreal pxPageHeight = 0;
     qreal dpi = 1;
 };
 
-#endif // SCALEWIDGET_H
+#endif // LAYOUTWIDGET_H

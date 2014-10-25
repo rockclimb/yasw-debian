@@ -27,3 +27,11 @@ QStringList Constants::dpiList = QStringList() << "150"
                                                << "600";
 
 qreal const Constants::milimeterPerInch = 25.4;     // 1 inch = 25,4 mm
+
+
+QStringList Constants::horizontalAlignment = QStringList() << "Left"
+                                                  << "Center"
+                                                  << "Right";
+QStringList Constants::verticalAlignment = QStringList() << "Top"
+                                                  << "Center"
+                                                  << "Bottom";

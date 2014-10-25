@@ -16,19 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#ifndef SCALEFILTER_H
-#define SCALEFILTER_H
+#ifndef LAYOUTFILTER_H
+#define LAYOUTFILTER_H
 
 #include "basefilter.h"
-#include "scalewidget.h"
+#include "layoutwidget.h"
 
-class ScaleFilter : public BaseFilter
+class LayoutFilter : public BaseFilter
 {
     Q_OBJECT
 
 public:
-    ScaleFilter(QObject * parent = 0);
+    LayoutFilter(QObject * parent = 0);
     QString getIdentifier();
     QString getName();
     QMap<QString, QVariant> getSettings();
@@ -41,9 +40,7 @@ protected:
     virtual QImage filter(QImage inputImage);
 
 private:
-    ScaleWidget *widget;
-    QTransform scaleMatrix;
-    QString displayUnit;
+    LayoutWidget *widget;
 };
 
-#endif // SCALEFILTER_H
+#endif // LAYOUTFILTER_H

@@ -49,6 +49,8 @@ SOURCES += main.cpp \
     filter/colorcorrectiongraphicsview.cpp \
     filter/colorcorrectiongraphicsscene.cpp \
     constants.cpp \
+    filter/layoutfilter.cpp \
+    filter/layoutwidget.cpp \
     filter/scalefilter.cpp
 HEADERS += mainwindow.h \
     filter/basefilter.h \
@@ -70,6 +72,8 @@ HEADERS += mainwindow.h \
     imagetablewidget.h \
     filter/scaling/scaling.h \
     filter/scalewidget.h \
+    filter/layoutfilter.h \
+    filter/layoutwidget.h \
     preferencesdialog.h \
     filter/scaling/scalingwidget.h \
     filter/colorcorrectionwidget.h \
@@ -87,6 +91,7 @@ FORMS += mainwindow.ui \
     preferencesdialog.ui \
     filter/scaling/scalingwidget.ui \
     filter/scalewidget.ui \
+    filter/layoutwidget.ui \
     filter/colorcorrectionwidget.ui
 INCLUDEPATH += filter \
     filter/dekeystoning \

@@ -17,9 +17,6 @@
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QPrinter>
-#include <QDebug>
-
 #include "filtercontainer.h"
 #include "rotation.h"
 #include "dekeystoning.h"
@@ -27,6 +24,10 @@
 #include "scalefilter.h"
 #include "colorcorrection.h"
 #include "scaling.h"
+#include "layoutfilter.h"
+
+#include <QPrinter>
+#include <QDebug>
 
 /** \class FilterContainer
     \brief A customised QTabWidget to display the different filters.
@@ -69,6 +70,14 @@ FilterContainer::FilterContainer( QWidget * parent)
     scaleFilter->setPreviousFilter(croppingFilter);
     connect(croppingFilter, SIGNAL(parameterChanged()),
             scaleFilter, SLOT(inputImageChanged()));
+
+    LayoutFilter *layoutFilter = new LayoutFilter(this);
+    tabToFilter.append(layoutFilter);
+    addTab(layoutFilter->getWidget(), layoutFilter->getName());
+    /* connect the filter to previous filter so it gets changes automaticaly */
+    layoutFilter->setPreviousFilter(scaleFilter);
+    connect(scaleFilter, SIGNAL(parameterChanged()),
+            layoutFilter, SLOT(inputImageChanged()));
 
 // Disabling Collor Corection for now as it still Work in Progress
 //    ColorCorrection *colorCorrection = new ColorCorrection(this);
