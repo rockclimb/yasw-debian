@@ -164,6 +164,11 @@ void LayoutWidget::setDisplayUnit(QString unit)
     updateFormSizes();
 }
 
+void LayoutWidget::enableFilter(bool enable)
+{
+    ui->enable->setChecked(enable);
+}
+
 void LayoutWidget::setBackgroundColor(QColor color)
 {
     ui->view->setBackgroundBrush(QBrush(color));
@@ -270,4 +275,9 @@ void LayoutWidget::on_horizontalAlignment_currentIndexChanged(int /*index*/)
 void LayoutWidget::on_verticalAlignment_currentIndexChanged(int /*index*/)
 {
     emit parameterChanged();
+}
+
+void LayoutWidget::on_enable_toggled(bool checked)
+{
+    emit enableFilterToggled(checked);
 }

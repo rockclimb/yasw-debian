@@ -46,11 +46,13 @@ public:
     virtual void setPreview(QPixmap pixmap) = 0;
     // true if preview is active
     virtual bool preview() = 0;
+    virtual void enableFilter(bool enable) = 0;
 protected:
     QPixmap inputPixmap;
     QPixmap previewPixmap;
 signals:
     void parameterChanged();
+    void enableFilterToggled(bool checked);
 
 };
 

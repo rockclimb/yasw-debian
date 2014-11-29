@@ -20,7 +20,8 @@
 #define CONSTANTS_H
 
 #include <QStringList>
-
+// QDebug included centraly, so that it can be commented out.
+#include <QDebug>
 
 static const char VERSION[] = "git master for 0.6";
 

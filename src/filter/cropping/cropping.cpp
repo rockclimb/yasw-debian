@@ -32,13 +32,22 @@ Cropping::Cropping(QObject *parent)
         connect(parent, SIGNAL(backgroundColorChanged(QColor)),
                 widget, SLOT(setBackgroundColor(QColor)));
     }
+
+    // Connect seems only to work when applied to the inherited classes
+    // I would have love to connect one for all in Basefilter...
+    connect(widget, SIGNAL(enableFilterToggled(bool)),
+            this, SLOT(enableFilterToggled(bool)));
 }
 
 QImage Cropping::filter(QImage inputImage)
 {
-    QRect rectangle = widget->rectangle();
+    if (filterEnabled) {
+        QRect rectangle = widget->rectangle();
 
-    return inputImage.copy(rectangle);
+        return inputImage.copy(rectangle);
+    } else {
+        return inputImage;
+    }
 }
 
 /** \brief Returns a universal name for this filter.
@@ -61,7 +70,10 @@ QString Cropping::getName()
 */
 QMap<QString, QVariant> Cropping::getSettings()
 {
-    return widget->getSettings();
+    QMap<QString, QVariant> settings = widget->getSettings();
+    settings["enabled"] = filterEnabled;
+
+    return settings;
 }
 
 /** \brief set this filter's settings
@@ -70,6 +82,11 @@ void Cropping::setSettings(QMap<QString, QVariant> settings)
 {
     loadingSettings = true;
     widget->setSettings(settings);
+
+    if (settings.contains("enabled"))
+        enableFilter(settings["enabled"].toBool());
+    else
+        enableFilter("true");
 
     mustRecalculate = true;
     loadingSettings = false;
@@ -99,6 +116,11 @@ void Cropping::settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<Q
             filter.appendChild(pointElement);
         }
     }
+
+    if (settings.contains("enabled"))
+        filter.setAttribute("enabled", settings["enabled"].toBool());
+    else
+        filter.setAttribute("enabled", true);
 }
 
 QMap<QString, QVariant> Cropping::dom2Settings(QDomElement &filterElement)
@@ -122,6 +144,8 @@ QMap<QString, QVariant> Cropping::dom2Settings(QDomElement &filterElement)
                                        cornerElement.attribute("y").toDouble());
         }
     }
+    settings["enabled"] = filterElement.attribute("enabled", "1").toInt();
+
     return settings;
 }
 

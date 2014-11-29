@@ -33,8 +33,12 @@ Dekeystoning::Dekeystoning(QObject *parent)
                 widget, SLOT(setSelectionColor(QColor)));
         connect(parent, SIGNAL(backgroundColorChanged(QColor)),
                 widget, SLOT(setBackgroundColor(QColor)));
-
     }
+
+    // Connect seems only to work when applied to the inherited classes
+    // I would have love to connect one for all in Basefilter...
+    connect(widget, SIGNAL(enableFilterToggled(bool)),
+            this, SLOT(enableFilterToggled(bool)));
 }
 
 /** \brief Returns a universal name for this filter.
@@ -57,7 +61,10 @@ QString Dekeystoning::getName()
 */
 QMap<QString, QVariant> Dekeystoning::getSettings()
 {
-    return widget->getSettings();
+    QMap<QString, QVariant> settings = widget->getSettings();
+
+    settings["enabled"] = filterEnabled;
+    return settings;
 }
 
 /** \brief set this filter's settings
@@ -66,6 +73,11 @@ void Dekeystoning::setSettings(QMap<QString, QVariant> settings)
 {
     loadingSettings = true;
     widget->setSettings(settings);
+
+    if (settings.contains("enabled"))
+        enableFilter(settings["enabled"].toBool());
+    else
+        enableFilter("true");
 
     mustRecalculate = true;
     loadingSettings = false;
@@ -95,6 +107,10 @@ void Dekeystoning::settings2Dom(QDomDocument &doc, QDomElement &imageElement, QM
             filter.appendChild(pointElement);
         }
     }
+    if (settings.contains("enabled"))
+        filter.setAttribute("enabled", settings["enabled"].toBool());
+    else
+        filter.setAttribute("enabled", true);
 }
 
 QMap<QString, QVariant> Dekeystoning::dom2Settings(QDomElement &filterElement)
@@ -114,22 +130,21 @@ QMap<QString, QVariant> Dekeystoning::dom2Settings(QDomElement &filterElement)
 
         cornerElement = filterElement.firstChildElement(corner);
 
-
-//        QString s;
-//        QTextStream str(&s, QIODevice::WriteOnly);
-//        cornerElement.save(str, 2);
-//        qDebug() << qPrintable(s);
-
         if (!cornerElement.isNull()) {
             settings[corner] = QPointF(cornerElement.attribute("x").toDouble(),
                                        cornerElement.attribute("y").toDouble());
         }
     }
+
+    settings["enabled"] = filterElement.attribute("enabled", "1").toInt();
     return settings;
 }
 
 QImage Dekeystoning::filter(QImage inputImage)
 {
+    if (!filterEnabled)
+        return inputImage;
+
     QPolygonF polygon = widget->polygon();
 
     QTransform transformMatrix;

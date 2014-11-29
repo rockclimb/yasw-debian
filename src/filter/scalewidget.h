@@ -47,6 +47,7 @@ public:
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
     void setDisplayUnit(QString unit);
+    void enableFilter(bool enable);
 
 
 public slots:
@@ -59,6 +60,8 @@ private slots:
     void on_imageHeight_editingFinished();
     void on_imageWidth_textEdited(const QString &strValue);
     void on_imageHeight_textEdited(const QString &strValue);
+
+    void on_enable_toggled(bool checked);
 
 private:
     void updateFormSizes();

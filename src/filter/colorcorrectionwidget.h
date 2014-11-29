@@ -43,6 +43,8 @@ public:
     QColor blackPoint();
     void setWhitePoint(QColor white);
     void setBlackPoint(QColor black);
+    void enableFilter(bool enable);
+
 
 public slots:
     void on_whiteReset_clicked();
@@ -55,6 +57,8 @@ private slots:
     void on_whiteSetPoint_clicked();
 
     void on_blackSetPoint_clicked();
+
+    void on_enable_toggled(bool checked);
 
 private:
     Ui::ColorCorrectionWidget *ui;

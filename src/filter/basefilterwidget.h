@@ -35,10 +35,14 @@ public:
     void setPreview(QPixmap pixmap);
     // true if preview is active
     bool preview();
-
+    void enableFilter(bool enable);
 
 protected:
     void changeEvent(QEvent *e);
+
+private slots:
+    void on_enable_toggled(bool checked);
+
 
 private:
     Ui::BaseFilterWidget *ui;

@@ -39,6 +39,11 @@ ScaleFilter::ScaleFilter(QObject * parent) : BaseFilter(parent)
         connect(parent, SIGNAL(dpiChanged(int)),
                 widget, SLOT(setDPI(int)));
     }
+
+    // Connect seems only to work when applied to the inherited classes
+    // I would have love to connect one for all in Basefilter...
+    connect(widget, SIGNAL(enableFilterToggled(bool)),
+            this, SLOT(enableFilterToggled(bool)));
 }
 
 QString ScaleFilter::getIdentifier()
@@ -58,7 +63,10 @@ QString ScaleFilter::getName()
 */
 QMap<QString, QVariant> ScaleFilter::getSettings()
 {
-    return widget->getSettings();
+    QMap<QString, QVariant> settings = widget->getSettings();
+    settings["enabled"] = filterEnabled;
+
+    return settings;
 }
 
 /** \brief Sets the settings for the filter.
@@ -71,6 +79,10 @@ void ScaleFilter::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = true;
 
     widget->setSettings(settings);
+    if (settings.contains("enabled"))
+        enableFilter(settings["enabled"].toBool());
+    else
+        enableFilter("true");
 
     mustRecalculate = true;
     loadingSettings = false;
@@ -95,6 +107,10 @@ void ScaleFilter::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QStr
         }
     }
 
+    if (settings.contains("enabled"))
+        filter.setAttribute("enabled", settings["enabled"].toBool());
+    else
+        filter.setAttribute("enabled", true);
 }
 
 QMap<QString, QVariant> ScaleFilter::dom2Settings(QDomElement &filterElement)
@@ -115,6 +131,8 @@ QMap<QString, QVariant> ScaleFilter::dom2Settings(QDomElement &filterElement)
         }
     }
 
+    settings["enabled"] = filterElement.attribute("enabled", "1").toInt();
+
     return settings;
 }
 
@@ -126,6 +144,9 @@ void ScaleFilter::setDisplayUnit(QString unit)
 
 QImage ScaleFilter::filter(QImage inputImage)
 {
+    if (!filterEnabled)
+        return inputImage;
+
     qreal imageWidth = widget->imagePixelWidth();
     qreal imageHeight = widget->imagePixelHeight();
 

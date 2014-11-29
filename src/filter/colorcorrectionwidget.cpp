@@ -97,6 +97,11 @@ void ColorCorrectionWidget::setBlackPoint(QColor black)
     emit parameterChanged();
 }
 
+void ColorCorrectionWidget::enableFilter(bool enable)
+{
+    ui->enable->setChecked(enable);
+}
+
 void ColorCorrectionWidget::on_preview_toggled(bool checked)
 {
     if (checked) {
@@ -159,4 +164,9 @@ void ColorCorrectionWidget::on_blackSetPoint_clicked()
         ui->whiteSetPoint->setText(tr("Set"));
         setWhitePointClicked = false;
     }
+}
+
+void ColorCorrectionWidget::on_enable_toggled(bool checked)
+{
+    emit enableFilterToggled(checked);
 }

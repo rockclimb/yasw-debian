@@ -30,6 +30,7 @@ public:
     QString getName();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
+
 protected:
     virtual QImage filter(QImage inputImage);
 

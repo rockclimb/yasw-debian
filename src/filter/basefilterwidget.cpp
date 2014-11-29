@@ -59,3 +59,13 @@ bool BaseFilterWidget::preview()
     return ui->preview->isChecked();
 }
 
+void BaseFilterWidget::enableFilter(bool enable)
+{
+    ui->enable->setChecked(enable);
+}
+
+
+void BaseFilterWidget::on_enable_toggled(bool checked)
+{
+    emit enableFilterToggled(checked);
+}

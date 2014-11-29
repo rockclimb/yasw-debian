@@ -44,7 +44,9 @@ User requests:
    without the doxygen format.
  - XML Project Files (.yasw) Closes #22 and #25 as a side effect (Loading Project messes up file order)
  - Scaling filter splitted in two - Fixes #19
+ - Checkbox "Enable Filter" works now - Fixes #27
 WIP 0.6
+- Fine tune Layout Filter (diplaying sizes with zeros, display input image size)
 - PDF Export probably Broken - see FilterContainer::getPageSize()
 - Color Correction Filter (Work in Progress)
 

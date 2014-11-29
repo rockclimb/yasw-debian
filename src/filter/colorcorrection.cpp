@@ -34,6 +34,10 @@ ColorCorrection::ColorCorrection(QObject *parent) : BaseFilter(parent)
                 widget, SLOT(setBackgroundColor(QColor)));
     }
 
+    // Connect seems only to work when applied to the inherited classes
+    // I would have love to connect one for all in Basefilter...
+    connect(widget, SIGNAL(enableFilterToggled(bool)),
+            this, SLOT(enableFilterToggled(bool)));
 }
 
 QString ColorCorrection::getIdentifier()
@@ -62,6 +66,8 @@ QMap<QString, QVariant> ColorCorrection::getSettings()
     settings["blackGreenValue"] = color.green();
     settings["blackBlueValue"] = color.blue();
 
+    settings["enabled"] = filterEnabled;
+
     return settings;
 }
 
@@ -81,6 +87,11 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
     color.setGreen(settings["blackGreenValue"].toInt());
     color.setBlue(settings["blackBlueValue"].toInt());
     widget->setBlackPoint(color);
+
+    if (settings.contains("enabled"))
+        enableFilter(settings["enabled"].toBool());
+    else
+        enableFilter("true");
 
     mustRecalculate = true;
     loadingSettings = false;
@@ -103,6 +114,9 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
  */
 QImage ColorCorrection::filter(QImage inputImage)
 {
+    if (!filterEnabled)
+        return inputImage;
+
     QImage outputImage(inputImage.width(), inputImage.height(), QImage::Format_ARGB32_Premultiplied);
 
     int x, y; // coordinates in the image for the for() loops

@@ -123,6 +123,12 @@ void DekeystoningWidget::setSettings(QMap<QString, QVariant> settings)
     ui->view->setSettings(settings);
 }
 
+void DekeystoningWidget::enableFilter(bool enable)
+{
+    ui->enable->setChecked(enable);
+
+}
+
 /** \brief Sets new Selection Color
 
   This does only forward the information, as this widget ist the only one able to call
@@ -144,3 +150,8 @@ void DekeystoningWidget::gvParameterChanged()
 }
 
 
+
+void DekeystoningWidget::on_enable_toggled(bool checked)
+{
+    emit enableFilterToggled(checked);
+}

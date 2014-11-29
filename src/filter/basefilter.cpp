@@ -16,8 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "basefilter.h"
-#include <QDebug>
 
 /*! \class BaseFilter
 
@@ -111,6 +111,17 @@ void BaseFilter::widgetParameterChanged()
     }
 }
 
+void BaseFilter::enableFilterToggled(bool checked)
+{
+    filterEnabled = checked;
+    emit parameterChanged();
+    // Only refresh the output image if preview is active
+    mustRecalculate = true;
+    if (filterWidget->preview()) {
+        refresh();
+    }
+}
+
 /*! \brief virtual function to get the Filter settings
 
     @returns A QMap of keys (QString) to settings (QVariant).
@@ -153,6 +164,12 @@ void BaseFilter::setPreviousFilter(BaseFilter *filter)
     previousFilter = filter;
     /* Change of previous Filter = change of external Parameter*/
     inputImageChanged();
+}
+
+void BaseFilter::enableFilter(bool enable)
+{
+    filterEnabled = enable;
+    filterWidget->enableFilter(enable);
 }
 
 void BaseFilter::refresh()

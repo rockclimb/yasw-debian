@@ -49,6 +49,7 @@ public:
     virtual QMap<QString, QVariant> dom2Settings(QDomElement &filterElement);
 
     void setPreviousFilter(BaseFilter *filter);
+    void enableFilter(bool enable);
     void refresh();
 
 public slots:
@@ -57,6 +58,7 @@ public slots:
     void inputImageChanged();
     /* Parameter for the Filter changed through user intercaction */
     void widgetParameterChanged();
+    void enableFilterToggled(bool checked);
 signals:
     /* Yell that my parameter (this includes input image) changed and that one need to reload my FilteredImage */
     void parameterChanged();
@@ -75,6 +77,7 @@ protected:
     bool loadingSettings = false;
     virtual void compute();
     virtual QImage filter(QImage inputImage);
+    bool filterEnabled = true; // default on all widgets
 
 private:
     BaseFilterWidget* widget;

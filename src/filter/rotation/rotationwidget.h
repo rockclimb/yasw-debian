@@ -38,6 +38,8 @@ public:
     bool preview();
     int rotation();
     void setRotation(int degrees);
+    void enableFilter(bool enable);
+
 
 public slots:
     void setBackgroundColor(QColor color);
@@ -48,6 +50,8 @@ private slots:
     void on_rotateRight_clicked();
     void on_preview_toggled(bool checked);
 
+
+    void on_enable_toggled(bool checked);
 
 private:
     Ui::RotationWidget *ui;

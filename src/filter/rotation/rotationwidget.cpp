@@ -94,7 +94,17 @@ void RotationWidget::setRotation(int degrees)
     rotationAngle = degrees;
 }
 
+void RotationWidget::enableFilter(bool enable)
+{
+    ui->enable->setChecked(enable);
+}
+
 void RotationWidget::setBackgroundColor(QColor color)
 {
     ui->view->setBackgroundBrush(QBrush(color));
+}
+
+void RotationWidget::on_enable_toggled(bool checked)
+{
+    emit enableFilterToggled(checked);
 }

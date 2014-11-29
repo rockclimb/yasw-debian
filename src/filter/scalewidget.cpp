@@ -129,6 +129,11 @@ void ScaleWidget::setDisplayUnit(QString unit)
     updateFormSizes();
 }
 
+void ScaleWidget::enableFilter(bool enable)
+{
+    ui->enable->setChecked(enable);
+}
+
 void ScaleWidget::setBackgroundColor(QColor color)
 {
     ui->view->setBackgroundBrush(QBrush(color));
@@ -225,3 +230,8 @@ void ScaleWidget::on_imageHeight_textEdited(const QString &strValue)
     } else {
         ui->imageHeight->setStyleSheet("");
     }}
+
+void ScaleWidget::on_enable_toggled(bool checked)
+{
+    emit enableFilterToggled(checked);
+}

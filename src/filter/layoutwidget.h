@@ -49,6 +49,8 @@ public:
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
     void setDisplayUnit(QString unit);
+    void enableFilter(bool enable);
+
 
 
 public slots:
@@ -63,6 +65,8 @@ private slots:
     void on_pageHeight_textEdited(const QString &strValue);
     void on_horizontalAlignment_currentIndexChanged(int /*index*/);
     void on_verticalAlignment_currentIndexChanged(int /*index*/);
+
+    void on_enable_toggled(bool checked);
 
 private:
     void updateFormSizes();

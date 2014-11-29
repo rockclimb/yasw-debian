@@ -40,6 +40,11 @@ LayoutFilter::LayoutFilter(QObject * parent) : BaseFilter(parent)
         connect(parent, SIGNAL(dpiChanged(int)),
                 widget, SLOT(setDPI(int)));
     }
+
+    // Connect seems only to work when applied to the inherited classes
+    // I would have love to connect one for all in Basefilter...
+    connect(widget, SIGNAL(enableFilterToggled(bool)),
+            this, SLOT(enableFilterToggled(bool)));
 }
 
 QString LayoutFilter::getIdentifier()
@@ -59,7 +64,10 @@ QString LayoutFilter::getName()
 */
 QMap<QString, QVariant> LayoutFilter::getSettings()
 {
-    return widget->getSettings();
+    QMap<QString, QVariant> settings = widget->getSettings();
+    settings["enabled"] = filterEnabled;
+
+    return settings;
 }
 
 /** \brief Sets the settings for the filter.
@@ -72,6 +80,10 @@ void LayoutFilter::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = true;
 
     widget->setSettings(settings);
+    if (settings.contains("enabled"))
+        enableFilter(settings["enabled"].toBool());
+    else
+        enableFilter("true");
 
     mustRecalculate = true;
     loadingSettings = false;
@@ -106,6 +118,11 @@ void LayoutFilter::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QSt
             filter.setAttribute(attribute, settings[attribute].toString());
         }
     }
+
+    if (settings.contains("enabled"))
+        filter.setAttribute("enabled", settings["enabled"].toBool());
+    else
+        filter.setAttribute("enabled", true);
 }
 
 QMap<QString, QVariant> LayoutFilter::dom2Settings(QDomElement &filterElement)
@@ -136,6 +153,8 @@ QMap<QString, QVariant> LayoutFilter::dom2Settings(QDomElement &filterElement)
         }
     }
 
+    settings["enabled"] = filterElement.attribute("enabled", "1").toInt();
+
     return settings;
 }
 
@@ -146,6 +165,9 @@ void LayoutFilter::setDisplayUnit(QString unit)
 
 QImage LayoutFilter::filter(QImage inputImage)
 {
+    if (!filterEnabled)
+        return inputImage;
+
     qreal pageWidth = widget->pagePixelWidth();
     qreal pageHeight = widget->pagePixelHeight();
 

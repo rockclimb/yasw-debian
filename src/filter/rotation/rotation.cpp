@@ -30,6 +30,10 @@ Rotation::Rotation(QObject * parent) : BaseFilter(parent)
                 widget, SLOT(setBackgroundColor(QColor)));
     }
 
+    // Connect seems only to work when applied to the inherited classes
+    // I would have love to connect one for all in Basefilter...
+    connect(widget, SIGNAL(enableFilterToggled(bool)),
+            this, SLOT(enableFilterToggled(bool)));
 }
 
 /** \brief Returns a universal name for this filter.
@@ -51,21 +55,22 @@ QString Rotation::getName()
 
 QImage Rotation::filter(QImage inputImage)
 {
-    rotationMatrix.reset();
-    rotationMatrix.rotate(widget->rotation());
-    return inputImage.transformed(rotationMatrix);
+    if (filterEnabled) {
+        rotationMatrix.reset();
+        rotationMatrix.rotate(widget->rotation());
+        return inputImage.transformed(rotationMatrix);
+    } else {
+        return inputImage;
+    }
 }
 
-/** \brief Get filter settings
-
-  The only relevant Setting for the Filter is its rotation angle.
-  todo: One may want to also save the preview/disable checkbox.
-  */
+// Return the settings of the filter: Rotation Angle in Degrees and Enable Checkbox
 QMap<QString, QVariant> Rotation::getSettings()
 {
     QMap<QString, QVariant> settings;
 
     settings["rotation"] = widget->rotation();
+    settings["enabled"] = filterEnabled;
 
     return settings;
 }
@@ -84,6 +89,11 @@ void Rotation::setSettings(QMap<QString, QVariant> settings)
     else
         widget->setRotation(0);
 
+    if (settings.contains("enabled"))
+        enableFilter(settings["enabled"].toBool());
+    else
+        enableFilter("true");
+
     mustRecalculate = true;
     loadingSettings = false;
 }
@@ -96,6 +106,11 @@ void Rotation::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString
         filter.setAttribute("angle", settings["rotation"].toUInt());
     else
         filter.setAttribute("angle", 0);
+
+    if (settings.contains("enabled"))
+        filter.setAttribute("enabled", settings["enabled"].toBool());
+    else
+        filter.setAttribute("enabled", true);
 }
 
 QMap<QString, QVariant> Rotation::dom2Settings(QDomElement &filterElement)
@@ -103,6 +118,7 @@ QMap<QString, QVariant> Rotation::dom2Settings(QDomElement &filterElement)
     QMap<QString, QVariant> settings;
 
     settings["rotation"] = filterElement.attribute("angle", "0").toInt();
+    settings["enabled"] = filterElement.attribute("enabled", "1").toInt();
 
     return settings;
 }
