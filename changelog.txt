@@ -45,6 +45,7 @@ User requests:
  - XML Project Files (.yasw) Closes #22 and #25 as a side effect (Loading Project messes up file order)
  - Scaling filter splitted in two - Fixes #19
  - Checkbox "Enable Filter" works now - Fixes #27
+ - Changes are now only propagated when a user selects the according button, to avoid unwanted propagations. Fixes #24
 WIP 0.6
 - Fine tune Layout Filter (diplaying sizes with zeros, display input image size)
 - PDF Export probably Broken - see FilterContainer::getPageSize()

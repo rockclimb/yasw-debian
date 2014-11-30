@@ -81,6 +81,10 @@ private:
 
 signals:
     void pixmapChanged (QPixmap newPixmap);
+private slots:
+    void on_btnPropagateFollowingSameSide_clicked();
+    void on_btnPropagateAllSameSide_clicked();
+    void on_btnPropagateAll_clicked();
 };
 
 #endif // IMAGETABLEWIDGET_H

@@ -85,7 +85,6 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
 
     QMap<QString, QVariant> settings;
     QMap<QString, QVariant> oldSettings;
-    int fromRow, side, i;
     QString filterID = "";
 
     if (previousItem) {
@@ -94,50 +93,6 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
         // settings changed? Save them!
         if (settings != oldSettings) {
             previousItem->setData(ImagePreferences, settings);
-
-            // Propagate settings according to settings policy
-            switch (ui->settingImagePolicy->currentIndex()) {
-            case 1: // propagate to all following images in this side
-                fromRow = ui->images->row(previousItem);
-                side = ui->images->column(previousItem);
-
-                switch (ui->settingFilterPolicy->currentIndex()) {
-                case 0: // propagate only selected filter
-                    filterID = filterContainer->currentFilter();
-                    for (i = fromRow; i < itemCount[side]; i++) {
-                        oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
-                        oldSettings[filterID] = settings[filterID];
-                        ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
-                    }
-                    break;
-                case 1: // propagate all filter settings
-                    for (i = fromRow; i < itemCount[side]; i++) {
-                        ui->images->item(i, side)->setData(ImagePreferences, settings);
-                    }
-                    break;
-                }
-                break;
-            case 2: // propagate to all images in this side
-                side = ui->images->column(previousItem);
-                switch (ui->settingFilterPolicy->currentIndex()) {
-                case 0: // propagate only selected filter
-                    filterID = filterContainer->currentFilter();
-                    for (i = 0; i < itemCount[side]; i++) {
-                        oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
-                        oldSettings[filterID] = settings[filterID];
-                        ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
-                    }
-                    break;
-                case 1: // propagate all filter settings
-                    for (i = 0; i < itemCount[side]; i++) {
-                        ui->images->item(i, side)->setData(ImagePreferences, settings);
-                    }
-                    break;
-                }
-                break;
-//          default:
-//          case 0: // do not propagate;
-            }
         }
     }
 
@@ -160,7 +115,6 @@ void ImageTableWidget::filterChanged(QString oldFilterID)
     QMap<QString, QVariant> settings;
     QMap<QString, QVariant> oldSettings;
     QTableWidgetItem *item;
-    int fromRow, side, i;
 
     settings = filterContainer->getSettings();
     item = ui->images->currentItem();
@@ -177,33 +131,6 @@ void ImageTableWidget::filterChanged(QString oldFilterID)
     // update old Settungs and save the changes
     oldSettings[oldFilterID] = settings[oldFilterID];
     item->setData(ImagePreferences, oldSettings);
-
-    // and propagate them according to the settings policy
-    switch (ui->settingImagePolicy->currentIndex()) {
-    case 1: // propagate to all following images in this side
-        fromRow = ui->images->row(item);
-        side = ui->images->column(item);
-
-        for (i = fromRow; i < itemCount[side]; i++) {
-            oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
-            oldSettings[oldFilterID] = settings[oldFilterID];
-            ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
-        }
-        break;
-    case 2: // propagate to all images in this side
-        side = ui->images->column(item);
-        for (i = 0; i < itemCount[side]; i++) {
-            oldSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
-            oldSettings[oldFilterID] = settings[oldFilterID];
-            ui->images->item(i, side)->setData(ImagePreferences, oldSettings);
-        }
-        break;
-//    default:
-//    case 0: // do not propagate;
-    }
-
-
-
 }
 
 
@@ -662,8 +589,6 @@ void ImageTableWidget::clear()
     ui->images->setRowCount(0);
     itemCount[leftSide] = 0;
     itemCount[rightSide] = 0;
-    ui->settingFilterPolicy->setCurrentIndex(0);
-    ui->settingImagePolicy->setCurrentIndex(0);
 }
 
 void ImageTableWidget::exportToFolder(QString folder)
@@ -791,5 +716,48 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
 
 
 
+void ImageTableWidget::on_btnPropagateFollowingSameSide_clicked()
+{
+    QMap<QString, QVariant> filterSettings;
+    int row = ui->images->currentRow();
+    int side = ui->images->currentColumn();
 
+    QMap<QString, QVariant> settings = filterContainer->getSettings();
+    QString filterID = filterContainer->currentFilter();
+    for (int i = row; i < itemCount[side]; i++) {
+        filterSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+        filterSettings[filterID] = settings[filterID];
+        ui->images->item(i, side)->setData(ImagePreferences, filterSettings);
+    }
+}
+
+
+void ImageTableWidget::on_btnPropagateAllSameSide_clicked()
+{
+    QMap<QString, QVariant> filterSettings;
+    int side = ui->images->currentColumn();
+
+    QMap<QString, QVariant> settings = filterContainer->getSettings();
+    QString filterID = filterContainer->currentFilter();
+    for (int i = 0; i < itemCount[side]; i++) {
+        filterSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+        filterSettings[filterID] = settings[filterID];
+        ui->images->item(i, side)->setData(ImagePreferences, filterSettings);
+    }
+}
+
+void ImageTableWidget::on_btnPropagateAll_clicked()
+{
+    QMap<QString, QVariant> filterSettings;
+
+    for (int side=0; side <= 1; side++) {
+        QMap<QString, QVariant> settings = filterContainer->getSettings();
+        QString filterID = filterContainer->currentFilter();
+        for (int i = 0; i < itemCount[side]; i++) {
+            filterSettings = ui->images->item(i, side)->data(ImagePreferences).toMap();
+            filterSettings[filterID] = settings[filterID];
+            ui->images->item(i, side)->setData(ImagePreferences, filterSettings);
+        }
+    }
+}
 
