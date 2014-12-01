@@ -105,6 +105,8 @@ FilterContainer::~FilterContainer()
 /* Sets the image to be worked on. */
 void FilterContainer::setImage(QPixmap pixmap)
 {
+    // Settings the image on the fist filter results in recalculating the image for all filters,
+    // as the each filter emits a parameterChanged signal, which is read by the next filter.
     tabToFilter[0]->setImage(pixmap);
 
     int currentTab = std::min (tabToFilter.size(), currentIndex());

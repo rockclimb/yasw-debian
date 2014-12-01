@@ -17,6 +17,7 @@
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "constants.h"
 #include "basefilter.h"
 
 /*! \class BaseFilter

@@ -65,8 +65,8 @@ void LayoutWidget::setPixmap(QPixmap pixmap)
             && pxPageHeight == 0) {
         pxPageWidth = pixmap.width();
         pxPageHeight = pixmap.height();
-        updateFormSizes();
     }
+    updateFormSizes();
     if (!preview()) {
         ui->view->setPixmap(pixmap);
     }
@@ -199,6 +199,17 @@ void LayoutWidget::updateFormSizes()
             Constants::float2String(pxPageWidth / dpi * Constants::milimeterPerInch));
     ui->millimeterPageHeight->setText(
                 Constants::float2String(pxPageHeight / dpi * Constants::milimeterPerInch));
+
+    int inputWidth = inputPixmap.width();
+    int inputHeight = inputPixmap.height();
+    ui->pixelInputWidth->setText(Constants::float2String(inputWidth));
+    ui->pixelInputHeight->setText(Constants::float2String(inputHeight));
+    ui->inchInputWidth->setText(Constants::float2String(inputWidth / dpi));
+    ui->inchInputHeight->setText(Constants::float2String(inputHeight / dpi));
+    ui->millimeterInputWidth->setText(
+            Constants::float2String(inputWidth / dpi * Constants::milimeterPerInch));
+    ui->millimeterInputHeight->setText(
+                Constants::float2String(inputHeight / dpi * Constants::milimeterPerInch));
 }
 
 void LayoutWidget::setDPI(int newDpi)
@@ -265,7 +276,8 @@ void LayoutWidget::on_pageHeight_textEdited(const QString &strValue)
         ui->pageHeight->setStyleSheet("background-color: rgb(255, 0, 0);");
     } else {
         ui->pageHeight->setStyleSheet("");
-    }}
+    }
+}
 
 void LayoutWidget::on_horizontalAlignment_currentIndexChanged(int /*index*/)
 {

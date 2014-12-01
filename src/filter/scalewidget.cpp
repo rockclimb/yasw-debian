@@ -59,8 +59,8 @@ void ScaleWidget::setPixmap(QPixmap pixmap)
             && pxImageHeight == 0) {
         pxImageWidth = pixmap.width();
         pxImageHeight = pixmap.height();
-        updateFormSizes();
     }
+    updateFormSizes();
     if (!preview()) {
         ui->view->setPixmap(pixmap);
     }
@@ -147,7 +147,7 @@ void ScaleWidget::on_preview_toggled(bool checked)
         ui->view->setPixmap(inputPixmap);
 }
 
-// When a parameter is changed, the input and resulting Image Sizes are recalculated with this function.
+// When a parameter is changed, the input and resulting image Sizes are recalculated with this function.
 void ScaleWidget::updateFormSizes()
 {
     QString newImageWidth, newImageHeight;
@@ -164,6 +164,19 @@ void ScaleWidget::updateFormSizes()
             Constants::float2String(pxImageWidth / dpi * Constants::milimeterPerInch));
     ui->millimeterImageHeight->setText(
                 Constants::float2String(pxImageHeight / dpi * Constants::milimeterPerInch));
+
+    int inputWidth = inputPixmap.width();
+    int inputHeight = inputPixmap.height();
+    ui->pixelInputWidth->setText(Constants::float2String(inputWidth));
+    ui->pixelInputHeight->setText(Constants::float2String(inputHeight));
+    ui->inchInputWidth->setText(Constants::float2String(inputWidth / dpi));
+    ui->inchInputHeight->setText(Constants::float2String(inputHeight / dpi));
+    ui->millimeterInputWidth->setText(
+            Constants::float2String(inputWidth / dpi * Constants::milimeterPerInch));
+    ui->millimeterInputHeight->setText(
+                Constants::float2String(inputHeight / dpi * Constants::milimeterPerInch));
+
+
 }
 
 void ScaleWidget::setDPI(int newDpi)

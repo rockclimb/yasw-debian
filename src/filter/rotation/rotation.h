@@ -36,7 +36,7 @@ public:
     void settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings);
     QMap<QString, QVariant> dom2Settings(QDomElement &filterElement);
 
-private:
+protected:
     virtual QImage filter(QImage inputImage);
 
 

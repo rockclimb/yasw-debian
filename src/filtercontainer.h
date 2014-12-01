@@ -42,10 +42,10 @@ public:
     QPixmap getResultImage();
     QMap<QString, QVariant> getPageSize();
     QString currentFilter();
+    void setImage(QPixmap pixmap);
 
 public slots:
     void tabChanged(int index);
-    void setImage(QPixmap pixmap);
     void setSelectionColor(QColor color);
     void setBackgroundColor(QColor color);
     void setDisplayUnit(QString unit);

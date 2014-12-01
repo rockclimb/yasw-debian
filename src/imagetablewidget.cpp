@@ -67,8 +67,6 @@ void ImageTableWidget::setFilterContainer(FilterContainer *container)
 
     filterContainer = container;
 
-    connect (this, SIGNAL(pixmapChanged(QPixmap)),
-             filterContainer, SLOT(setImage(QPixmap)));
     // When a new filter is selected, propagate the changes to other images
     connect (filterContainer, SIGNAL(filterChanged(QString)),
              this, SLOT(filterChanged(QString)));
@@ -97,12 +95,12 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
     }
 
     if (newItem) {
+        filterContainer->setImage(QPixmap(newItem->data(ImageFileName).toString()));
         filterContainer->setSettings(newItem->data(ImagePreferences).toMap());
-        emit pixmapChanged(QPixmap(newItem->data(ImageFileName).toString()));
     } else {
         // FIXME: can this happen?
         qDebug() << "ImageTableWidget::currentItemChanged to an empty item";
-        emit pixmapChanged(QPixmap());
+        filterContainer->setImage(QPixmap());
         // Reset Filter Settings as no image is selected
         filterContainer->setSettings(QMap<QString, QVariant>());
     }
