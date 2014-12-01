@@ -41,6 +41,13 @@ public:
     enum verticalAlignmentEnum {TopVAlignment, CenterVAlignment, BottomVAlignment};
     static QStringList horizontalAlignment;
     static QStringList verticalAlignment;
+
+    static QString float2String(qreal n, int precision = 3);
+
+private:
+    // Code optimisation: define these QRegExp once and loading a project is much faster.
+    static QRegExp trailZero;
+    static QRegExp trailDot;
 };
 
 

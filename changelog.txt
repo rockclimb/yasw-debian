@@ -47,7 +47,7 @@ User requests:
  - Checkbox "Enable Filter" works now - Fixes #27
  - Changes are now only propagated when a user selects the according button, to avoid unwanted propagations. Fixes #24
 WIP 0.6
-- Fine tune Layout Filter (diplaying sizes with zeros, display input image size)
+- Fine tune Layout Filter (display input image size)
 - PDF Export probably Broken - see FilterContainer::getPageSize()
 - Color Correction Filter (Work in Progress)
 

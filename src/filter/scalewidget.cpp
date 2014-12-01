@@ -151,19 +151,19 @@ void ScaleWidget::on_preview_toggled(bool checked)
 void ScaleWidget::updateFormSizes()
 {
     QString newImageWidth, newImageHeight;
-    newImageWidth = QString::number(pxImageWidth * factorPixeltoDisplayUnit, 'f', 3);
-    newImageHeight = QString::number(pxImageHeight * factorPixeltoDisplayUnit, 'f', 3);
+    newImageWidth = Constants::float2String(pxImageWidth * factorPixeltoDisplayUnit);
+    newImageHeight = Constants::float2String(pxImageHeight * factorPixeltoDisplayUnit);
 
     ui->imageWidth->setText(newImageWidth);
     ui->imageHeight->setText(newImageHeight);
-    ui->pixelImageWidth->setText(QString::number(pxImageWidth, 'f', 3));
-    ui->pixelImageHeight->setText(QString::number(pxImageHeight, 'f', 3));
-    ui->inchImageWidth->setText(QString::number(pxImageWidth / dpi, 'f', 3));
-    ui->inchImageHeight->setText(QString::number(pxImageHeight / dpi, 'f', 3));
+    ui->pixelImageWidth->setText(Constants::float2String(pxImageWidth));
+    ui->pixelImageHeight->setText(Constants::float2String(pxImageHeight));
+    ui->inchImageWidth->setText(Constants::float2String(pxImageWidth / dpi));
+    ui->inchImageHeight->setText(Constants::float2String(pxImageHeight / dpi));
     ui->millimeterImageWidth->setText(
-            QString::number(pxImageWidth / dpi * Constants::milimeterPerInch, 'f', 3));
+            Constants::float2String(pxImageWidth / dpi * Constants::milimeterPerInch));
     ui->millimeterImageHeight->setText(
-                QString::number(pxImageHeight / dpi * Constants::milimeterPerInch, 'f', 3));
+                Constants::float2String(pxImageHeight / dpi * Constants::milimeterPerInch));
 }
 
 void ScaleWidget::setDPI(int newDpi)

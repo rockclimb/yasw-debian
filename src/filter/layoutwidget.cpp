@@ -186,19 +186,19 @@ void LayoutWidget::on_preview_toggled(bool checked)
 void LayoutWidget::updateFormSizes()
 {
     QString newPageWidth, newPageHeight;
-    newPageWidth = QString::number(pxPageWidth * factorPixeltoDisplayUnit, 'f', 3);
-    newPageHeight = QString::number(pxPageHeight * factorPixeltoDisplayUnit, 'f', 3);
+    newPageWidth = Constants::float2String(pxPageWidth * factorPixeltoDisplayUnit);
+    newPageHeight = Constants::float2String(pxPageHeight * factorPixeltoDisplayUnit);
 
     ui->pageWidth->setText(newPageWidth);
     ui->pageHeight->setText(newPageHeight);
-    ui->pixelPageWidth->setText(QString::number(pxPageWidth, 'f', 3));
-    ui->pixelPageHeight->setText(QString::number(pxPageHeight, 'f', 3));
-    ui->inchPageWidth->setText(QString::number(pxPageWidth / dpi, 'f', 3));
-    ui->inchPageHeight->setText(QString::number(pxPageHeight / dpi, 'f', 3));
+    ui->pixelPageWidth->setText(Constants::float2String(pxPageWidth));
+    ui->pixelPageHeight->setText(Constants::float2String(pxPageHeight));
+    ui->inchPageWidth->setText(Constants::float2String(pxPageWidth / dpi));
+    ui->inchPageHeight->setText(Constants::float2String(pxPageHeight / dpi));
     ui->millimeterPageWidth->setText(
-            QString::number(pxPageWidth / dpi * Constants::milimeterPerInch, 'f', 3));
+            Constants::float2String(pxPageWidth / dpi * Constants::milimeterPerInch));
     ui->millimeterPageHeight->setText(
-                QString::number(pxPageHeight / dpi * Constants::milimeterPerInch, 'f', 3));
+                Constants::float2String(pxPageHeight / dpi * Constants::milimeterPerInch));
 }
 
 void LayoutWidget::setDPI(int newDpi)

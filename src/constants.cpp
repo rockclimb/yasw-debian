@@ -35,3 +35,16 @@ QStringList Constants::horizontalAlignment = QStringList() << "Left"
 QStringList Constants::verticalAlignment = QStringList() << "Top"
                                                   << "Center"
                                                   << "Bottom";
+
+QRegExp Constants::trailZero = QRegExp("0+$");
+QRegExp Constants::trailDot = QRegExp("\\.$");
+
+
+QString Constants::float2String(qreal n, int precision)
+{
+    QString str = QString::number(n, 'f', precision);
+    str.remove(trailZero);
+    str.remove(trailDot);
+
+    return str;
+}
