@@ -95,6 +95,8 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
     }
 
     if (newItem) {
+        // NOTE: setting the image an setting the settings results in recaluling twice the image
+        // There might be a performance improvement here.
         filterContainer->setImage(QPixmap(newItem->data(ImageFileName).toString()));
         filterContainer->setSettings(newItem->data(ImagePreferences).toMap());
     } else {

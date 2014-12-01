@@ -87,6 +87,8 @@ void LayoutFilter::setSettings(QMap<QString, QVariant> settings)
 
     mustRecalculate = true;
     loadingSettings = false;
+
+    emit parameterChanged();
 }
 
 void LayoutFilter::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)

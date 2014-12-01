@@ -96,6 +96,7 @@ void Rotation::setSettings(QMap<QString, QVariant> settings)
 
     mustRecalculate = true;
     loadingSettings = false;
+    emit parameterChanged();
 }
 
 void Rotation::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)

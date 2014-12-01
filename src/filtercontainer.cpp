@@ -106,7 +106,7 @@ FilterContainer::~FilterContainer()
 void FilterContainer::setImage(QPixmap pixmap)
 {
     // Settings the image on the fist filter results in recalculating the image for all filters,
-    // as the each filter emits a parameterChanged signal, which is read by the next filter.
+    // as the each filter emits a parameterChanged signal, which is recieved by the next filter.
     tabToFilter[0]->setImage(pixmap);
 
     int currentTab = std::min (tabToFilter.size(), currentIndex());
@@ -184,6 +184,9 @@ void FilterContainer::setSettings(QMap<QString, QVariant> settings)
             filter->setSettings(QMap<QString, QVariant>());
         }
     }
+
+    int currentTab = std::min (tabToFilter.size(), currentIndex());
+    tabToFilter[currentTab]->refresh();
 }
 
 /* Fills the parent with filter DomEmelents and ther parameters

@@ -86,6 +86,8 @@ void ScaleFilter::setSettings(QMap<QString, QVariant> settings)
 
     mustRecalculate = true;
     loadingSettings = false;
+
+    emit parameterChanged();
 }
 
 void ScaleFilter::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)

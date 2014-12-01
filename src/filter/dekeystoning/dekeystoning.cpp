@@ -81,6 +81,8 @@ void Dekeystoning::setSettings(QMap<QString, QVariant> settings)
 
     mustRecalculate = true;
     loadingSettings = false;
+
+    emit parameterChanged();
 }
 
 void Dekeystoning::settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> settings)
