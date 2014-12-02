@@ -52,7 +52,6 @@ public slots:
     void imageUp();
     void imageDown();
     void removeSelected();
-    void filterChanged(QString oldFilterID);
     void moveImageLeft();
     void moveImageRight();
     void selectPreviousImage();

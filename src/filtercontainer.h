@@ -61,10 +61,5 @@ signals:
     void backgroundColorChanged(QColor color);
     void displayUnitChanged(QString unit);
     void dpiChanged(int dpi);
-    // Emited when a user changes the Tab
-    // Used by imageTableWidget to propagate the settings to other images.
-    void filterChanged(QString oldFilterID);
-
-
 };
 #endif // FILTERCONTAINER_H

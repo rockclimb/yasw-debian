@@ -138,8 +138,6 @@ void FilterContainer::tabChanged(int index)
     int currentTab = std::min (tabToFilter.size(), currentIndex());
     tabToFilter[currentTab]->refresh();
     oldIndex = index;
-
-    emit filterChanged(tabToFilter[oldIndex]->getIdentifier());
 }
 
 /*! \brief Get settings from the filters.

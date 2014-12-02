@@ -66,10 +66,6 @@ void ImageTableWidget::setFilterContainer(FilterContainer *container)
     }
 
     filterContainer = container;
-
-    // When a new filter is selected, propagate the changes to other images
-    connect (filterContainer, SIGNAL(filterChanged(QString)),
-             this, SLOT(filterChanged(QString)));
 }
 
 
@@ -107,32 +103,6 @@ void ImageTableWidget::currentItemChanged(QTableWidgetItem *newItem, QTableWidge
         filterContainer->setSettings(QMap<QString, QVariant>());
     }
 }
-
-/* \brief Propagate settings to other images,
-   if the settings changed and if there is such a policy activated */
-void ImageTableWidget::filterChanged(QString oldFilterID)
-{
-    QMap<QString, QVariant> settings;
-    QMap<QString, QVariant> oldSettings;
-    QTableWidgetItem *item;
-
-    settings = filterContainer->getSettings();
-    item = ui->images->currentItem();
-    if (item == NULL) { // There is no item under selection
-        return;
-    }
-    oldSettings = item->data(ImagePreferences).toMap();
-
-    if (settings[oldFilterID] == oldSettings[oldFilterID]) {
-        // do nothing
-        return;
-    }
-
-    // update old Settungs and save the changes
-    oldSettings[oldFilterID] = settings[oldFilterID];
-    item->setData(ImagePreferences, oldSettings);
-}
-
 
 /** \brief Slot called from the UI to add an one or many images */
 void ImageTableWidget::insertImage()
