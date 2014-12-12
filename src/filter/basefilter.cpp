@@ -97,7 +97,7 @@ QString BaseFilter::getName()
 
 void BaseFilter::inputImageChanged()
 {
-    reloadInputImage = true;
+    reloadInputImage = true;    // This implies mustRecalculate = true in refresh();
     // Tell folowing filter that my parameter changed.
     emit parameterChanged();
 }
