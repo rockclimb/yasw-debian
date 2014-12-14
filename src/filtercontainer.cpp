@@ -210,11 +210,6 @@ QMap<QString, QVariant> FilterContainer::dom2Settings(QDomElement &imageElement)
     BaseFilter *filter;
     QMap<QString, QVariant> settings;
 
-//    QString s;
-//    QTextStream str(&s, QIODevice::WriteOnly);
-//    imageElement.save(str, 2);
-//    qDebug() << qPrintable(s);
-
     filterElement = imageElement.firstChildElement();
 
     while (!filterElement.isNull()) {
@@ -235,26 +230,6 @@ QPixmap FilterContainer::getResultImage()
     int maxTab = tabToFilter.size() - 1;
 
     return tabToFilter[maxTab]->getOutputImage();
-}
-
-/** \brief returns the Size of the current image.
-
-    \returns QMap<QString, QVariant>; keys are size (QSize), and
-        unit (enum QPrinter::Unit)
-*/
-QMap<QString, QVariant> FilterContainer::getPageSize()
-{
-    QMap<QString, QVariant> imageSize;
-    qreal width, height;
-
-    // FIXME: LayoutFilter
-    width = 0; // scalingFilter->pageMilimeterWidth();
-    height = 0; // scalingFilter->pageMilimeterHeight();
-
-    imageSize["unit"] = QPrinter::Millimeter;
-    imageSize["size"] = QSize(width, height);
-
-    return imageSize;
 }
 
 /** \brief Returns the identifiert of the current filter */

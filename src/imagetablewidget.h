@@ -43,7 +43,7 @@ public:
     bool loadProjectParameters(QDomElement &rootElement);
     void clear();
     void exportToFolder(QString folder);
-    void exportToPdf(QString pdfFile);
+    void exportToPdf(QString pdfFile, int DPI);
 
 public slots:
     void currentItemChanged(QTableWidgetItem *newItem, QTableWidgetItem *previousItem);

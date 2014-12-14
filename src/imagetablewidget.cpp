@@ -29,7 +29,6 @@
 
 #include "ui_imagetablewidget.h"
 
-//TODO: comment this file, most comments from the old imagelistwidget shall match
 /* FIXME: I am very unhapy with the design of this ImageTableWidget. This is a dirty
    hack that has to be rewritten. It is a lot of work that noone sees but has to be
    rewritten before nice features like drag&drop comme in play.
@@ -159,7 +158,6 @@ void ImageTableWidget::insertImage()
 
 /* Inserts an image at the current selection on the given side and selects it.
 */
-// FIXME: handle fileName = "" (empty image)
 void ImageTableWidget::addImage(QString fileName, ImageTableWidget::ImageSide side, QMap<QString, QVariant> settings)
 {
     QTableWidgetItem *item;
@@ -606,19 +604,22 @@ void ImageTableWidget::exportToFolder(QString folder)
     ui->images->setCurrentItem(currentItem);
 }
 
-void ImageTableWidget::exportToPdf(QString pdfFile)
+void ImageTableWidget::exportToPdf(QString pdfFile, int DPI)
 {
     int row;
+    qreal w = 0;
+    qreal h = 0;
     bool firstPage = true;
     QTableWidgetItem *currentItem = ui->images->currentItem();
     QPixmap pixmap;
     QPainter painter;
-    QMap<QString, QVariant> imageSize;
 
-    QPrinter *printer = new QPrinter();
-    printer->setOutputFormat(QPrinter::PdfFormat);
-    printer->setFullPage(true);
-    printer->setOutputFileName(pdfFile);
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setFullPage(true);
+    printer.setOutputFileName(pdfFile);
+    // This seems to have no effect. Setting it doesn't hurt...
+    printer.setResolution(DPI);
 
     int progress = 0;
     int maxProgress = qMax(itemCount[leftSide], itemCount[rightSide]);
@@ -631,53 +632,35 @@ void ImageTableWidget::exportToPdf(QString pdfFile)
         progress++;
         if (progressDialog.wasCanceled()) {
             painter.end();
-            delete(printer);
             ui->images->setCurrentItem(currentItem);
             return;
         }
-        // Export page
-        // left side
-        if (row < itemCount[leftSide]) {       // is one item availabla at this row?
-            ui->images->setCurrentCell(row, leftSide);
-            pixmap = filterContainer->getResultImage();
+        // Export pages
+        // handle both side with one peace of code. side values: 0 = leftSide, 1 = rightSide
+        for (int side = 0; side <= 1; side++) {
+            if (row < itemCount[side]) {       // is one item available at this row?
+                ui->images->setCurrentCell(row, side);
+                pixmap = filterContainer->getResultImage();
 
-            /* set Paper size from the scaling Filter */
-            imageSize = filterContainer->getPageSize();
-            printer->setPaperSize(QSize(imageSize["size"].toSize()),
-                                  static_cast<QPrinter::Unit>(imageSize["unit"].toInt()));
+                // as QPrinter does not handle DPI right, we have set the paper size in inches.
+                w = (qreal) pixmap.width() / DPI;
+                h = (qreal) pixmap.height() / DPI;
+                printer.setPaperSize(QSizeF(w, h), QPrinter::Inch);
 
-            // we don't need a new page for the first page or we would have a blank page
-            if (firstPage == true) {
-                firstPage = false;
-                painter.begin(printer);
-            } else {
-                printer->newPage();
+                // we don't need a new page for the first page or we would have a blank page
+                if (firstPage == true) {
+                    firstPage = false;
+                    painter.begin(&printer);
+                } else {
+                    printer.newPage();
+                }
+
+                painter.drawPixmap(printer.pageRect(), pixmap);
             }
-            painter.drawPixmap(printer->pageRect(), pixmap);
-        }
-        // right side
-        if (row < itemCount[rightSide]) {       // is one item availabla at this row?
-            ui->images->setCurrentCell(row, rightSide);
-            pixmap = filterContainer->getResultImage();
-
-            /* set Paper size from the scaling Filter */
-            imageSize = filterContainer->getPageSize();
-            printer->setPaperSize(QSize(imageSize["size"].toSize()),
-                                  static_cast<QPrinter::Unit>(imageSize["unit"].toInt()));
-
-            // we don't need a new page for the first page or we would have a blank page
-            if (firstPage == true) {
-                firstPage = false;
-                painter.begin(printer);
-            } else {
-                printer->newPage();
-            }
-            painter.drawPixmap(printer->pageRect(), pixmap);
         }
     }
 
     painter.end();
-    delete(printer);
 
     progressDialog.setValue(maxProgress);
     ui->images->setCurrentItem(currentItem);

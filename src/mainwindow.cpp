@@ -291,7 +291,7 @@ void MainWindow::exportToPdf()
     if (exportFile.length() == 0)
         return;
 
-    ui->imageList->exportToPdf(exportFile);
+    ui->imageList->exportToPdf(exportFile, preferencesDialog->DPI());
 }
 
 /** \brief Close curent project,

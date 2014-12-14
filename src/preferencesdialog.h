@@ -40,6 +40,7 @@ public:
     void setSettings(QSettings *newSettings);
     QString displayUnit();
     void setDPI(int newDpi);
+    int DPI();
 
     // save YASW into XML
     void saveProjectParameters(QDomDocument &doc, QDomElement &rootElement);

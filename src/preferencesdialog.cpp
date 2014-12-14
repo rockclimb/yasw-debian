@@ -97,6 +97,11 @@ void PreferencesDialog::setDPI(int newDpi)
     emit(dpiChanged(dpi));
 }
 
+int PreferencesDialog::DPI()
+{
+    return dpi;
+}
+
 void PreferencesDialog::saveProjectParameters(QDomDocument &doc, QDomElement &rootElement)
 {
     QDomElement parameter = doc.createElement("global");

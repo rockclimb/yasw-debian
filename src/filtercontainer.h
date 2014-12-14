@@ -40,7 +40,6 @@ public:
     void settings2Dom(QDomDocument &doc, QDomElement &imageElement, QMap<QString, QVariant> settings);
     QMap<QString, QVariant> dom2Settings(QDomElement &imageElement);
     QPixmap getResultImage();
-    QMap<QString, QVariant> getPageSize();
     QString currentFilter();
     void setImage(QPixmap pixmap);
 
