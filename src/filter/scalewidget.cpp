@@ -141,9 +141,10 @@ void ScaleWidget::setBackgroundColor(QColor color)
 
 void ScaleWidget::on_preview_toggled(bool checked)
 {
-    if (checked)
-        ui->view->setPixmap(previewPixmap);
-    else
+    if (checked) {
+        // This does recalculate the output image if necessary and sets the preview Image.
+        emit previewChecked();
+    } else
         ui->view->setPixmap(inputPixmap);
 }
 

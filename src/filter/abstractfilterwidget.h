@@ -53,6 +53,7 @@ protected:
 signals:
     void parameterChanged();
     void enableFilterToggled(bool checked);
+    void previewChecked();
 
 };
 

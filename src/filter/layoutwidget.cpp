@@ -176,9 +176,10 @@ void LayoutWidget::setBackgroundColor(QColor color)
 
 void LayoutWidget::on_preview_toggled(bool checked)
 {
-    if (checked)
-        ui->view->setPixmap(previewPixmap);
-    else
+    if (checked) {
+        // This does recalculate the output image if necessary and sets the preview Image.
+        emit previewChecked();
+    } else
         ui->view->setPixmap(inputPixmap);
 }
 
@@ -256,7 +257,6 @@ void LayoutWidget::on_pageHeight_editingFinished()
     emit parameterChanged();
 }
 
-// TODO: minimal width / height ist max(0.001, width of input image)
 void LayoutWidget::on_pageWidth_textEdited(const QString &strValue)
 {
     qreal width = strValue.toDouble();

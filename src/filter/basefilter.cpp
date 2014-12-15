@@ -123,6 +123,12 @@ void BaseFilter::enableFilterToggled(bool checked)
     }
 }
 
+void BaseFilter::previewChecked()
+{
+    refresh();
+    filterWidget->setPreview(outputPixmap);
+}
+
 /*! \brief virtual function to get the Filter settings
 
     @returns A QMap of keys (QString) to settings (QVariant).

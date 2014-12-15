@@ -49,8 +49,6 @@ private slots:
     void on_rotateLeft_clicked();
     void on_rotateRight_clicked();
     void on_preview_toggled(bool checked);
-
-
     void on_enable_toggled(bool checked);
 
 private:

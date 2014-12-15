@@ -44,6 +44,9 @@ ScaleFilter::ScaleFilter(QObject * parent) : BaseFilter(parent)
     // I would have love to connect one for all in Basefilter...
     connect(widget, SIGNAL(enableFilterToggled(bool)),
             this, SLOT(enableFilterToggled(bool)));
+    connect(widget, SIGNAL(previewChecked()),
+            this, SLOT(previewChecked()));
+
 }
 
 QString ScaleFilter::getIdentifier()

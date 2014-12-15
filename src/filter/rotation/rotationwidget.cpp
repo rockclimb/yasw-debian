@@ -65,9 +65,8 @@ void RotationWidget::on_rotateRight_clicked()
 void RotationWidget::on_preview_toggled(bool checked)
 {
     if (checked) {
-        // recalculate preview Pixmap if necessery. FIXME: this recalculates every time, even of not needed.
-        emit parameterChanged();
-        ui->view->setPixmap(previewPixmap);
+        // This does recalculate the output image if necessary and sets the preview Image.
+        emit previewChecked();
     } else {
         ui->view->setPixmap(inputPixmap);
     }

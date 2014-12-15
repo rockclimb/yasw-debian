@@ -38,6 +38,9 @@ ColorCorrection::ColorCorrection(QObject *parent) : BaseFilter(parent)
     // I would have love to connect one for all in Basefilter...
     connect(widget, SIGNAL(enableFilterToggled(bool)),
             this, SLOT(enableFilterToggled(bool)));
+    connect(widget, SIGNAL(previewChecked()),
+            this, SLOT(previewChecked()));
+
 }
 
 QString ColorCorrection::getIdentifier()
@@ -77,10 +80,21 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
 
     QColor color;
 
-    //FIXME: should default to 255,255,255 when no settings present.
-    color.setRed(settings["whiteRedValue"].toInt());
-    color.setGreen(settings["whiteGreenValue"].toInt());
-    color.setBlue(settings["whiteBlueValue"].toInt());
+    if (settings.contains("whiteRedValue"))
+        color.setRed(settings["whiteRedValue"].toInt());
+    else
+        color.setRed(255);
+
+    if (settings.contains("whiteGreenValue"))
+        color.setGreen(settings["whiteGreenValue"].toInt());
+    else
+        color.setGreen(255);
+
+    if (settings.contains("whiteBlueValue"))
+        color.setBlue(settings["whiteBlueValue"].toInt());
+    else
+        color.setBlue(255);
+
     widget->setWhitePoint(color);
 
     color.setRed(settings["blackRedValue"].toInt());

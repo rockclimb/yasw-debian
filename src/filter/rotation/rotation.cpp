@@ -30,10 +30,12 @@ Rotation::Rotation(QObject * parent) : BaseFilter(parent)
                 widget, SLOT(setBackgroundColor(QColor)));
     }
 
-    // Connect seems only to work when applied to the inherited classes
+    // TODO: Connect seems only to work when applied to the inherited classes
     // I would have love to connect one for all in Basefilter...
     connect(widget, SIGNAL(enableFilterToggled(bool)),
             this, SLOT(enableFilterToggled(bool)));
+    connect(widget, SIGNAL(previewChecked()),
+            this, SLOT(previewChecked()));
 }
 
 /** \brief Returns a universal name for this filter.

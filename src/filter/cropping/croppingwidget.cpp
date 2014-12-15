@@ -20,8 +20,8 @@ void CroppingWidget::on_preview_toggled(bool checked)
 {
     if (checked) {
         ui->view->resetRectangleMoved();
-        emit parameterChanged();
-        ui->view->setPixmap(previewPixmap);
+        // This does recalculate the output image if necessary and sets the preview Image.
+        emit previewChecked();
     } else {
         ui->view->setPixmap(inputPixmap);
     }

@@ -42,8 +42,7 @@ User requests:
  - Checkbox "Enable Filter" works now - Fixes #27
  - Changes are now only propagated when a user selects the according button, to avoid unwanted propagations. Fixes #24
 WIP 0.6
-- PDF Export probably Broken - see FilterContainer::getPageSize()
-- Color Correction Filter (Work in Progress)
+ - Color Correction Filter (Work in Progress)
 
 20130629; YASW 0.5 "release few but release often"
  - Key shortcuts

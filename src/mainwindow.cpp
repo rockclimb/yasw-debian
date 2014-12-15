@@ -99,8 +99,6 @@ void MainWindow::on_action_SaveAs_triggered()
     QString fileName;
 
     fileName = QFileDialog::getSaveFileName(this, tr("Save File"),
-                               // FIXME: use last project name
-                               // FIXME: save last path
                                QDir::currentPath() + "/project.yasw",
                                tr("yasw projects (*.yasw);;All files (* *.*"));
 
@@ -282,10 +280,15 @@ void MainWindow::exportToJpeg()
 
 void MainWindow::exportToPdf()
 {
+    QString pdfFilename = QDir::currentPath() + "/file.pdf";
+
+    if (projectFileName.length() > 0) {
+        QFileInfo fi(projectFileName);
+        pdfFilename = fi.path() + "/" + fi.baseName() + ".pdf";
+    }
+
     QString exportFile = QFileDialog::getSaveFileName(this, tr("Export to PDF"),
-                               // FIXME: use project name
-                               // FIXME: save last path
-                               QDir::currentPath() + "/file.pdf",
+                               pdfFilename,
                                tr("PDF Files (*.pdf);;All files (* *.*"));
 
     if (exportFile.length() == 0)

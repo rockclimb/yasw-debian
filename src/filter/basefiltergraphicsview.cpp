@@ -35,7 +35,7 @@ BaseFilterGraphicsView::~BaseFilterGraphicsView()
     delete scene; // this includes all items in the scene so pixmapItem must not be explicitly deleted.
 }
 
-//FIXME: add another possibility to zoom (buttons, ctrl+-..).
+//TODO: add another possibility to zoom (buttons, ctrl+-..).
 void
 BaseFilterGraphicsView::wheelEvent(QWheelEvent *event)
 {

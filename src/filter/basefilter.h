@@ -59,6 +59,7 @@ public slots:
     /* Parameter for the Filter changed through user intercaction */
     void widgetParameterChanged();
     void enableFilterToggled(bool checked);
+    void previewChecked();
 signals:
     /* Yell that my parameter (this includes input image) changed and that one need to reload my FilteredImage */
     void parameterChanged();

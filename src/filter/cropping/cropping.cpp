@@ -36,6 +36,8 @@ Cropping::Cropping(QObject *parent)
     // I would have love to connect one for all in Basefilter...
     connect(widget, SIGNAL(enableFilterToggled(bool)),
             this, SLOT(enableFilterToggled(bool)));
+    connect(widget, SIGNAL(previewChecked()),
+            this, SLOT(previewChecked()));
 }
 
 QImage Cropping::filter(QImage inputImage)
