@@ -60,14 +60,10 @@ QMap<QString, QVariant> ColorCorrection::getSettings()
     QColor color;
 
     color = widget->whitePoint();
-    settings["whiteRedValue"] = color.red();
-    settings["whiteGreenValue"] = color.green();
-    settings["whiteBlueValue"] = color.blue();
+    settings["whitepoint"] = color.name();
 
     color = widget->blackPoint();
-    settings["blackRedValue"] = color.red();
-    settings["blackGreenValue"] = color.green();
-    settings["blackBlueValue"] = color.blue();
+    settings["blackpoint"] = color.name();
 
     settings["enabled"] = filterEnabled;
 
@@ -80,26 +76,16 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
 
     QColor color;
 
-    if (settings.contains("whiteRedValue"))
-        color.setRed(settings["whiteRedValue"].toInt());
+    if (settings.contains("whitepoint"))
+        color.setNamedColor(settings["whitepoint"].toString());
     else
-        color.setRed(255);
-
-    if (settings.contains("whiteGreenValue"))
-        color.setGreen(settings["whiteGreenValue"].toInt());
-    else
-        color.setGreen(255);
-
-    if (settings.contains("whiteBlueValue"))
-        color.setBlue(settings["whiteBlueValue"].toInt());
-    else
-        color.setBlue(255);
-
+        color = Qt::white;
     widget->setWhitePoint(color);
 
-    color.setRed(settings["blackRedValue"].toInt());
-    color.setGreen(settings["blackGreenValue"].toInt());
-    color.setBlue(settings["blackBlueValue"].toInt());
+    if (settings.contains("blackpoint"))
+        color.setNamedColor(settings["blackpoint"].toString());
+    else
+        color = Qt::black;
     widget->setBlackPoint(color);
 
     if (settings.contains("enabled"))
@@ -109,6 +95,14 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
 
     mustRecalculate = true;
     loadingSettings = false;
+}
+
+void ColorCorrection::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)
+{
+}
+
+QMap<QString, QVariant> ColorCorrection::dom2Settings(QDomElement &filterElement)
+{
 }
 
 

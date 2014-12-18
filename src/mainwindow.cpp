@@ -117,7 +117,6 @@ void MainWindow::on_action_SaveAs_triggered()
   */
 bool MainWindow::saveProjectSettings(QString fileName)
 {
-    // FIXME: Save QStream version and yast Version
     QFile file(fileName);
     if (!file.open(QFile::WriteOnly | QFile::Text)) {
         // Failure

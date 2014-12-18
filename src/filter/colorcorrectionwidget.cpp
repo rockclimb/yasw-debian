@@ -1,21 +1,32 @@
+/*
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
+ *
+ * This file is part of YASW (Yet Another Scan Wizard).
+ *
+ * YASW is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * YASW is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
+ */
 #include "colorcorrectionwidget.h"
 #include "ui_colorcorrectionwidget.h"
+
 #include <QDebug>
+#include <QColorDialog>
 
 ColorCorrectionWidget::ColorCorrectionWidget(QWidget *parent) :
     AbstractFilterWidget(parent),
     ui(new Ui::ColorCorrectionWidget)
 {
     ui->setupUi(this);
-
-    // Only allow values between 0 and 255 for RGB colors
-    intValidator = new QIntValidator(0,255);
-    ui->whiteRedValue->setValidator(intValidator);
-    ui->whiteGreenValue->setValidator(intValidator);
-    ui->whiteBlueValue->setValidator(intValidator);
-    ui->blackRedValue->setValidator(intValidator);
-    ui->blackGreenValue->setValidator(intValidator);
-    ui->blackBlueValue->setValidator(intValidator);
 
     connect(ui->view, SIGNAL(pixmapClicked(QColor)),
             this, SLOT(imageClicked(QColor)));
@@ -50,24 +61,12 @@ bool ColorCorrectionWidget::preview()
 
 QColor ColorCorrectionWidget::whitePoint()
 {
-    QColor color;
-
-    color.setRed(ui->whiteRedValue->text().toInt());
-    color.setGreen(ui->whiteGreenValue->text().toInt());
-    color.setBlue(ui->whiteBlueValue->text().toInt());
-
-    return color;
+    return whitepoint;
 }
 
 QColor ColorCorrectionWidget::blackPoint()
 {
-    QColor color;
-
-    color.setRed(ui->blackRedValue->text().toInt());
-    color.setGreen(ui->blackGreenValue->text().toInt());
-    color.setBlue(ui->blackBlueValue->text().toInt());
-
-    return color;
+    return blackpoint;
 }
 
 void ColorCorrectionWidget::on_whiteReset_clicked()
@@ -83,17 +82,19 @@ void ColorCorrectionWidget::on_blackReset_clicked()
 
 void ColorCorrectionWidget::setWhitePoint(QColor white)
 {
-    ui->whiteRedValue->setText(QString::number(white.red()));
-    ui->whiteGreenValue->setText(QString::number(white.green()));
-    ui->whiteBlueValue->setText(QString::number(white.blue()));
+    whitepoint = white;
+    QString whiteName = whitepoint.name();
+    ui->whitepoint->setText(whiteName);
+    ui->whitepoint->setStyleSheet("background-color: " + whiteName + ";");
     emit parameterChanged();
 }
 
 void ColorCorrectionWidget::setBlackPoint(QColor black)
 {
-    ui->blackRedValue->setText(QString::number(black.red()));
-    ui->blackGreenValue->setText(QString::number(black.green()));
-    ui->blackBlueValue->setText(QString::number(black.blue()));
+    blackpoint = black;
+    QString blackName = blackpoint.name();
+    ui->blackpoint->setText(blackName);
+    ui->blackpoint->setStyleSheet("background-color: " + blackName + "; color: rgb(255, 255, 255);");
     emit parameterChanged();
 }
 
@@ -128,44 +129,60 @@ void ColorCorrectionWidget::setBackgroundColor(QColor color)
     ui->view->setBackgroundBrush(QBrush(color));
 }
 
-// While Setting a point, the text of the button changes.
-void ColorCorrectionWidget::on_whiteSetPoint_clicked()
-{
-    if (setWhitePointClicked) {
-        ui->whiteSetPoint->setText(tr("Set"));
-        setWhitePointClicked = false;
-    } else {
-        ui->whiteSetPoint->setText(tr("Done"));
-        setWhitePointClicked = true;
-    }
+//// While Setting a point, the text of the button changes.
+//void ColorCorrectionWidget::on_whiteSetPoint_clicked()
+//{
+//    if (setWhitePointClicked) {
+//        ui->whiteSetPoint->setText(tr("Set"));
+//        setWhitePointClicked = false;
+//    } else {
+//        ui->whiteSetPoint->setText(tr("Done"));
+//        setWhitePointClicked = true;
+//    }
 
-    // deaktivate setting black point if necessery
-    if (setBlackPointClicked) {
-        ui->blackSetPoint->setText(tr("Set"));
-        setBlackPointClicked = false;
-    }
-}
+//    // deaktivate setting black point if necessery
+//    if (setBlackPointClicked) {
+//        ui->blackSetPoint->setText(tr("Set"));
+//        setBlackPointClicked = false;
+//    }
+//}
 
 
 
-void ColorCorrectionWidget::on_blackSetPoint_clicked()
-{
-    if (setBlackPointClicked) {
-        ui->blackSetPoint->setText(tr("Set"));
-        setBlackPointClicked = false;
-    } else {
-        ui->blackSetPoint->setText(tr("Done"));
-        setBlackPointClicked = true;
-    }
+//void ColorCorrectionWidget::on_blackSetPoint_clicked()
+//{
+//    if (setBlackPointClicked) {
+//        ui->blackSetPoint->setText(tr("Set"));
+//        setBlackPointClicked = false;
+//    } else {
+//        ui->blackSetPoint->setText(tr("Done"));
+//        setBlackPointClicked = true;
+//    }
 
-    // deaktivate setting black point if necessery
-    if (setWhitePointClicked) {
-        ui->whiteSetPoint->setText(tr("Set"));
-        setWhitePointClicked = false;
-    }
-}
+//    // deaktivate setting black point if necessery
+//    if (setWhitePointClicked) {
+//        ui->whiteSetPoint->setText(tr("Set"));
+//        setWhitePointClicked = false;
+//    }
+//}
 
 void ColorCorrectionWidget::on_enable_toggled(bool checked)
 {
     emit enableFilterToggled(checked);
+}
+
+void ColorCorrectionWidget::on_whitepoint_clicked()
+{
+    QColor color = QColorDialog::getColor(whitepoint, this, tr("Choose whitepoint"));
+    if (color.isValid()) {
+        setWhitePoint(color);
+    }
+}
+
+void ColorCorrectionWidget::on_blackpoint_clicked()
+{
+    QColor color = QColorDialog::getColor(blackpoint, this, tr("Choose blackpoint"));
+    if (color.isValid()) {
+        setBlackPoint(color);
+    }
 }

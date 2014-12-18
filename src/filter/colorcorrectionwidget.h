@@ -54,17 +54,23 @@ public slots:
     void setBackgroundColor(QColor color);
 
 private slots:
-    void on_whiteSetPoint_clicked();
+//    void on_whiteSetPoint_clicked();
 
-    void on_blackSetPoint_clicked();
+//    void on_blackSetPoint_clicked();
 
     void on_enable_toggled(bool checked);
+
+    void on_whitepoint_clicked();
+
+    void on_blackpoint_clicked();
 
 private:
     Ui::ColorCorrectionWidget *ui;
     QIntValidator *intValidator = NULL;
     bool setWhitePointClicked = false;
     bool setBlackPointClicked = false;
+    QColor whitepoint;
+    QColor blackpoint;
 };
 
 #endif // COLORCORRECTIONWIDGET_H
