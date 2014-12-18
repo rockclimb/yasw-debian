@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <QtGui/QApplication>
+#include <QApplication>
 #include "mainwindow.h"
 
 // Cross-compile for windows with mxe, some library have to be loaded explicitly as this is a static build

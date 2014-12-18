@@ -41,6 +41,7 @@ User requests:
  - Scaling filter splitted in two - Fixes #19
  - Checkbox "Enable Filter" works now - Fixes #27
  - Changes are now only propagated when a user selects the according button, to avoid unwanted propagations. Fixes #24
+ - Migration to Qt5
 WIP 0.6
  - Color Correction Filter (Work in Progress)
 

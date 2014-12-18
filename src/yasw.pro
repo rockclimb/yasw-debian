@@ -21,6 +21,8 @@ QMAKE_CXXFLAGS += -std=c++11
 TARGET = yasw
 TEMPLATE = app
 QT += xml
+QT += widgets
+QT += printsupport
 SOURCES += main.cpp \
     mainwindow.cpp \
     filter/basefilter.cpp \

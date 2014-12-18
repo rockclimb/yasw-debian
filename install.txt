@@ -10,7 +10,7 @@ is welcome!
 
 Complile YASW
 -------------
-Prerequisite to build YASW is the Qt-Plateform.
+Prerequisite to build YASW is the Qt5-Plateform.
 $ cd src
 $ qmake
 $ make
@@ -21,11 +21,6 @@ Run YASW
 --------
 After compiling YASW, just go into src and run "yasw", on linux:
 ./yasw
-
-Build YASW Developer-Documentation
-----------------------------------
-$ cd documentation
-$ make
 
 
 How to Release
