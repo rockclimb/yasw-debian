@@ -99,10 +99,33 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
 
 void ColorCorrection::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)
 {
+    QDomElement filter = doc.createElement(getIdentifier());
+    parent.appendChild(filter);
+    if (settings.contains("whitepoint"))
+        filter.setAttribute("whitepoint", settings["whitepoint"].toString());
+    else
+        filter.setAttribute("whitepoint", "#FFFFFF");
+
+    if (settings.contains("blackpoint"))
+        filter.setAttribute("blackpoint", settings["blackpoint"].toString());
+    else
+        filter.setAttribute("blackpoint", "#000000");
+
+
+    if (settings.contains("enabled"))
+        filter.setAttribute("enabled", settings["enabled"].toBool());
+    else
+        filter.setAttribute("enabled", true);
 }
 
 QMap<QString, QVariant> ColorCorrection::dom2Settings(QDomElement &filterElement)
 {
+    QMap<QString, QVariant> settings;
+
+    settings["whitepoint"] = filterElement.attribute("whitepoint", "#FFFFFF");
+    settings["blackpoint"] = filterElement.attribute("blackpoint", "#000000");
+
+    return settings;
 }
 
 
