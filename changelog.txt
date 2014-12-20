@@ -32,7 +32,7 @@ User requests:
       and the left of the images; I don't know if that's intentional or not, but I'd like to be able
       to turn it off.
 
-2014xxxx; YASW 0.6 "(master)"
+20141218; YASW 0.6
  - Progress dialogs for long operations
  - Performance optimisation (calculate only when seen on screen or exporting) & bug fixes
  - Removed doxygen documentation as it is not complete. I will comment in the source as much as possible, but
@@ -45,7 +45,7 @@ User requests:
 WIP 0.6
  - Color Correction Filter (Work in Progress)
 
-20130629; YASW 0.5 "release few but release often"
+20130629; YASW 0.5
  - Key shortcuts
  - Redesign of the Scaling Filter Widget
  - New policies for propagating changes. I'm not 100% happy as this is quite
@@ -66,7 +66,7 @@ WIP 0.6
  - Scaling filter
  - Improve PDF Export (a lot!)
 
-20130525; YASW 0.3 "yasw has reached one (1) user!"
+20130525; YASW 0.3
  - About dialog
  - open -> recent projects
  - change selection color for dekeystoning and cropping

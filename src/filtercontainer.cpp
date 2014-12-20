@@ -78,13 +78,14 @@ FilterContainer::FilterContainer( QWidget * parent)
     connect(scaleFilter, SIGNAL(parameterChanged()),
             layoutFilter, SLOT(inputImageChanged()));
 
-    ColorCorrection *colorCorrection = new ColorCorrection(this);
-    tabToFilter.append(colorCorrection);
-    addTab(colorCorrection->getWidget(), colorCorrection->getName());
-    /* connect the filter to previous filter so it gets changes automaticaly */
-    colorCorrection->setPreviousFilter(layoutFilter);
-    connect(layoutFilter, SIGNAL(parameterChanged()),
-            colorCorrection, SLOT(inputImageChanged()));
+// Deactivation Color Corection for release 0.6: this ist not good enought for a release.
+//    ColorCorrection *colorCorrection = new ColorCorrection(this);
+//    tabToFilter.append(colorCorrection);
+//    addTab(colorCorrection->getWidget(), colorCorrection->getName());
+//    /* connect the filter to previous filter so it gets changes automaticaly */
+//    colorCorrection->setPreviousFilter(layoutFilter);
+//    connect(layoutFilter, SIGNAL(parameterChanged()),
+//            colorCorrection, SLOT(inputImageChanged()));
 
     // get informed when a tab changed
     connect(this, SIGNAL(currentChanged(int)),
