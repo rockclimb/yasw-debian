@@ -243,8 +243,6 @@ void ImageTableWidget::appendImageToSide(QString fileName,
     item->setData(ImagePreferences, settings);
     item->setToolTip(fileName);
     itemCount[side] = itemCount[side] + 1;
-
-    ui->images->setCurrentItem(item);
 }
 
 void ImageTableWidget::insertEmptyImage()
