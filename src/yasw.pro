@@ -104,9 +104,9 @@ OTHER_FILES += \
     ../README
 
 static {
-# Everything below takes effect with CONFIG += static
-# thanks to Charles N. Burns, http://www.formortals.com/how-to-statically-link-qt-4/ for the help
-    QT += svg
+## Everything below takes effect when calling qmake with CONFIG += static
+## thanks to Charles N. Burns, http://www.formortals.com/how-to-statically-link-qt-4/ for the help
+## Update Qt5: Q_IMPORT_PLUGIN(qsvg) in main.c is not needed anymore; QT += svg neither
     QTPLUGIN += qsvg
     DEFINES += STATIC
     message ("This is a static build")
