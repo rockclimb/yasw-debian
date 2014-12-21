@@ -42,7 +42,7 @@ public:
     static QStringList horizontalAlignment;
     static QStringList verticalAlignment;
 
-    static QString float2String(qreal n, int precision = 3);
+    static QString float2String(qreal n, int precision = 2);
 
 private:
     // Code optimisation: define these QRegExp once and loading a project is much faster.

@@ -109,12 +109,12 @@ void LayoutFilter::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QSt
     for (i = 0; i < attributeNames.size(); i++) {
         attribute = attributeNames.at(i);
         if (settings.contains(attribute)) {
-            filter.setAttribute(attribute, settings[attribute].toDouble());
+            filter.setAttribute(attribute, Constants::float2String(settings[attribute].toDouble()));
         }
     }
 
-
     // Iterate through attributeNames to save all strings
+    attributeNames.clear();
     attributeNames << "horizontalAlignement" << "verticalAlignement";
 
     for (i = 0; i < attributeNames.size(); i++) {
@@ -205,10 +205,10 @@ QImage LayoutFilter::filter(QImage inputImage)
         topMargin = 0;
         break;
     case Constants::CenterVAlignment:
-        topMargin = qMax((pageWidth - imageHeight) / 2, 0.0);
+        topMargin = qMax((pageHeight - imageHeight) / 2, 0.0);
         break;
     case Constants::BottomVAlignment:
-        topMargin = qMax(pageWidth - imageHeight, 0.0);
+        topMargin = qMax(pageHeight - imageHeight, 0.0);
         break;
     }
 

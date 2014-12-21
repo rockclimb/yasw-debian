@@ -44,11 +44,10 @@ User requests:
  - Migration to Qt5
  - Progress bar when adding multiple images (Fixes #29)
 Problems found by release check:
- - dekeystoning / cropping: line should be thicker (2 pt?)
- - Layout image position vertical does not work
  - Idea: Deykeystoning filter + cropp option
  - shift-scroll
  - button bar with save / open
+ - export to file does not work as it should (pdf export does)
 
 20130629; YASW 0.5
  - Key shortcuts

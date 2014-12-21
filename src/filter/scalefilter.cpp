@@ -18,8 +18,8 @@
  */
 
 #include "scalefilter.h"
+#include "constants.h"
 
-#include <QDebug>
 #include <QPainter>
 
 ScaleFilter::ScaleFilter(QObject * parent) : BaseFilter(parent)
@@ -108,7 +108,7 @@ void ScaleFilter::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QStr
     for (i = 0; i < attributeNames.size(); i++) {
         attribute = attributeNames.at(i);
         if (settings.contains(attribute)) {
-            filter.setAttribute(attribute, settings[attribute].toDouble());
+            filter.setAttribute(attribute, Constants::float2String(settings[attribute].toDouble()));
         }
     }
 
