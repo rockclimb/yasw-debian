@@ -42,8 +42,13 @@ User requests:
  - Checkbox "Enable Filter" works now - Fixes #27
  - Changes are now only propagated when a user selects the according button, to avoid unwanted propagations. Fixes #24
  - Migration to Qt5
-WIP 0.6
- - Color Correction Filter (Work in Progress)
+ - Progress bar when adding multiple images (Fixes #29)
+Problems found by release check:
+ - dekeystoning / cropping: line should be thicker (2 pt?)
+ - Layout image position vertical does not work
+ - Idea: Deykeystoning filter + cropp option
+ - shift-scroll
+ - button bar with save / open
 
 20130629; YASW 0.5
  - Key shortcuts

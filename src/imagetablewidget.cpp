@@ -136,7 +136,25 @@ void ImageTableWidget::insertImage()
 //                        tr("Images (*.jpg *.png);;All files (* *.*)"));
                         tr("Images (*.jpg);;All files (* *.*)"));
 
+    int progress = 0;
+    int numberImages = images.length();
+    if (numberImages == 0) // No image to load
+        return;
+
+    QProgressDialog progressDialog(tr("Loading images..."), "Abort", 0, numberImages);
+    progressDialog.setWindowModality(Qt::WindowModal);
+
     foreach (imageFileName, images) {
+        // Update Progress Dialog
+        progressDialog.setValue(progress);
+        progress++;
+        if (progressDialog.wasCanceled()) {
+            // Allready loaded image can't be undone.
+            // Load settings/image for the current item.
+            currentItemChanged(ui->images->currentItem(), NULL);
+            return;
+        }
+        // Insert the image
         if (moveSelectionDown) {
             // Append images after the previous insertion.
             // Insert the first image depending on current selection, so do nothing.
@@ -146,9 +164,16 @@ void ImageTableWidget::insertImage()
         moveSelectionDown = true;
     }
 
+
+
     // Load settings/image for the current item.
     currentItemChanged(ui->images->currentItem(), NULL);
 
+    // Close progressDialog
+    progressDialog.setValue(numberImages);
+
+
+    // Saves path of the last loaded image.
     if (imageFileName.length() > 0) {
         fi = QFileInfo(imageFileName);
         lastDir = fi.absolutePath();
