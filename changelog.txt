@@ -44,8 +44,6 @@ User requests:
  - Migration to Qt5
  - Progress bar when adding multiple images (Fixes #29)
 Problems found by release check:
- - Idea: Deykeystoning filter + cropp option
- - shift-scroll
  - button bar with save / open
  - export to file does not work as it should (pdf export does)
 

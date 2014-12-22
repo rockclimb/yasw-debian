@@ -44,7 +44,12 @@ BaseFilterGraphicsView::wheelEvent(QWheelEvent *event)
         int numSteps = numDegrees / 15;
         double factor = pow(1.125, numSteps);
         scale(factor, factor);
-    } else {
+    }
+    // If one would want to scroll horizintaly with Shift instead of Alt (Qt Default),
+    // else if (event->modifiers().testFlag(Qt::ShiftModifier))
+    // We should create a new Event with a changed modifier Qt::AltModifier
+    // But this is Qt Default, so we stay by Qt Default (Alt+Scroll) for now.
+    else {
         QGraphicsView::wheelEvent(event);
     }
 }
