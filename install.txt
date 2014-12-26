@@ -28,7 +28,7 @@ How to Release
 #######################
 # Prepare Release
 #######################
-- edit changelog (name release)
+- edit changelog
 - update version in constants.h
 - make distclean working repository, rebuild in release, extensive test
 - cross-compile to windows, small test
