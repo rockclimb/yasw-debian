@@ -36,9 +36,16 @@ public:
     void setSelectionColor(QColor color);
 
 public slots:
-    void hideRectangle(bool hide);
     void moveRectangle();
+    void setPreview(bool preview);
+    void setEnabled(bool enabled);
+
 private:
+    void hideRectangle(bool hide);
+    // Defaults defined in croppingwidget.ui
+    bool preview = false;
+    bool enabled = true;
+
     CroppingCorner *topLeftCorner;
     CroppingCorner *bottomRightCorner;
     QGraphicsRectItem *rectangle;

@@ -41,10 +41,15 @@ public:
     void setSelectionColor(QColor color);
 
 public slots:
-    void hidePolygon(bool hide);
+    void setPreview(bool preview);
+    void setEnabled(bool enabled);
     void cornerMoved();
 
 private:
+    void hidePolygon(bool hide);
+    // Defaults defined in dekeystoningwidget.ui
+    bool preview = false;
+    bool enabled = true;
     DekeystoningCorner *topLeftCorner,
             *topRightCorner,
             *bottomRightCorner,

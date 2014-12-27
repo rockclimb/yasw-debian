@@ -87,6 +87,22 @@ void CroppingGraphicsView::moveRectangle()
     emit parameterChanged();
 }
 
+void CroppingGraphicsView::setPreview(bool preview)
+{
+    this->preview = preview;
+
+    hideRectangle(preview || !enabled);
+
+}
+
+void CroppingGraphicsView::setEnabled(bool enabled)
+{
+    this->enabled = enabled;
+    hideRectangle(preview || !enabled);
+
+    BaseFilterGraphicsView::setEnabled(enabled);
+}
+
 
 /** \brief Get the filter settings (gets the polygon coordinates)
 */

@@ -143,7 +143,7 @@ QPolygonF DekeystoningGraphicsView::polygon()
     return polygon;
 }
 
-/*! Hides the polygon so that it does not interfere with a previewed Pixmap */
+/*! Hides the polygon so that it does not interfere with a previewed Pixmap or when filter is disabled */
 void DekeystoningGraphicsView::hidePolygon(bool hide)
 {
     bool showPolygon = !hide;
@@ -179,6 +179,21 @@ void DekeystoningGraphicsView::setSelectionColor(QColor color)
     l2->setPen(color);
     l3->setPen(color);
     l4->setPen(color);
+}
+
+void DekeystoningGraphicsView::setPreview(bool preview)
+{
+    this->preview = preview;
+
+    hidePolygon(preview || !enabled);
+}
+
+void DekeystoningGraphicsView::setEnabled(bool enabled)
+{
+    this->enabled = enabled;
+    hidePolygon(preview || !enabled);
+
+    BaseFilterGraphicsView::setEnabled(enabled);
 }
 
 /** \brief Check if polygon moved since last resetPolygonMoved() */

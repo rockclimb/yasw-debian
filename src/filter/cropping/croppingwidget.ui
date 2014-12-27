@@ -75,7 +75,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
    <extends>QGraphicsView</extends>
    <header>croppinggraphicsview.h</header>
    <slots>
-    <slot>hideRectangle(bool)</slot>
+    <slot>setPreview(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -85,7 +85,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
    <sender>preview</sender>
    <signal>toggled(bool)</signal>
    <receiver>view</receiver>
-   <slot>hideRectangle(bool)</slot>
+   <slot>setPreview(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>139</x>
@@ -94,6 +94,22 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
     <hint type="destinationlabel">
      <x>134</x>
      <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>enable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>view</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>60</x>
+     <y>18</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>185</x>
+     <y>174</y>
     </hint>
    </hints>
   </connection>

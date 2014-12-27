@@ -74,7 +74,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.</comment>
    <extends>QGraphicsView</extends>
    <header>dekeystoninggraphicsview.h</header>
    <slots>
-    <slot>hidePolygon(bool)</slot>
+    <slot>setPreview(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -100,7 +100,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.</comment>
    <sender>preview</sender>
    <signal>toggled(bool)</signal>
    <receiver>view</receiver>
-   <slot>hidePolygon(bool)</slot>
+   <slot>setPreview(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>151</x>
