@@ -28,7 +28,7 @@ How to Release
 #######################
 # Prepare Release
 #######################
-- edit changelog
+- edit changelog (Version, Date)
 - update version in constants.h
 - make distclean working repository, rebuild in release, extensive test
 - cross-compile to windows, small test
@@ -44,7 +44,7 @@ git tag -a yasw_${VERSION} -m "YASW version ${VERSION}"
 # build the tarball (note: it contains files like .gitignore...)
 git archive --prefix=yasw_${VERSION}/ yasw_${VERSION} | gzip > ../yasw_${VERSION}.tgz
 # test archive (tar xvzf, qmake, make, ./yasw, play around)
-# publish the tag on github:
+# push the tag:
 git push --tags
 
 #######################
@@ -67,5 +67,5 @@ mkdir yasw_${VERSION}_Windows
 cp release/yasw.exe yasw_${VERSION}_Windows/
 cp ../README yasw_${VERSION}_Windows/
 cp ../changelog.txt yasw_${VERSION}_Windows/
-cp ../documentation/gpl.txt yasw_${VERSION}_Windows/
+cp ../gpl.txt yasw_${VERSION}_Windows/
 zip -r yasw_${VERSION}_Windows.zip yasw_${VERSION}_Windows/

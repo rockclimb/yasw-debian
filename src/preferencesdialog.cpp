@@ -142,15 +142,13 @@ void PreferencesDialog::on_selectionColorButton_clicked()
 */
 void PreferencesDialog::setSelectionColor(QColor color)
 {
-    QPalette palette;
-
     if (!color.isValid()) {
         return;
     }
 
     selectionColor = color;
-    palette.setColor(QPalette::Button, color);
-    ui->selectionColorButton->setPalette(palette);
+    ui->selectionColorButton->setStyleSheet("background-color: " + color.name());
+
 
     if (settings) {
         settings->setValue("selectionColor", color.name());
@@ -161,15 +159,12 @@ void PreferencesDialog::setSelectionColor(QColor color)
 
 void PreferencesDialog::setBackgroundColor(QColor color)
 {
-    QPalette palette;
-
     if (!color.isValid()) {
         return;
     }
 
     backgroundColor = color;
-    palette.setColor(QPalette::Button, color);
-    ui->backgroundColorButton->setPalette(palette);
+    ui->backgroundColorButton->setStyleSheet("background-color: " + color.name());
 
     if (settings) {
         settings->setValue("backgroundColor", color.name());

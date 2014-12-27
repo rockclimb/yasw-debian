@@ -1,4 +1,7 @@
-20141218; YASW 0.6
+201412xx; YASW 0.7 (git Master)
+ - Fixed buttons background color in Preference Dialog
+
+20141226; YASW 0.6
  - Progress dialogs for long operations
  - Performance optimisation (calculate only when seen on screen or exporting) & bug fixes
  - Removed doxygen documentation as it is not complete. I will comment in the source as much as possible, but
