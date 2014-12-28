@@ -23,8 +23,8 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
-    <height>450</height>
+    <width>520</width>
+    <height>529</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -60,7 +60,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>330</width>
+         <width>293</width>
          <height>20</height>
         </size>
        </property>
@@ -68,29 +68,15 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
      </item>
     </layout>
    </item>
-   <item row="1" column="0" rowspan="2">
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="ColorCorrectionGraphicsView" name="view">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>1</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="BaseFilterGraphicsView" name="previewView">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>1</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-      </widget>
-     </item>
-    </layout>
+   <item row="1" column="0" rowspan="3">
+    <widget class="ColorCorrectionGraphicsView" name="view">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
    </item>
    <item row="1" column="1">
     <widget class="QGroupBox" name="groupBox">
@@ -181,6 +167,40 @@ color: rgb(255, 255, 255);</string>
     </widget>
    </item>
    <item row="2" column="1">
+    <widget class="QLabel" name="previewImage">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>200</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>300</width>
+       <height>1000</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -194,17 +214,17 @@ color: rgb(255, 255, 255);</string>
     </spacer>
    </item>
   </layout>
+  <zorder>groupBox</zorder>
+  <zorder>previewImage</zorder>
+  <zorder>previewImage</zorder>
+  <zorder>horizontalScrollBar</zorder>
+  <zorder>verticalScrollBar</zorder>
  </widget>
  <customwidgets>
   <customwidget>
    <class>ColorCorrectionGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>colorcorrectiongraphicsview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>BaseFilterGraphicsView</class>
-   <extends>QGraphicsView</extends>
-   <header>basefiltergraphicsview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

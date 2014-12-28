@@ -65,6 +65,16 @@ void ColorCorrectionGraphicsView::setPixmap(const QPixmap pixmap)
     fitInView(pixmapItem, Qt::KeepAspectRatio);
 }
 
+void ColorCorrectionGraphicsView::pickingColor(bool picking)
+{
+    pickingColorState = picking;
+    if (picking) {
+        setCursor(Qt::CrossCursor);
+    } else {
+        unsetCursor();
+    }
+}
+
 void ColorCorrectionGraphicsView::colorFromScene(QColor color)
 {
     emit pixmapClicked(color);

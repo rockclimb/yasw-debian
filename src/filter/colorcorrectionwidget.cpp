@@ -42,16 +42,13 @@ ColorCorrectionWidget::~ColorCorrectionWidget()
 void ColorCorrectionWidget::setPixmap(QPixmap pixmap)
 {
     inputPixmap = pixmap;
-    if (!preview()) {
-        ui->view->setPixmap(pixmap);
-    }
+    ui->view->setPixmap(pixmap);
 }
 
 void ColorCorrectionWidget::setPreview(QPixmap pixmap)
 {
     previewPixmap = pixmap;
-    if (preview())
-        ui->view->setPixmap(pixmap);
+    ui->previewImage->setPixmap(pixmap.scaledToWidth(ui->previewImage->width()));
 }
 
 bool ColorCorrectionWidget::preview()
@@ -68,17 +65,6 @@ QColor ColorCorrectionWidget::blackPoint()
 {
     return blackpoint;
 }
-
-void ColorCorrectionWidget::on_whiteReset_clicked()
-{
-    setWhitePoint(QColor("white"));
-}
-
-void ColorCorrectionWidget::on_blackReset_clicked()
-{
-    setBlackPoint(QColor("black"));
-}
-
 
 void ColorCorrectionWidget::setWhitePoint(QColor white)
 {
@@ -113,14 +99,19 @@ void ColorCorrectionWidget::on_preview_toggled(bool checked)
     }
 }
 
+// This slot is called every time the image in ui-view is clicked. React only when curently picking a color.
 void ColorCorrectionWidget::imageClicked(QColor color)
 {
-    if (setWhitePointClicked) {
+    if (pickingWhiteColor) {
         setWhitePoint(color);
+        // Resets state of picking Color. This call to the slot is to avoid duplicate code
+        on_pickWhitepoint_clicked();
     }
 
-    if (setBlackPointClicked) {
+    if (pickingBlackColor) {
         setBlackPoint(color);
+        // Resets state of picking Color. This call to the slot is to avoid duplicate code
+        on_pickBlackpoint_clicked();
     }
 }
 
@@ -128,43 +119,6 @@ void ColorCorrectionWidget::setBackgroundColor(QColor color)
 {
     ui->view->setBackgroundBrush(QBrush(color));
 }
-
-//// While Setting a point, the text of the button changes.
-//void ColorCorrectionWidget::on_whiteSetPoint_clicked()
-//{
-//    if (setWhitePointClicked) {
-//        ui->whiteSetPoint->setText(tr("Set"));
-//        setWhitePointClicked = false;
-//    } else {
-//        ui->whiteSetPoint->setText(tr("Done"));
-//        setWhitePointClicked = true;
-//    }
-
-//    // deaktivate setting black point if necessery
-//    if (setBlackPointClicked) {
-//        ui->blackSetPoint->setText(tr("Set"));
-//        setBlackPointClicked = false;
-//    }
-//}
-
-
-
-//void ColorCorrectionWidget::on_blackSetPoint_clicked()
-//{
-//    if (setBlackPointClicked) {
-//        ui->blackSetPoint->setText(tr("Set"));
-//        setBlackPointClicked = false;
-//    } else {
-//        ui->blackSetPoint->setText(tr("Done"));
-//        setBlackPointClicked = true;
-//    }
-
-//    // deaktivate setting black point if necessery
-//    if (setWhitePointClicked) {
-//        ui->whiteSetPoint->setText(tr("Set"));
-//        setWhitePointClicked = false;
-//    }
-//}
 
 void ColorCorrectionWidget::on_enable_toggled(bool checked)
 {
@@ -184,5 +138,38 @@ void ColorCorrectionWidget::on_blackpoint_clicked()
     QColor color = QColorDialog::getColor(blackpoint, this, tr("Choose blackpoint"));
     if (color.isValid()) {
         setBlackPoint(color);
+    }
+}
+
+void ColorCorrectionWidget::on_pickWhitepoint_clicked()
+{
+    pickingWhiteColor = ! pickingWhiteColor;
+
+    // Disable any action with black point.
+    ui->pickBlackpoint->setText(tr("Pick"));
+    pickingBlackColor= false;
+
+    // Set a CrossCursor over the view when picking.
+    ui->view->pickingColor(pickingWhiteColor);
+    if (pickingWhiteColor) {
+        ui->pickWhitepoint->setText(tr("Picking..."));
+    } else {
+        ui->pickWhitepoint->setText(tr("Pick"));
+    }
+}
+
+void ColorCorrectionWidget::on_pickBlackpoint_clicked()
+{
+    pickingBlackColor = ! pickingBlackColor;
+
+    // Disable any action with black point.
+    ui->pickWhitepoint->setText(tr("Pick"));
+    pickingWhiteColor= false;
+
+    ui->view->pickingColor(pickingBlackColor);
+    if (pickingBlackColor) {
+        ui->pickBlackpoint->setText(tr("Picking..."));
+    } else {
+        ui->pickBlackpoint->setText(tr("Pick"));
     }
 }

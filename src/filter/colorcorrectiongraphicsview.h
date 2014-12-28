@@ -30,6 +30,7 @@ public:
     ColorCorrectionGraphicsView(QWidget *parent = 0);
     ~ColorCorrectionGraphicsView();
     void setPixmap(const QPixmap pixmap);
+    void pickingColor(bool picking);
 
 public slots:
     void colorFromScene(QColor color);
@@ -40,6 +41,8 @@ protected:
 //    QGraphicsScene *scene = NULL;
     ColorCorrectionGraphicsScene *scene = NULL;
     QGraphicsPixmapItem *pixmapItem = NULL;
+private:
+    bool pickingColorState = false;
 };
 
 #endif // COLORCORRECTIONGRAPHICSVIEW_H
