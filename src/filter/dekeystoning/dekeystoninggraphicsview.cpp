@@ -171,14 +171,19 @@ void DekeystoningGraphicsView::setSelectionColor(QColor color)
 {
     QPen pen = QPen(color);
 
+    // Fix for Qt5: the pen width sould be independent of the current transformation.
+    pen.setCosmetic(true);
+    pen.setWidth(2);
+
+
     topLeftCorner->setPen(pen);
-    topRightCorner->setPen(color);
-    bottomRightCorner->setPen(color);
-    bottomLeftCorner->setPen(color);
-    l1->setPen(color);
-    l2->setPen(color);
-    l3->setPen(color);
-    l4->setPen(color);
+    topRightCorner->setPen(pen);
+    bottomRightCorner->setPen(pen);
+    bottomLeftCorner->setPen(pen);
+    l1->setPen(pen);
+    l2->setPen(pen);
+    l3->setPen(pen);
+    l4->setPen(pen);
 }
 
 void DekeystoningGraphicsView::setPreview(bool preview)

@@ -139,6 +139,10 @@ void CroppingGraphicsView::setSelectionColor(QColor color)
 {
     QPen pen = QPen(color);
 
+    // Fix for Qt5: the pen width sould be independent of the current transformation.
+    pen.setCosmetic(true);
+    pen.setWidth(2);
+
     topLeftCorner->setPen(pen);
     bottomRightCorner->setPen(pen);
     rectangle->setPen(pen);

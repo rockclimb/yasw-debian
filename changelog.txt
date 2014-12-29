@@ -1,5 +1,7 @@
 201412xx; YASW 0.7 (git Master)
- - Fixed buttons background color in Preference Dialog
+ - Fixed buttons background color in Preference Dialog (Closes #39)
+ - Fixed #38: hide dekeystoning and cropping lines when filter is not enabled
+ - Fixed #33: dekaystoning and cripping lines too small
 
 20141226; YASW 0.6
  - Progress dialogs for long operations
