@@ -16,65 +16,55 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
+#ifndef THRESHOLDWIDGET_H
+#define THRESHOLDWIDGET_H
 
-#ifndef SCALEWIDGET_H
-#define SCALEWIDGET_H
-
-#include "abstractfilterwidget.h"
-
-#include <QDoubleValidator>
 #include <QWidget>
+#include <QIntValidator>
+#include <QColor>
+#include "abstractfilterwidget.h"
 
 
 namespace Ui {
-class ScaleWidget;
+class ThresholdWidget;
 }
 
-class ScaleWidget : public AbstractFilterWidget
+class ThresholdWidget : public AbstractFilterWidget
 {
     Q_OBJECT
     
 public:
-    explicit ScaleWidget(QWidget *parent = 0);
-    ~ScaleWidget();
-    
+    explicit ThresholdWidget(QWidget *parent = 0);
+    ~ThresholdWidget();
     void setPixmap(QPixmap pixmap);
     void setPreview(QPixmap pixmap);
     bool preview();
-    double imagePixelHeight();
-    double imagePixelWidth();
-
-    QMap<QString, QVariant> getSettings();
-    void setSettings(QMap <QString, QVariant> settings);
-    void setDisplayUnit(QString unit);
     void enableFilter(bool enable);
 
+    // Get widget parameters for different clases
+    // Noise preprocessing
+    bool preprocessNoise();
+    // Threshold
+    bool rbThreshold();
+    int threshold();
+    // adaptative Threshold
+    bool rbAdaptativeThreshold();
+    double cvalue();
+    int blockSize();
+    // Otsu Threshold
+    bool rbOtsuThreshold();
+    void setOtsuThreshold(double threshold);
 
 public slots:
+    void on_preview_toggled(bool checked);
     void setBackgroundColor(QColor color);
-    void setDPI(int newDpi);
 
 private slots:
-    void on_preview_toggled(bool checked);
-    void on_imageWidth_editingFinished();
-    void on_imageHeight_editingFinished();
-    void on_imageWidth_textEdited(const QString &strValue);
-    void on_imageHeight_textEdited(const QString &strValue);
-
     void on_enable_toggled(bool checked);
-
+    void paramChanged();
 private:
-    void updateFormSizes();
-
-    Ui::ScaleWidget *ui;
-    QDoubleValidator *doubleValidator;
-    int lastUnitIndex = 0;
-    QString displayUnit;
-    qreal factorPixeltoDisplayUnit = 1;
-
-    qreal pxImageWidth = 0;
-    qreal pxImageHeight = 0;
-    qreal dpi = 1;
+    Ui::ThresholdWidget *ui;
+    QIntValidator *intValidator = NULL;
 };
 
-#endif // SCALEWIDGET_H
+#endif // THRESHOLDWIDGET_H

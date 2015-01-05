@@ -16,13 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "colorcorrection.h"
 #include <QImage>
 #include <QDebug>
+#include <cv.h>
 
-ColorCorrection::ColorCorrection(QObject *parent) : BaseFilter(parent)
+#include "threshold.h"
+#include "openCVToQt.hpp"
+
+Threshold::Threshold(QObject *parent) : BaseFilter(parent)
 {
-    widget = new ColorCorrectionWidget();
+    widget = new ThresholdWidget();
     filterWidget = widget;
 
     connect(widget, SIGNAL(parameterChanged()),
@@ -43,50 +46,30 @@ ColorCorrection::ColorCorrection(QObject *parent) : BaseFilter(parent)
 
 }
 
-QString ColorCorrection::getIdentifier()
+QString Threshold::getIdentifier()
 {
-    return QString("colorcorrection");
+    return QString("threshold");
 }
 
-QString ColorCorrection::getName()
+QString Threshold::getName()
 {
-    return tr("Color Correction");
+    return tr("Threshold Binarization");
 }
 
-QMap<QString, QVariant> ColorCorrection::getSettings()
+QMap<QString, QVariant> Threshold::getSettings()
 {
     QMap<QString, QVariant> settings;
-
-    QColor color;
-
-    color = widget->whitePoint();
-    settings["whitepoint"] = color.name();
-
-    color = widget->blackPoint();
-    settings["blackpoint"] = color.name();
 
     settings["enabled"] = filterEnabled;
 
     return settings;
 }
 
-void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
+void Threshold::setSettings(QMap<QString, QVariant> settings)
 {
     loadingSettings = true;
 
     QColor color;
-
-    if (settings.contains("whitepoint"))
-        color.setNamedColor(settings["whitepoint"].toString());
-    else
-        color = Qt::white;
-    widget->setWhitePoint(color);
-
-    if (settings.contains("blackpoint"))
-        color.setNamedColor(settings["blackpoint"].toString());
-    else
-        color = Qt::black;
-    widget->setBlackPoint(color);
 
     if (settings.contains("enabled"))
         enableFilter(settings["enabled"].toBool());
@@ -97,20 +80,10 @@ void ColorCorrection::setSettings(QMap<QString, QVariant> settings)
     loadingSettings = false;
 }
 
-void ColorCorrection::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)
+void Threshold::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings)
 {
     QDomElement filter = doc.createElement(getIdentifier());
     parent.appendChild(filter);
-    if (settings.contains("whitepoint"))
-        filter.setAttribute("whitepoint", settings["whitepoint"].toString());
-    else
-        filter.setAttribute("whitepoint", "#FFFFFF");
-
-    if (settings.contains("blackpoint"))
-        filter.setAttribute("blackpoint", settings["blackpoint"].toString());
-    else
-        filter.setAttribute("blackpoint", "#000000");
-
 
     if (settings.contains("enabled"))
         filter.setAttribute("enabled", settings["enabled"].toBool());
@@ -118,13 +91,12 @@ void ColorCorrection::settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<
         filter.setAttribute("enabled", true);
 }
 
-QMap<QString, QVariant> ColorCorrection::dom2Settings(QDomElement &filterElement)
+QMap<QString, QVariant> Threshold::dom2Settings(QDomElement &filterElement)
 {
     QMap<QString, QVariant> settings;
 
     settings["whitepoint"] = filterElement.attribute("whitepoint", "#FFFFFF");
     settings["blackpoint"] = filterElement.attribute("blackpoint", "#000000");
-    settings["enabled"] = filterElement.attribute("enabled", "1").toInt();
 
     return settings;
 }
@@ -144,44 +116,61 @@ QMap<QString, QVariant> ColorCorrection::dom2Settings(QDomElement &filterElement
  * NOTE: performance improvements might be possible (use of scanline() or preview a scaled image)
  * NOTE: move this code to an ImageManipulation class?
  */
-QImage ColorCorrection::filter(QImage inputImage)
+// FIXME: catch opencv problems
+QImage Threshold::filter(QImage inputImage)
 {
     if (!filterEnabled)
         return inputImage;
 
-    QImage outputImage(inputImage.width(), inputImage.height(), QImage::Format_ARGB32_Premultiplied);
+    if (inputImage.isNull())
+        return inputImage;
 
-    int x, y; // coordinates in the image for the for() loops
-    QRgb pixelColor;
-    int redNew, redWhite, redBlack, redDelta;
-    int greenNew, greenWhite, greenBlack, greenDelta;
-    int blueNew, blueWhite, blueBlack, blueDelta;
+    cv::Mat src = qimage_to_mat_cpy(inputImage);
+    cv::Mat dst;
 
-    QColor whitePoint = widget->whitePoint();
-    QColor blackPoint = widget->blackPoint();
+    // Grey the image
+    cv::cvtColor(src, dst, CV_BGR2GRAY);
+    // For programming simplicity, after each filter, we replace source with the new calculated image.
+    // The dst matrix is released so we are sure to work with a clean matrix
+    src = dst;
+    dst.release();
 
-    // Optimisation: Storing everything static in seperate values to avoid needless calls while computing.
-    redWhite = whitePoint.red();
-    greenWhite = whitePoint.green();
-    blueWhite = whitePoint.blue();
-    redBlack = blackPoint.red();
-    greenBlack = blackPoint.green();
-    blueBlack = blackPoint.blue();
-    // as we divide through xxxDelta, it must at least be 1.
-    redDelta = qMax(1, redWhite - redBlack);
-    greenDelta = qMax(1, greenWhite - greenBlack);
-    blueDelta = qMax(1, blueWhite - blueBlack);
-    int imageWidth = inputImage.width();
-    int imageHeight = inputImage.height();
 
-    for (x = 0; x < imageWidth; x++) {
-        for (y = 0; y < imageHeight; y++) {
-            pixelColor = inputImage.pixel(x,y);
-            redNew =   qMax(0, qMin(255, qRed(pixelColor)   * 255 / redDelta   - redBlack));
-            greenNew = qMax(0, qMin(255, qGreen(pixelColor) * 255 / greenDelta - greenBlack));
-            blueNew =  qMax(0, qMin(255, qBlue(pixelColor)  * 255 / blueDelta  - blueBlack));
-            outputImage.setPixel(x, y, qRgb(redNew, greenNew, blueNew));
-        }
+    if (widget->preprocessNoise()) {
+        // 9 is a good value for the bilateral filter, so we do not offer to configure it.
+        cv::bilateralFilter(src, dst, 9, 9, 9);
+        src = dst;
+        dst.release();
     }
+
+
+    if (widget->rbThreshold()) {
+        cv::threshold(src, dst, widget->threshold(), 255,
+                        cv::THRESH_BINARY);
+        src=dst;
+        dst.release();
+    }
+
+    if (widget->rbAdaptativeThreshold()) {
+        cv::adaptiveThreshold(src, dst, 255, cv:: ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY,
+                              widget->blockSize(), widget->cvalue());
+        src=dst;
+        dst.release();
+    }
+
+    if (widget->rbOtsuThreshold()) {
+        double otsuThreshold = cv::threshold(src, dst, widget->threshold(), 255,
+                               cv::THRESH_BINARY + cv::THRESH_OTSU);
+        widget->setOtsuThreshold(otsuThreshold);
+        src=dst;
+        dst.release();
+    }
+
+    // For programatical purposes, we do let src=dst on the last step: it is simpler to add new options.
+    // => our output is src, as dst has been re
+    QImage outputImage = mat_to_qimage_cpy(src);
+
     return outputImage;
 }
+
+

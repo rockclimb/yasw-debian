@@ -16,22 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef BASEFILTERGRAPHICSVIEW_H
-#define BASEFILTERGRAPHICSVIEW_H
+#ifndef THRESHOLD_H
+#define THRESHOLD_H
 
-#include <QGraphicsView>
-#include <QGraphicsPixmapItem>
+#include "cv.h"
+#include "basefilter.h"
+#include "thresholdwidget.h"
 
-class BaseFilterGraphicsView : public QGraphicsView {
-    Q_OBJECT
+class Threshold : public BaseFilter
+{
 public:
-    BaseFilterGraphicsView(QWidget *parent);
-    ~BaseFilterGraphicsView();
-    void setPixmap(const QPixmap pixmap);
+    Threshold(QObject * parent = 0);
+    QString getIdentifier();
+    QString getName();
+    QMap<QString, QVariant> getSettings();
+    void setSettings(QMap <QString, QVariant> settings);
+    void settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings);
+    QMap<QString, QVariant> dom2Settings(QDomElement &filterElement);
+
 protected:
-    void wheelEvent(QWheelEvent *event);
-    QGraphicsScene *scene = NULL;
-    QGraphicsPixmapItem *pixmapItem = NULL;
+    virtual QImage filter(QImage inputImage);
+
+private:
+    ThresholdWidget *widget;
 };
 
-#endif // BASEFILTERGRAPHICSVIEW_H
+#endif // THRESHOLD_H

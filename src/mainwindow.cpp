@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -306,26 +306,40 @@ void MainWindow::on_action_Close_triggered()
 
 void MainWindow::on_action_About_triggered()
 {
-    QMessageBox::about(this, tr("Yet Another Scan Wizard Version: %1").arg(VERSION),
-                       tr("Yet Another Scan Wizard (YASW) is an application used to correct images taken "
-                          "with a camera while scanning a book.\n\n"
+    QMessageBox about(this);
+    about.setWindowTitle(tr("Yet Another Scan Wizard version: %1").arg(VERSION));
+    about.setTextFormat(Qt::RichText);
+    about.setText(tr("<p><b>Yet Another Scan Wizard version: %1</b><br>").arg(VERSION) +
+                tr("Yet Another Scan Wizard (YASW) is an application used to correct images taken "
+                   "with a camera while scanning a book.</p>"
 
-                          "YASW is written by Robert Cheramy <robert@cheramy.net>\n\n"
+                 "<p>YASW is written by Robert Chéramy an can be downloaded from the "
+                 "<a href=\"https://sourceforge.net/projects/yascanw/\">YASW Sourceforge project page</a>.</p>"
 
-                          "YASW is free software: you can redistribute it and/or modify "
-                          "it under the terms of the GNU General Public License as published by "
-                          "the Free Software Foundation, either version 3 of the License, or "
-                          "(at your option) any later version.\n"
+                 "<p>YASW is free software: you can redistribute it and/or modify "
+                 "it under the terms of the GNU General Public License as published by "
+                 "the Free Software Foundation, either version 3 of the License, or "
+                 "(at your option) any later version.<br>"
 
-                          "YASW is distributed in the hope that it will be useful, "
-                          "but WITHOUT ANY WARRANTY; without even the implied warranty of "
-                          "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
-                          "GNU General Public License for more details.\n"
+                 "YASW is distributed in the hope that it will be useful, "
+                 "but WITHOUT ANY WARRANTY; without even the implied warranty of "
+                 "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the "
+                 "GNU General Public License for more details.<br>"
 
-                          "You should have received a copy of the GNU General Public License "
-                          "along with YASW.  If not, see <http://www.gnu.org/licenses/>.\n\n"
+                 "You should have received a copy of the GNU General Public License "
+                 "along with YASW.  If not, see <a href=\"http://www.gnu.org/licenses/\">http://www.gnu.org/licenses/</a>.</p>"
 
-                          "YASW uses icons from the Tango Theme, which is in the public domain."));
+                 "<p><b>Third party icons & software</b><br>"
+                 "Please read the file readme.txt for more details."
+                 "<ul><li>YASW uses icons from the Tango Theme, which is in the public domain.</li>"
+                 "<li>YASW uses OpenCV, which is distributed under the 3-clause BSD License. "
+                 "Please note that the Windows version of YASW includes OpenCV in binary form (static linking).</li>"
+                 "<li>YASW uses openCVToQt to convert images between the Qt and OpenCV formats."
+                 "These where provided by <a href=\"http://qtandopencv.blogspot.de/2013/08/how-to-convert-between-cvmat-and-qimage.html\">sstereomatchingkiss</a></li>"
+                 "</ul></p>"
+                   ));
+
+    about.exec();
 }
 
 void MainWindow::openRecentProject()

@@ -1,7 +1,9 @@
 201412xx; YASW 0.7 (git Master)
  - Fixed buttons background color in Preference Dialog (Closes #39)
  - Fixed #38: hide dekeystoning and cropping lines when filter is not enabled
- - Fixed #33: dekaystoning and cripping lines too small
+ - Fixed #33: dekeystoning and cropping lines too small
+ - Linked to OpenCV => modifying licensing information (YASW ist still GPLv3, wich is compatible with OpenCV 3-clause BSD License)
+ - Document Binarization with OpenCV: thresholding and adaptative thresholding.
 
 20141226; YASW 0.6
  - Progress dialogs for long operations

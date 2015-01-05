@@ -1,6 +1,7 @@
 Implement your own filter
 -------------------------
-In order develop your own filter, you have to create a class that inherits from BaseFilter and reimplement at least:
+In order develop your own filter, you have to create a class that inherits from
+BaseFilter and reimplement at least:
 
 public:
     <Constructor>(QObject * parent = 0);
@@ -8,14 +9,20 @@ public:
     QString getName();
     QMap<QString, QVariant> getSettings();
     void setSettings(QMap <QString, QVariant> settings);
+    void settings2Dom(QDomDocument &doc, QDomElement &parent, QMap<QString, QVariant> settings);
+    QMap<QString, QVariant> dom2Settings(QDomElement &filterElement);
+
 protected:
-    void compute();
+    virtual QImage filter(QImage inputImage);
 
-This class should provide a Widget that implements the AbstractFilterWidget. The inherited methods (getWidget) from
-the BaseFilter don't need to be reimplemented in most cases.
+This class should provide a widget that implements the AbstractFilterWidget.
+The inherited methods (for example getWidget) from the BaseFilter don't need
+to be reimplemented in most cases.
 
-Each Filter should be placed somewhere appropiate under the filter folder. The name of the classes and files should
-beginn with the filer name as in getIdentifier().
+Each filter should be placed somewhere appropiate under the filter folder. The
+name of the classes and files should begin with the filer name as in
+getIdentifier().
 If you create a new folder, don't forget to modifiy the INCLUDEPATH in yasw.pro.
 
-Have a look at the BaseFilter and the Rotation class (folder filter/rotation) for simple filter example.
+Have a look at the BaseFilter and the Rotation class (folder filter/rotation)
+for simple filter example.

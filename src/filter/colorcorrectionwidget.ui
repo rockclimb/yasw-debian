@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <comment>Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
+ <comment>Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
 
 This file is part of YASW (Yet Another Scan Wizard).
 
@@ -39,7 +39,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
         <string>Enable Filter</string>
        </property>
        <property name="checked">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -49,7 +49,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.
         <string>Preview</string>
        </property>
        <property name="checked">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -214,11 +214,6 @@ color: rgb(255, 255, 255);</string>
     </spacer>
    </item>
   </layout>
-  <zorder>groupBox</zorder>
-  <zorder>previewImage</zorder>
-  <zorder>previewImage</zorder>
-  <zorder>horizontalScrollBar</zorder>
-  <zorder>verticalScrollBar</zorder>
  </widget>
  <customwidgets>
   <customwidget>
