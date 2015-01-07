@@ -196,12 +196,6 @@ void BaseFilter::refresh()
     }
 }
 
-// Do compute the outputPixmap with the help of all available parameters.
-void BaseFilter::compute()
-{
-    outputPixmap = QPixmap::fromImage(filter(inputPixmap.toImage()));
-}
-
 QImage BaseFilter::filter(QImage inputImage)
 {
     return inputImage;
