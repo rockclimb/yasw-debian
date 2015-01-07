@@ -4,6 +4,10 @@
  - Fixed #33: dekeystoning and cropping lines too small
  - Linked to OpenCV => modifying licensing information (YASW ist still GPLv3, wich is compatible with OpenCV 3-clause BSD License)
  - Document Binarization with OpenCV: thresholding and adaptative thresholding.
+ - Fixed #28 with a "fit into view" button + only automaticaly fit into view when
+   source image change (so we can switch between preview an src a every zoom level).
+   When a user skips a filter tab (from rotation to scale), the automaticaly fit in view does not work and the user
+   must use the "fit in view" button.
 
 20141226; YASW 0.6
  - Progress dialogs for long operations

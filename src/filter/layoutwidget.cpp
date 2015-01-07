@@ -70,6 +70,7 @@ void LayoutWidget::setPixmap(QPixmap pixmap)
     if (!preview()) {
         ui->view->setPixmap(pixmap);
     }
+    ui->view->fitIntoView();
 }
 
 void LayoutWidget::setPreview(QPixmap pixmap)

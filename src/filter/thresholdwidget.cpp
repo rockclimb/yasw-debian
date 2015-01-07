@@ -39,6 +39,7 @@ void ThresholdWidget::setPixmap(QPixmap pixmap)
 {
     inputPixmap = pixmap;
     ui->view->setPixmap(pixmap);
+    ui->view->fitIntoView();
 }
 
 void ThresholdWidget::setPreview(QPixmap pixmap)

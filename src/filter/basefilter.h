@@ -76,6 +76,7 @@ protected:
     BaseFilter *previousFilter = NULL;
     // when true, do not recalculate (this is not an user interaction)
     bool loadingSettings = false;
+    // Does the actual job of the filter: produce a QImage from the inputImage
     virtual QImage filter(QImage inputImage);
     bool filterEnabled = true; // default on all widgets
 

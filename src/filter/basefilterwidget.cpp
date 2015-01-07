@@ -46,12 +46,12 @@ void BaseFilterWidget::changeEvent(QEvent *e)
 void BaseFilterWidget::setPixmap(QPixmap pixmap)
 {
     ui->view->setPixmap(pixmap);
+    ui->view->fitIntoView();
 }
 
 void BaseFilterWidget::setPreview(QPixmap pixmap)
 {
     previewPixmap = pixmap;
-
 }
 
 bool BaseFilterWidget::preview()

@@ -28,6 +28,8 @@ public:
     BaseFilterGraphicsView(QWidget *parent);
     ~BaseFilterGraphicsView();
     void setPixmap(const QPixmap pixmap);
+public slots:
+    void fitIntoView();
 protected:
     void wheelEvent(QWheelEvent *event);
     QGraphicsScene *scene = NULL;

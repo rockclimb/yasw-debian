@@ -64,6 +64,7 @@ void ScaleWidget::setPixmap(QPixmap pixmap)
     if (!preview()) {
         ui->view->setPixmap(pixmap);
     }
+    ui->view->fitIntoView();
 }
 
 void ScaleWidget::setPreview(QPixmap pixmap)

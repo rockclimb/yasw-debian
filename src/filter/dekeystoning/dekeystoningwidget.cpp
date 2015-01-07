@@ -49,8 +49,11 @@ void DekeystoningWidget::changeEvent(QEvent *e)
 void DekeystoningWidget::setPixmap(QPixmap pixmap)
 {
     inputPixmap = pixmap;
-    if (!preview())
+    if (!preview()) {
         ui->view->setPixmap(pixmap);
+    }
+    ui->view->fitIntoView();
+
 }
 
 void DekeystoningWidget::setPreview(QPixmap pixmap)

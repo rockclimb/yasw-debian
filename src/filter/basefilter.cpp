@@ -49,7 +49,7 @@ BaseFilter::~BaseFilter()
 
   This function is called by the calling class to set the Pixmap to be "filtered".
 */
-void BaseFilter::setImage(QPixmap pixmap)
+void BaseFilter::setImage(const QPixmap pixmap)
 {
     inputPixmap = pixmap;
     emit parameterChanged();
