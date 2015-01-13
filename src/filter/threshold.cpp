@@ -159,7 +159,7 @@ QImage Threshold::filter(QImage inputImage)
     }
 
     if (widget->rbOtsuThreshold()) {
-        double otsuThreshold = cv::threshold(src, dst, widget->threshold(), 255,
+        double otsuThreshold = cv::threshold(src, dst, 0, 255,
                                cv::THRESH_BINARY + cv::THRESH_OTSU);
         widget->setOtsuThreshold(otsuThreshold);
         src=dst;
