@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=YASW
+Comment=Yet Another Scan Wizard
+Exec=/usr/bin/yasw
+Icon=application.png
+Terminal=false
+Categories=Graphics;Qt;
+Keywords=scanning;

@@ -1,0 +1,15 @@
+Source: yasw
+Section: graphics
+Priority: extra
+Maintainer: Andrew Ross <ubuntu@rossfamily.co.uk>
+Build-Depends: debhelper (>= 9.0.0), qt4-qmake, libqt4-dev
+Standards-Version: 4.0.0
+Homepage: http://yascanw.sourceforge.net/
+
+Package: yasw
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Yet Another Scan Wizard
+ YASW (Yet Another Scan Wizard) is an application used to correct images
+ taken with a camera. It can be used to post process the scanning of a book
+ or to correct an individual image taken with a camera.

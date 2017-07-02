@@ -1,0 +1,17 @@
+Description: exp is no longer a macro, and so math.h needs to be
+ included for it to be defined.
+Forwarded: https://sourceforge.net/p/yascanw/tickets/43/
+Author: Andrew Ross <ubuntu@rossfamily.co.uk>
+
+Index: yasw/src/filter/colorcorrectiongraphicsview.cpp
+===================================================================
+--- yasw.orig/src/filter/colorcorrectiongraphicsview.cpp
++++ yasw/src/filter/colorcorrectiongraphicsview.cpp
+@@ -17,6 +17,7 @@
+  * along with YASW.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ #include "colorcorrectiongraphicsview.h"
++#include <math.h>
+ #include <QImage>
+ #include <QDebug>
+ #include <QWheelEvent>
