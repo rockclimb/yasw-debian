@@ -43,22 +43,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="fitIntoView">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="toolTip">
-        <string>Fits the image into the view</string>
-       </property>
-       <property name="text">
-        <string>Fit into view</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -446,30 +430,10 @@
    <class>BaseFilterGraphicsView</class>
    <extends>QGraphicsView</extends>
    <header>basefiltergraphicsview.h</header>
-   <slots>
-    <slot>fitIntoView()</slot>
-   </slots>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>fitIntoView</sender>
-   <signal>clicked()</signal>
-   <receiver>view</receiver>
-   <slot>fitIntoView()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>230</x>
-     <y>18</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>211</x>
-     <y>176</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>slotPropertyChanged()</slot>
  </slots>

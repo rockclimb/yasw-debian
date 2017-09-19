@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -142,13 +142,15 @@ void PreferencesDialog::on_selectionColorButton_clicked()
 */
 void PreferencesDialog::setSelectionColor(QColor color)
 {
+    QPalette palette;
+
     if (!color.isValid()) {
         return;
     }
 
     selectionColor = color;
-    ui->selectionColorButton->setStyleSheet("background-color: " + color.name());
-
+    palette.setColor(QPalette::Button, color);
+    ui->selectionColorButton->setPalette(palette);
 
     if (settings) {
         settings->setValue("selectionColor", color.name());
@@ -159,12 +161,15 @@ void PreferencesDialog::setSelectionColor(QColor color)
 
 void PreferencesDialog::setBackgroundColor(QColor color)
 {
+    QPalette palette;
+
     if (!color.isValid()) {
         return;
     }
 
     backgroundColor = color;
-    ui->backgroundColorButton->setStyleSheet("background-color: " + color.name());
+    palette.setColor(QPalette::Button, color);
+    ui->backgroundColorButton->setPalette(palette);
 
     if (settings) {
         settings->setValue("backgroundColor", color.name());

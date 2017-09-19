@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -64,7 +64,6 @@ void ScaleWidget::setPixmap(QPixmap pixmap)
     if (!preview()) {
         ui->view->setPixmap(pixmap);
     }
-    ui->view->fitIntoView();
 }
 
 void ScaleWidget::setPreview(QPixmap pixmap)

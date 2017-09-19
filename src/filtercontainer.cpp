@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -23,7 +23,6 @@
 #include "cropping.h"
 #include "scalefilter.h"
 #include "colorcorrection.h"
-#include "threshold.h"
 #include "layoutfilter.h"
 
 #include <QPrinter>
@@ -79,21 +78,14 @@ FilterContainer::FilterContainer( QWidget * parent)
     connect(scaleFilter, SIGNAL(parameterChanged()),
             layoutFilter, SLOT(inputImageChanged()));
 
-    ColorCorrection *colorCorrection = new ColorCorrection(this);
-    tabToFilter.append(colorCorrection);
-    addTab(colorCorrection->getWidget(), colorCorrection->getName());
-    /* connect the filter to previous filter so it gets changes automaticaly */
-    colorCorrection->setPreviousFilter(layoutFilter);
-    connect(layoutFilter, SIGNAL(parameterChanged()),
-            colorCorrection, SLOT(inputImageChanged()));
-
-    Threshold *threshold = new Threshold(this);
-    tabToFilter.append(threshold);
-    addTab(threshold->getWidget(), threshold->getName());
-    /* connect the filter to previous filter so it gets changes automaticaly */
-    threshold->setPreviousFilter(layoutFilter);
-    connect(colorCorrection, SIGNAL(parameterChanged()),
-            threshold, SLOT(inputImageChanged()));
+// Deactivation Color Corection for release 0.6: this ist not good enought for a release.
+//    ColorCorrection *colorCorrection = new ColorCorrection(this);
+//    tabToFilter.append(colorCorrection);
+//    addTab(colorCorrection->getWidget(), colorCorrection->getName());
+//    /* connect the filter to previous filter so it gets changes automaticaly */
+//    colorCorrection->setPreviousFilter(layoutFilter);
+//    connect(layoutFilter, SIGNAL(parameterChanged()),
+//            colorCorrection, SLOT(inputImageChanged()));
 
     // get informed when a tab changed
     connect(this, SIGNAL(currentChanged(int)),

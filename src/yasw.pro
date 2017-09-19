@@ -20,15 +20,9 @@
 QMAKE_CXXFLAGS += -std=c++11
 TARGET = yasw
 TEMPLATE = app
-QT += core gui xml widgets
-
-# Support for PDF export
+QT += xml
+QT += widgets
 QT += printsupport
-
-#Support for OpenCV
-CONFIG += link_pkgconfig
-PKGCONFIG += opencv
-
 SOURCES += main.cpp \
     mainwindow.cpp \
     filter/basefilter.cpp \
@@ -57,10 +51,7 @@ SOURCES += main.cpp \
     constants.cpp \
     filter/layoutfilter.cpp \
     filter/layoutwidget.cpp \
-    filter/scalefilter.cpp \
-    openCVToQt.cpp \
-    filter/threshold.cpp \
-    filter/thresholdwidget.cpp
+    filter/scalefilter.cpp
 HEADERS += mainwindow.h \
     filter/basefilter.h \
     filter/basefiltergraphicsview.h \
@@ -88,10 +79,7 @@ HEADERS += mainwindow.h \
     filter/colorcorrectiongraphicsview.h \
     filter/colorcorrectiongraphicsscene.h \
     constants.h \
-    filter/scalefilter.h \
-    openCVToQt.hpp \
-    filter/threshold.h \
-    filter/thresholdwidget.h
+    filter/scalefilter.h
 FORMS += mainwindow.ui \
     filter/basefilterwidget.ui \
     filter/dekeystoning/dekeystoningwidget.ui \
@@ -101,8 +89,7 @@ FORMS += mainwindow.ui \
     preferencesdialog.ui \
     filter/scalewidget.ui \
     filter/layoutwidget.ui \
-    filter/colorcorrectionwidget.ui \
-    filter/thresholdwidget.ui
+    filter/colorcorrectionwidget.ui
 INCLUDEPATH += filter \
     filter/dekeystoning \
     filter/rotation \
@@ -114,7 +101,7 @@ OTHER_FILES += \
     ../install.txt \
     ../gpl.txt \
     ../developpers.txt \
-    ../readme.txt
+    ../README
 
 static {
 ## Everything below takes effect when calling qmake with CONFIG += static

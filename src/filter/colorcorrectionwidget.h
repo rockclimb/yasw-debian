@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -45,25 +45,30 @@ public:
     void setBlackPoint(QColor black);
     void enableFilter(bool enable);
 
+
 public slots:
+    void on_whiteReset_clicked();
+    void on_blackReset_clicked();
     void on_preview_toggled(bool checked);
     void imageClicked(QColor color);
     void setBackgroundColor(QColor color);
 
 private slots:
+//    void on_whiteSetPoint_clicked();
+
+//    void on_blackSetPoint_clicked();
+
     void on_enable_toggled(bool checked);
+
     void on_whitepoint_clicked();
+
     void on_blackpoint_clicked();
-
-    void on_pickWhitepoint_clicked();
-
-    void on_pickBlackpoint_clicked();
 
 private:
     Ui::ColorCorrectionWidget *ui;
     QIntValidator *intValidator = NULL;
-    bool pickingWhiteColor = false;
-    bool pickingBlackColor = false;
+    bool setWhitePointClicked = false;
+    bool setBlackPointClicked = false;
     QColor whitepoint;
     QColor blackpoint;
 };

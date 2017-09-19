@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -41,15 +41,10 @@ public:
     void setSelectionColor(QColor color);
 
 public slots:
-    void setPreview(bool preview);
-    void setEnabled(bool enabled);
+    void hidePolygon(bool hide);
     void cornerMoved();
 
 private:
-    void hidePolygon(bool hide);
-    // Defaults defined in dekeystoningwidget.ui
-    bool preview = false;
-    bool enabled = true;
     DekeystoningCorner *topLeftCorner,
             *topRightCorner,
             *bottomRightCorner,

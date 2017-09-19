@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -143,7 +143,7 @@ QPolygonF DekeystoningGraphicsView::polygon()
     return polygon;
 }
 
-/*! Hides the polygon so that it does not interfere with a previewed Pixmap or when filter is disabled */
+/*! Hides the polygon so that it does not interfere with a previewed Pixmap */
 void DekeystoningGraphicsView::hidePolygon(bool hide)
 {
     bool showPolygon = !hide;
@@ -171,34 +171,14 @@ void DekeystoningGraphicsView::setSelectionColor(QColor color)
 {
     QPen pen = QPen(color);
 
-    // Fix for Qt5: the pen width sould be independent of the current transformation.
-    pen.setCosmetic(true);
-    pen.setWidth(2);
-
-
     topLeftCorner->setPen(pen);
-    topRightCorner->setPen(pen);
-    bottomRightCorner->setPen(pen);
-    bottomLeftCorner->setPen(pen);
-    l1->setPen(pen);
-    l2->setPen(pen);
-    l3->setPen(pen);
-    l4->setPen(pen);
-}
-
-void DekeystoningGraphicsView::setPreview(bool preview)
-{
-    this->preview = preview;
-
-    hidePolygon(preview || !enabled);
-}
-
-void DekeystoningGraphicsView::setEnabled(bool enabled)
-{
-    this->enabled = enabled;
-    hidePolygon(preview || !enabled);
-
-    BaseFilterGraphicsView::setEnabled(enabled);
+    topRightCorner->setPen(color);
+    bottomRightCorner->setPen(color);
+    bottomLeftCorner->setPen(color);
+    l1->setPen(color);
+    l2->setPen(color);
+    l3->setPen(color);
+    l4->setPen(color);
 }
 
 /** \brief Check if polygon moved since last resetPolygonMoved() */

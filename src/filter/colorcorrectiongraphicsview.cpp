@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -63,16 +63,6 @@ void ColorCorrectionGraphicsView::setPixmap(const QPixmap pixmap)
 
     /* Zoom the QGraphicsView to fit the new Pixmap */
     fitInView(pixmapItem, Qt::KeepAspectRatio);
-}
-
-void ColorCorrectionGraphicsView::pickingColor(bool picking)
-{
-    pickingColorState = picking;
-    if (picking) {
-        setCursor(Qt::CrossCursor);
-    } else {
-        unsetCursor();
-    }
 }
 
 void ColorCorrectionGraphicsView::colorFromScene(QColor color)

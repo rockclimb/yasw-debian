@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -28,8 +28,6 @@ public:
     BaseFilterGraphicsView(QWidget *parent);
     ~BaseFilterGraphicsView();
     void setPixmap(const QPixmap pixmap);
-public slots:
-    void fitIntoView();
 protected:
     void wheelEvent(QWheelEvent *event);
     QGraphicsScene *scene = NULL;

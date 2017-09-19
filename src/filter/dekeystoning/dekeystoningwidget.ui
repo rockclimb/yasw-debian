@@ -51,22 +51,6 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.</comment>
     </widget>
    </item>
    <item row="0" column="2">
-    <widget class="QToolButton" name="fitIntoView">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="toolTip">
-      <string>Fits the image into the view</string>
-     </property>
-     <property name="text">
-      <string>Fit into view</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="3">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -79,7 +63,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.</comment>
      </property>
     </spacer>
    </item>
-   <item row="1" column="0" colspan="4">
+   <item row="1" column="0" colspan="3">
     <widget class="DekeystoningGraphicsView" name="view"/>
    </item>
   </layout>
@@ -90,8 +74,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.</comment>
    <extends>QGraphicsView</extends>
    <header>dekeystoninggraphicsview.h</header>
    <slots>
-    <slot>setPreview(bool)</slot>
-    <slot>fitIntoView()</slot>
+    <slot>hidePolygon(bool)</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -117,7 +100,7 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.</comment>
    <sender>preview</sender>
    <signal>toggled(bool)</signal>
    <receiver>view</receiver>
-   <slot>setPreview(bool)</slot>
+   <slot>hidePolygon(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>151</x>
@@ -126,22 +109,6 @@ along with YASW.  If not, see http://www.gnu.org/licenses/.</comment>
     <hint type="destinationlabel">
      <x>192</x>
      <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fitIntoView</sender>
-   <signal>clicked()</signal>
-   <receiver>view</receiver>
-   <slot>fitIntoView()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>221</x>
-     <y>17</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>387</x>
-     <y>111</y>
     </hint>
    </hints>
   </connection>
