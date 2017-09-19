@@ -30,10 +30,8 @@ void CroppingWidget::on_preview_toggled(bool checked)
 void CroppingWidget::setPixmap(QPixmap pixmap)
 {
     inputPixmap = pixmap;
-    if (!preview()) {
+    if (!preview())
         ui->view->setPixmap(pixmap);
-    }
-    ui->view->fitIntoView();
 }
 
 void CroppingWidget::setPreview(QPixmap pixmap)

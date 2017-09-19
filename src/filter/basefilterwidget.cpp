@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -46,12 +46,12 @@ void BaseFilterWidget::changeEvent(QEvent *e)
 void BaseFilterWidget::setPixmap(QPixmap pixmap)
 {
     ui->view->setPixmap(pixmap);
-    ui->view->fitIntoView();
 }
 
 void BaseFilterWidget::setPreview(QPixmap pixmap)
 {
     previewPixmap = pixmap;
+
 }
 
 bool BaseFilterWidget::preview()

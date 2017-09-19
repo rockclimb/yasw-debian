@@ -23,7 +23,7 @@
 // QDebug included centraly, so that it can be commented out.
 #include <QDebug>
 
-static const char VERSION[] = "0.7 git master";
+static const char VERSION[] = "0.6";
 
 
 class Constants

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -76,7 +76,7 @@ protected:
     BaseFilter *previousFilter = NULL;
     // when true, do not recalculate (this is not an user interaction)
     bool loadingSettings = false;
-    // Does the actual job of the filter: produce a QImage from the inputImage
+    virtual void compute();
     virtual QImage filter(QImage inputImage);
     bool filterEnabled = true; // default on all widgets
 

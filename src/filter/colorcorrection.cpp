@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -124,7 +124,6 @@ QMap<QString, QVariant> ColorCorrection::dom2Settings(QDomElement &filterElement
 
     settings["whitepoint"] = filterElement.attribute("whitepoint", "#FFFFFF");
     settings["blackpoint"] = filterElement.attribute("blackpoint", "#000000");
-    settings["enabled"] = filterElement.attribute("enabled", "1").toInt();
 
     return settings;
 }

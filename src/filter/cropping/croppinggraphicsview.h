@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -36,16 +36,9 @@ public:
     void setSelectionColor(QColor color);
 
 public slots:
-    void moveRectangle();
-    void setPreview(bool preview);
-    void setEnabled(bool enabled);
-
-private:
     void hideRectangle(bool hide);
-    // Defaults defined in croppingwidget.ui
-    bool preview = false;
-    bool enabled = true;
-
+    void moveRectangle();
+private:
     CroppingCorner *topLeftCorner;
     CroppingCorner *bottomRightCorner;
     QGraphicsRectItem *rectangle;

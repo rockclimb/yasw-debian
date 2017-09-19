@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -49,7 +49,7 @@ BaseFilter::~BaseFilter()
 
   This function is called by the calling class to set the Pixmap to be "filtered".
 */
-void BaseFilter::setImage(const QPixmap pixmap)
+void BaseFilter::setImage(QPixmap pixmap)
 {
     inputPixmap = pixmap;
     emit parameterChanged();
@@ -194,6 +194,12 @@ void BaseFilter::refresh()
         mustRecalculate = false;
         filterWidget->setPreview(outputPixmap);
     }
+}
+
+// Do compute the outputPixmap with the help of all available parameters.
+void BaseFilter::compute()
+{
+    outputPixmap = QPixmap::fromImage(filter(inputPixmap.toImage()));
 }
 
 QImage BaseFilter::filter(QImage inputImage)

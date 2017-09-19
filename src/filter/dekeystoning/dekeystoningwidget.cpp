@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -49,11 +49,8 @@ void DekeystoningWidget::changeEvent(QEvent *e)
 void DekeystoningWidget::setPixmap(QPixmap pixmap)
 {
     inputPixmap = pixmap;
-    if (!preview()) {
+    if (!preview())
         ui->view->setPixmap(pixmap);
-    }
-    ui->view->fitIntoView();
-
 }
 
 void DekeystoningWidget::setPreview(QPixmap pixmap)

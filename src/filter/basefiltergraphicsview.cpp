@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -25,11 +25,6 @@ BaseFilterGraphicsView::BaseFilterGraphicsView(QWidget *parent) : QGraphicsView(
 {
     scene = new QGraphicsScene();
     setScene(scene);
-
-    // We always display the Scrollbars so we don't have an offset when switching between
-    // Normalview an preview
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     pixmapItem = new QGraphicsPixmapItem();
     scene->addItem(pixmapItem);
@@ -63,10 +58,7 @@ void BaseFilterGraphicsView::setPixmap(const QPixmap pixmap)
 {
     scene->setSceneRect(pixmap.rect());
     pixmapItem->setPixmap(pixmap);
-}
 
-void BaseFilterGraphicsView::fitIntoView()
-{
+    /* Zoom the QGraphicsView to fit the new Pixmap */
     fitInView(pixmapItem, Qt::KeepAspectRatio);
-
 }

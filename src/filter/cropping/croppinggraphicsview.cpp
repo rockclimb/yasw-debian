@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012-2015 Robert Chéramy (robert@cheramy.net)
+ * Copyright (C) 2012-2014 Robert Chéramy (robert@cheramy.net)
  *
  * This file is part of YASW (Yet Another Scan Wizard).
  *
@@ -87,22 +87,6 @@ void CroppingGraphicsView::moveRectangle()
     emit parameterChanged();
 }
 
-void CroppingGraphicsView::setPreview(bool preview)
-{
-    this->preview = preview;
-
-    hideRectangle(preview || !enabled);
-
-}
-
-void CroppingGraphicsView::setEnabled(bool enabled)
-{
-    this->enabled = enabled;
-    hideRectangle(preview || !enabled);
-
-    BaseFilterGraphicsView::setEnabled(enabled);
-}
-
 
 /** \brief Get the filter settings (gets the polygon coordinates)
 */
@@ -138,10 +122,6 @@ void CroppingGraphicsView::setSettings(QMap<QString, QVariant> settings)
 void CroppingGraphicsView::setSelectionColor(QColor color)
 {
     QPen pen = QPen(color);
-
-    // Fix for Qt5: the pen width sould be independent of the current transformation.
-    pen.setCosmetic(true);
-    pen.setWidth(2);
 
     topLeftCorner->setPen(pen);
     bottomRightCorner->setPen(pen);
