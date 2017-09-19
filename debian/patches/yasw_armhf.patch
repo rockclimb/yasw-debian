@@ -1,0 +1,38 @@
+Description: Fix build failure on armhf and armel.
+ .
+ This is the result of QT's brain damage: they use inconsistent types on
+ these architectures: https://doc.qt.io/qt-4.8/qtglobal.html#qreal-typedef
+ .
+ As we don't know whether qreal is float or double, we can't use a suffix for
+ the literal and need a type cast.
+Forwarded: https://sourceforge.net/p/yascanw/tickets/44/
+Author: Adam Borowski <kilobyte@angband.pl>
+
+--- yasw-0.6.orig/src/filter/layoutfilter.cpp
++++ yasw-0.6/src/filter/layoutfilter.cpp
+@@ -194,10 +194,10 @@ QImage LayoutFilter::filter(QImage input
+         leftMargin = 0;
+         break;
+     case Constants::CenterHAlignment:
+-        leftMargin = qMax((pageWidth - imageWidth) / 2, 0.0);
++        leftMargin = qMax((pageWidth - imageWidth) / 2, (qreal)0.0);
+         break;
+     case Constants::RightHAlignment:
+-        leftMargin = qMax(pageWidth - imageWidth, 0.0);
++        leftMargin = qMax(pageWidth - imageWidth, (qreal)0.0);
+         break;
+     }
+     switch (Constants::verticalAlignment.indexOf(verticalAlignement)) {
+@@ -205,10 +205,10 @@ QImage LayoutFilter::filter(QImage input
+         topMargin = 0;
+         break;
+     case Constants::CenterVAlignment:
+-        topMargin = qMax((pageHeight - imageHeight) / 2, 0.0);
++        topMargin = qMax((pageHeight - imageHeight) / 2, (qreal)0.0);
+         break;
+     case Constants::BottomVAlignment:
+-        topMargin = qMax(pageHeight - imageHeight, 0.0);
++        topMargin = qMax(pageHeight - imageHeight, (qreal)0.0);
+         break;
+     }
+ 

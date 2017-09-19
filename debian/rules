@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+export QT_SELECT=5
 
 %:
 	dh $@ --sourcedirectory=src
